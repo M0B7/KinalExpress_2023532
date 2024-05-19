@@ -584,6 +584,10 @@ begin
     values(idPro,descripcionPro,precioUni,precioDoc,precioMay,imagenPro,exist,idTipoPro, idProv);
 end$$
 DELIMITER ;
+
+INSERT INTO Proveedores (idProveedores, nitProveedor, nombreProveedor, apellidosProveedor, direccionProveedor, razonSocial, contactoPrincipal, paginaWeb)
+VALUES (1, '123456789', 'Proveedor', 'Apellidos', 'Direccion', 'Razon Social', 'Contacto Principal', 'www.proveedor.com')
+ON DUPLICATE KEY UPDATE idProveedores = idProveedores;
  
 call sp_agregarProducto(1, 'Leche', 10.99, 88.99, 8.99, 'leche.jpg', 200, 1, 1);
 
@@ -591,353 +595,438 @@ call sp_agregarProducto(1, 'Leche', 10.99, 88.99, 8.99, 'leche.jpg', 200, 1, 1);
 
 DELIMITER $$
 
-create procedure sp_buscarProductoPorCodigo(in codProd varchar(15))
+create procedure sp_buscarProducto(in idProd varchar(15))
 begin
-    select p.codigoProducto, p.descripcionProducto, p.precioUnitario, p.precioDocena, p.precioMayor, 
-           p.imagenProducto, p.existencia, p.codigoProveedor, p.codigoTipoProducto
+    select p.idProducto, p.descripcionProducto, p.precioUnitario, p.precioDocena, p.precioMayor, 
+           p.imagenProducto, p.existencia, p.idProveedores, p.idTipoProducto
     from Productos p 
-    where p.codigoProducto = codProd;
+    where p.idProducto = idProd;
 end$$
-
-delimiter ;
+DELIMITER ;
+ 
+ -- LISTAR
  
 Delimiter $$
 create procedure sp_listarProductos()
 begin
     select
-		p.codigoProducto,
+		p.idProducto,
         p.descripcionProducto,
         p.precioUnitario,
         p.precioDocena,
         p.precioMayor,
         p.imagenProducto,
         p.existencia,
-        p.codigoTipoProducto,
-        p.codigoProveedor
+        p.idTipoProducto,
+        p.idProveedores
         from
-        productos p;
+		Productos p;
 end$$
 Delimiter ;
  
 call sp_listarProductos();
+
+-- EDITAR
  
 DELIMITER $$
-CREATE PROCEDURE sp_actualizarProducto(
-    IN p_codigoProducto VARCHAR(15),
-    IN p_nuevaDescripcionProducto VARCHAR(15),
-    IN p_nuevoPrecioUnitario DECIMAL(10,2),
-    IN p_nuevoPrecioDocena DECIMAL(10,2),
-    IN p_nuevoPrecioMayor DECIMAL(10,2),
-    IN p_nuevaImagenProducto VARCHAR(45),
-    IN p_nuevaExistencia INT,
-    IN p_nuevoCodigoTipoProducto INT,
-    IN p_nuevoCodigoProveedor INT
+create procedure sp_editarProducto(
+	in idPro int,
+    in descripcionProd varchar(15),
+    in precioUnit decimal(10,2),
+    in precioDoce decimal(10,2),
+    in precioMayo decimal(10,2),
+    in imagenProduc varchar(45),
+    in existen int,
+    in idTipoProduc int,
+    in idProveed int
 )
-BEGIN
-    UPDATE Productos
-    SET descripcionProducto = p_nuevaDescripcionProducto,
-        precioUnitario = p_nuevoPrecioUnitario,
-        precioDocena = p_nuevoPrecioDocena,
-        precioMayor = p_nuevoPrecioMayor,
-        imagenProducto = p_nuevaImagenProducto,
-        existencia = p_nuevaExistencia,
-        codigoTipoProducto = p_nuevoCodigoTipoProducto,
-        codigoProveedor = p_nuevoCodigoProveedor
-    WHERE codigoProducto = p_codigoProducto;
-END$$
-DELIMITER ;
- 
-
- 
-Delimiter $$
-CREATE PROCEDURE sp_eliminarProducto(IN _codigoProducto VARCHAR(15))
-BEGIN
-    DELETE FROM Productos
-    WHERE codigoProducto = _codigoProducto;
-END $$
- 
-DELIMITER ;
- 
-
--- ------------------------------------------ TELEFONO PROVEEDOR------------------------------------------------------
-
-delimiter $$
-
-create procedure sp_agregarTelefonoProveedor(in codTelPro int, in numPrin varchar(8), in numSec varchar(8), in obs varchar(45), in codPro int)
 begin
-    insert into TelefonoProveedor (codigoTelefonoProveedor, numeroPrincipal, numeroSecundario, observaciones, codigoProveedor)
-    values (codTelPro, numPrin, numSec, obs, codPro);
+    update Productos
+    set descripcionProducto = descripcionProd,
+        precioUnitario = precioUnit,
+        precioDocena = precioDoce,
+        precioMayor = precioMayo,
+        imagenProducto = imagenProduc,
+        existencia = existen,
+        idTipoProducto = idTipoProduc,
+        idProveedores = idProveed
+    where idProducto = idPro;
 end$$
+DELIMITER ;
+ 
+-- ELIMINAR
+ 
+DELIMITER $$
+create procedure sp_eliminarProducto(in  idProduc int)
+begin
+    delete from Productos
+    where idProducto = idProduc;
+end $$
+ 
+DELIMITER ;
+ 
 
-delimiter ;
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+-- TELEFONO PROVEEDOR
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
 
-call sp_agregarTelefonoProveedor(1, '5165', '5165', 'sdfg', 1);
+-- AGREGAR
 
-delimiter $$
+DELIMITER $$
+
+create procedure sp_agregarTelefonoProveedor
+(in idTelPro int, in numeroPrin varchar(12), in numeroSec varchar(12), in observa varchar(90), in idProvee int)
+begin
+    insert into TelefonoProveedor(idTelefonoProveedor, numeroPrincipal, numeroSecundario, observaciones, idProveedores)
+    values (idTelPro, numeroPrin, numeroSec, observa, idProvee);
+end$$
+DELIMITER ;
+
+call sp_agregarTelefonoProveedor(1, '82536475', '0273546', 'El numero principal es de la secretaria', 1);
+
+-- LISTAR
+
+DELIMITER $$
 
 create procedure sp_listarTelefonoProveedor()
 begin 
-    select t.codigoTelefonoProveedor, t.numeroPrincipal, t.numeroSecundario, t.observaciones, t.codigoProveedor from TelefonoProveedor t;
+    select t.idTelefonoProveedor, t.numeroPrincipal, t.numeroSecundario, t.observaciones, t.idProveedores
+    from TelefonoProveedor t;
 end$$
-
-delimiter ;
+DELIMITER ;
 
 call sp_listarTelefonoProveedor();
+
+-- BUSCAR
+
 delimiter $$
 
-create procedure sp_buscarTelefonoProveedor(in codPro int)
+create procedure sp_buscarTelefonoProveedor(in idPro int)
 begin
-    select t.codigoTelefonoProveedor, t.numeroPrincipal, t.numeroSecundario, t.observaciones, t.codigoProveedor from TelefonoProveedor t where t.codigoProveedor = codPro;
+    select t.idTelefonoProveedor, t.numeroPrincipal, t.numeroSecundario, t.observaciones, t.idProveedores
+    from TelefonoProveedor t 
+    where t.idProveedores = idPro;
 end$$
+DELIMITER ;
 
-delimiter ;
-delimiter $$
+-- EDITAR
 
-create procedure sp_actualizarTelefonoProveedor(in codTelPro int, in numPrin varchar(8), in numSec varchar(8), in obs varchar(45), in codPro int)
+DELIMITER $$
+
+create procedure sp_editarTelefonoProveedor(in idTelPro int, in numPrin varchar(10),
+ in numSec varchar(10), in obs varchar(90), in idPro int)
 begin
-    update TelefonoProveedor set numeroPrincipal = numPrin, numeroSecundario = numSec, observaciones = obs, codigoProveedor = codPro where codigoTelefonoProveedor = codTelPro;
+    update TelefonoProveedor 
+    set
+    numeroPrincipal = numPrin,
+    numeroSecundario = numSec, 
+    observaciones = obs, 
+    idProveedores = idPro where idTelefonoProveedor = idTelPro;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- ELIMINAR
 
-delimiter $$
+DELIMITER $$
 
-create procedure sp_eliminarTelefonoProveedor(in codTelPro int)
+create procedure sp_eliminarTelefonoProveedor(in idTelPro int)
 begin
-    delete from TelefonoProveedor where codigoTelefonoProveedor = codTelPro;
+    delete from TelefonoProveedor 
+    where idTelefonoProveedor = idTelPro;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+-- EMAIL PROVEEDOR
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
 
--- --------------------------------------- -----Email Proveedor -------------------------------------------------------------------------------
-delimiter $$
+DELIMITER $$
 
 create procedure sp_agregarEmailProveedor(
-    in codEmailPro int,
+    in idEmailPro int,
     in email varchar(50),
     in descr varchar(100),
-    in codPro int
+    in idProv int
 )
 begin
-    insert into EmailProveedor (codigoEmailProveedor, emailProveedor, descripcion, codigoProveedor)
-    values (codEmailPro, email, descr, codPro);
+    insert into EmailProveedor (idEmailProveedor, emailProveedor, descripcion, idProveedores)
+    values (idEmailPro, email, descr, idProv);
 end$$
+DELIMITER ;
 
-delimiter ;
+call sp_agregarEmailProveedor(1, 'hdfjebrf@gmail.com', 'No respondo los domingos', 1);
 
-delimiter $$
+-- LISTAR
+
+DELIMITER $$
 
 create procedure sp_listarEmailProveedor()
 begin 
-    select e.codigoEmailProveedor, e.emailProveedor, e.descripcion, e.codigoProveedor 
+    select e.idEmailProveedor,
+    e.emailProveedor,
+    e.descripcion, 
+    e.idProveedores 
     from EmailProveedor e;
 end$$
+DELIMITER ;
 
-delimiter ;
+call sp_listarEmailProveedor();
 
-delimiter $$
+-- BUSCAR
 
-create procedure sp_buscarEmailProveedor(in codPro int)
+DELIMITER $$
+
+create procedure sp_buscarEmailProveedor(in idPro int)
 begin
-    select e.codigoEmailProveedor, e.emailProveedor, e.descripcion, e.codigoProveedor 
+    select e.idEmailProveedor, 
+    e.emailProveedor, 
+    e.descripcion,
+    e.idProveedores 
     from EmailProveedor e 
-    where e.codigoProveedor = codPro;
+    where e.idProveedores = idPro;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- EDITAR
 
 delimiter $$
 
-create procedure sp_actualizarEmailProveedor(
-    in codEmailPro int,
+create procedure sp_editarEmailProveedor(
+    in idEmailPro int,
     in email varchar(50),
-    in descr varchar(100),
-    in codPro int
+    in descri varchar(100),
+    in idPro int
 )
 begin
     update EmailProveedor 
-    set emailProveedor = email, descripcion = descr, codigoProveedor = codPro 
-    where codigoEmailProveedor = codEmailPro;
+    set emailProveedor = email,
+    descripcion = descri,
+    idProveedores = idPro 
+    where idEmailProveedor = idEmailPro;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- ELIMINAR
 
-delimiter $$
+DELIMITER $$
 
-create procedure sp_eliminarEmailProveedor(in codEmailPro int)
+create procedure sp_eliminarEmailProveedor(in idEmailPro int)
 begin
     delete from EmailProveedor 
-    where codigoEmailProveedor = codEmailPro;
+    where idEmailProveedor = idEmailPro;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+-- EMAIL EMPLEADOS
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
 
--- ----------------------------------------------------- Empleados ------------------------------------------------------------
-delimiter $$
+
+-- AGREGAR
+
+DELIMITER $$
 
 create procedure sp_agregarEmpleado(
-    in codEmp int,
+    in idEmp int,
     in nombres varchar(50),
     in apellidos varchar(50),
     in sueldo decimal(10,2),
-    in direccion varchar(150),
     in turno varchar(15),
-    in codCargoEmp int
+    in idCargoEmp int
 )
 begin
-    insert into Empleados (codigoEmpleado, nombresEmpleado, apellidosEmpleado, sueldo, direccion, turno, codigoCargoEmpleado)
-    values (codEmp, nombres, apellidos, sueldo, direccion, turno, codCargoEmp);
+    insert into Empleados (idEmpleado, nombresEmpleado, apellidosEmpleado, sueldo, turno, idCargoEmpleado)
+    values (idEmp, nombres, apellidos, sueldo, turno, idCargoEmp);
 end$$
 
-delimiter ;
-call sp_agregarEmpleado(1, 'John', 'Doe', 3000.00, '1234 Elm Street', 'Day', 1);
+DELIMITER ;
 
+call sp_agregarEmpleado(1, 'Neto', 'Bran', 1.00, 'Nocturno', 1);
 
-delimiter $$
+-- LISTAR
+
+DELIMITER $$
 
 create procedure sp_listarEmpleados()
 begin 
-    select e.codigoEmpleado, e.nombresEmpleado, e.apellidosEmpleado, e.sueldo, e.direccion, e.turno, e.codigoCargoEmpleado 
+    select e.idEmpleado, e.nombresEmpleado, e.apellidosEmpleado, e.sueldo, e.turno, e.idCargoEmpleado 
     from Empleados e;
 end$$
+DELIMITER ;
 
-delimiter ;
+call sp_listarEmpleados();
 
-delimiter $$
+-- BUSCAR
 
-create procedure sp_buscarEmpleado(in codEmpleado int)
+DELIMITER $$
+
+create procedure sp_buscarEmpleado(in idEmpleado int)
 begin
-    select e.codigoEmpleado, e.nombresEmpleado, e.apellidosEmpleado, e.sueldo, e.direccion, e.turno, e.codigoCargoEmpleado 
+    select e.idEmpleado, e.nombresEmpleado, e.apellidosEmpleado, e.sueldo, e.turno, e.idCargoEmpleado 
     from Empleados e 
-    where e.codigoEmpleado = codEmpleado;
+    where e.idEmpleado = idEmpleado;
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
+-- EDITAR
 
-create procedure sp_actualizarEmpleado(
-    in codEmp int,
+DELIMITER $$
+
+create procedure sp_editarEmpleado(
+    in idEmp int,
     in nombres varchar(50),
     in apellidos varchar(50),
     in sueldo decimal(10,2),
-    in direccion varchar(150),
     in turno varchar(15),
-    in codCargoEmp int
+    in idCargoEmp int
 )
 begin
     update Empleados 
-    set nombresEmpleado = nombres, apellidosEmpleado = apellidos, sueldo = sueldo, direccion = direccion, turno = turno, codigoCargoEmpleado = codCargoEmp 
-    where codigoEmpleado = codEmp;
+    set nombresEmpleado = nombres,
+    apellidosEmpleado = apellidos, 
+    sueldo = sueldo,
+    direccion = direccion,
+    turno = turno,
+    idCargoEmpleado = idCargoEmp 
+    where idEmpleado = idEmp;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- ELIMINAR
 
-delimiter $$
+DELIMITER $$
 
-create procedure sp_eliminarEmpleado(in codEmp int)
+create procedure sp_eliminarEmpleado(in idEmp int)
 begin
     delete from Empleados 
-    where codigoEmpleado = codEmp;
+    where idEmpleado = idEmp;
 end$$
 
-delimiter ;
+DELIMITER ;
 
--- ------------------------------------------- Factura ------------------------------------------------------------------------
-delimiter $$
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+-- FACTURA
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+
+-- AGREGAR
+
+DELIMITER $$
 
 create procedure sp_agregarFactura(
-    in numFac int,
+    in idFac int,
     in estadoFac varchar(50),
     in totalFac decimal(10,2),
     in fechaFac varchar(45),
-    in codCli int,
-    in codEmp int
+    in idCli int,
+    in idEmp int
 )
 begin
-    insert into Factura (numeroFactura, estado, totalFactura, fechaFactura, codigoCliente, codigoEmpleado)
-    values (numFac, estadoFac, totalFac, fechaFac, codCli, codEmp);
+    insert into Factura (idFactura, estado, totalFactura, fechaFactura, idCliente, idEmpleado)
+    values (idFac, estadoFac, totalFac, fechaFac, idCli, idEmp);
 end$$
+DELIMITER ;
 
-delimiter ;
 
-delimiter $$
+-- LISTAR
+
+DELIMITER $$
 
 create procedure sp_listarFacturas()
 begin 
-    select f.numeroFactura, f.estado, f.totalFactura, f.fechaFactura, f.codigoCliente, f.codigoEmpleado 
+    select f.idFactura, f.estado, f.totalFactura, f.fechaFactura, f.idCliente, f.idEmpleado 
     from Factura f;
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
+call sp_listarFacturas();
 
-create procedure sp_buscarFactura(in numFac int)
+-- BUSCAR 
+
+DELIMITER $$
+
+create procedure sp_buscarFactura(in idFac int)
 begin
-    select f.numeroFactura, f.estado, f.totalFactura, f.fechaFactura, f.codigoCliente, f.codigoEmpleado 
+    select f.idFactura, f.estado, f.totalFactura, f.fechaFactura, f.idCliente, f.idEmpleado 
     from Factura f 
-    where f.numeroFactura = numFac;
+    where f.idFactura = idFac;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- ACTUALIZAR 
 
-delimiter $$
+DELIMITER $$
 
 create procedure sp_actualizarFactura(
-    in numFac int,
+    in idFac int,
     in estadoFac varchar(50),
     in totalFac decimal(10,2),
     in fechaFac varchar(45),
-    in codCli int,
-    in codEmp int
+    in idCli int,
+    in idEmp int
 )
 begin
     update Factura 
-    set estado = estadoFac, totalFactura = totalFac, fechaFactura = fechaFac, codigoCliente = codCli, codigoEmpleado = codEmp 
-    where numeroFactura = numFac;
-end$$
+    set estado = estadoFac,
+    totalFactura = totalFac, 
+    fechaFactura = fechaFac,
+    idCliente = idCli, 
+    idEmpleado = idEmp 
+    where idFactura = idFac;
+end$$	
+DELIMITER ;
 
-delimiter ;
+-- ELIMINAR
 
-delimiter $$
+DELIMITER $$
 
-create procedure sp_eliminarFactura(in numFac int)
+create procedure sp_eliminarFactura(in idFac int)
 begin
     delete from Factura 
-    where numeroFactura = numFac;
+    where idFactura = idFac;
 end$$
 
-delimiter ;
+DELIMITER ;
 
--- ------------------------------------------------ Detalle Factura-----------------------------------------------------
-delimiter $$
+
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+-- DETALLE FACTURA
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+
+-- AGREGAR
+
+DELIMITER $$
 
 create procedure sp_agregarDetalleFactura(
-    in codDetFac int,
+    in idDetFac int,
     in precioUnit decimal(10,2),
     in cant int,
-    in numFac int,
-    in codProd varchar(15)
+    in idFac int,
+    in idProd int
 )
 begin
-    insert into DetalleFactura (codigoDetalleFactura, precioUnitario, cantidad, numeroFactura, codigoProducto)
-    values (codDetFac, precioUnit, cant, numFac, codProd);
+    insert into DetalleFactura (idDetalleFactura, precioUnitario, cantidad, idFactura, idProducto)
+    values (idDetFac, precioUnit, cant, idFac, idProd);
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
 
-create procedure sp_listarDetalleFacturas()
+-- LISTAR
+
+DELIMITER $$
+
+create procedure sp_listarDetalleFactura()
 begin 
-    select d.codigoDetalleFactura, d.precioUnitario, d.cantidad, d.numeroFactura, d.codigoProducto
+    select d.idDetalleFactura, d.precioUnitario, d.cantidad, d.idFactura, d.idProducto
     from DetalleFactura d;
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
+
+DELIMITER $$
 
 create procedure sp_buscarDetalleFactura(in codDetFac int)
 begin
@@ -946,97 +1035,118 @@ begin
     where d.codigoDetalleFactura = codDetFac;
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
 
-create procedure sp_actualizarDetalleFactura(
-    in codDetFac int,
+-- EDITAR
+
+DELIMITER $$
+
+create procedure sp_editarDetalleFactura(
+    in idDetFac int,
     in precioUnit decimal(10,2),
     in cant int,
-    in numFac int,
-    in codProd varchar(15)
+    in idFac int,
+    in idProd int
 )
 begin
     update DetalleFactura 
-    set precioUnitario = precioUnit, cantidad = cant, numeroFactura = numFac, codigoProducto = codProd 
-    where codigoDetalleFactura = codDetFac;
+    set precioUnitario = precioUnit, 
+    cantidad = cant, 
+    idFactura = idFac,
+    idProducto = idProd 
+    where idDetalleFactura = idDetFac;
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
+-- ELIMINAR 
 
-create procedure sp_eliminarDetalleFactura(in codDetFac int)
+DELIMITER $$
+
+create procedure sp_eliminarDetalleFactura(in idDetFac int)
 begin
     delete from DetalleFactura 
-    where codigoDetalleFactura = codDetFac;
+    where idDetalleFactura = idDetFac;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+-- DETALLE FACTURA
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
 
--- ------------------------------------------------- Detalle Compra ---------------------------------------------------
-delimiter $$
+-- AGREGAR 
+
+DELIMITER $$
 
 create procedure sp_agregarDetalleCompra(
-    in codDetComp int,
+    in idDetComp int,
     in costoUnit decimal(10,2),
     in cant int,
-    in codProd varchar(15),
-    in numDoc int
+    in idProd varchar(15),
+    in idCom int
 )
 begin
-    insert into DetalleCompra (codigoDetalleCompra, costoUnitario, cantidad, codigoProducto, numeroDocumento)
-    values (codDetComp, costoUnit, cant, codProd, numDoc);
+    insert into DetalleCompra (idDetalleCompra, costoUnitario, cantidad, idProducto, idCompra)
+    values (idDetComp, costoUnit, cant, idProd, idCom);
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
+-- LISTAR
+
+DELIMITER $$
 
 create procedure sp_listarDetalleCompras()
 begin 
-    select d.codigoDetalleCompra, d.costoUnitario, d.cantidad, d.codigoProducto, d.numeroDocumento
+    select d.idDetalleCompra, d.costoUnitario, d.cantidad, d.idProducto, d.idCompra
     from DetalleCompra d;
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
+-- BUSCAR
 
-create procedure sp_buscarDetalleCompraPorCodigo(in codDetComp int)
+DELIMITER $$
+
+create procedure sp_buscarDetalleCompraPorCodigo(in idDetComp int)
 begin
-    select d.codigoDetalleCompra, d.costoUnitario, d.cantidad, d.codigoProducto, d.numeroDocumento
+    select d.idDetalleCompra, d.costoUnitario, d.cantidad, d.idProducto, d.idCompra
     from DetalleCompra d 
-    where d.codigoDetalleCompra = codDetComp;
+    where d.idDetalleCompra = idDetComp;
 end$$
 
-delimiter ;
+DELIMITER ;
 
-delimiter $$
+-- EDITAR
+
+DELIMITER $$
 
 create procedure sp_actualizarDetalleCompra(
-    in codDetComp int,
+    in idDetComp int,
     in costoUnit decimal(10,2),
     in cant int,
-    in codProd varchar(15),
-    in numDoc int
+    in idProd varchar(15),
+    in idCom int
 )
 begin
     update DetalleCompra 
-    set costoUnitario = costoUnit, cantidad = cant, codigoProducto = codProd, numeroDocumento = numDoc 
-    where codigoDetalleCompra = codDetComp;
+    set costoUnitario = costoUnit,
+    cantidad = cant, 
+    idProducto = idProd, 
+    idCompra = idCom 
+    where idDetalleCompra = idDetComp;
 end$$
+DELIMITER ;
 
-delimiter ;
+-- ELIMINAR
 
-delimiter $$
+DELIMITER $$
 
-create procedure sp_eliminarDetalleCompra(in codDetComp int)
+create procedure sp_eliminarDetalleCompra(in idDetComp int)
 begin
     delete from DetalleCompra 
-    where codigoDetalleCompra = codDetComp;
+    where idDetalleCompra = idDetComp;
 end$$
-
-delimiter ;
+DELIMITER ;
 
