@@ -37,7 +37,8 @@ public class MenuPrincipalController implements Initializable {
     public void handleButtonAction (ActionEvent event){
         if (event.getSource() == btnMenuClientes){
         escenarioPrincipal.menuClientesView();
-        }else if(event.getSource() == btnMenuProgramador){
+        } 
+        if(event.getSource() == btnMenuProgramador){
         escenarioPrincipal.menuProgramadorView();
             
         }

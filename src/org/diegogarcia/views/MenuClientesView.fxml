@@ -86,7 +86,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="58.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Editar" textFill="WHITE" GridPane.rowIndex="1">
+                  <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" prefHeight="58.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Editar" textFill="WHITE" GridPane.rowIndex="1">
                      <font>
                         <Font name="Bauhaus 93" size="18.0" />
                      </font>
@@ -108,7 +108,7 @@
                            </image></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnEliminar" mnemonicParsing="false" prefHeight="59.0" prefWidth="142.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-focus-traversable: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Eliminar" textFill="#fffafa" GridPane.rowIndex="3">
+                  <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminar" prefHeight="59.0" prefWidth="142.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-focus-traversable: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Eliminar" textFill="#fffafa" GridPane.rowIndex="3">
                      <font>
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>
@@ -130,12 +130,12 @@
                            </cursor></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnReporte" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="49.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Reporte" textFill="#fffafa" GridPane.rowIndex="4">
+                  <Button fx:id="btnReporte" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#reportes" prefHeight="49.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Reporte" textFill="#fffafa" GridPane.rowIndex="4">
                      <font>
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>
                      <graphic>
-                        <ImageView fx:id="imgReporteria" fitHeight="30.0" fitWidth="24.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgReporte" fitHeight="30.0" fitWidth="24.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/Reporteria.png" />
                            </image>

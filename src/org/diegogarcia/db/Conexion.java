@@ -1,24 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.diegogarcia.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+
 /**
- *
- * @author informatica
+ * Nombre: Diego Fernando Garcia Galvez
+ * 2023532
+ * PE5AM
+ * Fecha de creacion: 15/04/2024
+ * Fecha de Modificacion: 17/04, 23/04, 24/04, 30/04, 06/05, 07/05, 8/5
  */
+
+
 public class Conexion {
+    
+    // Realiza la conexion
     private Connection conexion;
+    
+    //Instancia lo de arriba
     private static Conexion instancia;
     
+    
+    /*
+    Constructor que hace la conexion con la base de datos
+    */
     public Conexion () {
 		try{
                     Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-                    conexion = DriverManager.getConnection("dbc:mysql://localhost:3306:/DBKinalExpressIN5BM?useSSL=false", "root", "Elmantecasxdpro1");
+                    conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306:/DBKinalExpress?useSSL=false", "root", "admin");
                 }catch(ClassNotFoundException e){
                     e.printStackTrace();
                 }catch(InstantiationException e){
@@ -30,6 +40,11 @@ public class Conexion {
                 }
     }
     
+    
+    /* 
+     Istancia de nuestra clase conexion
+     */
+    
     public static Conexion getInstance(){
         if (instancia == null){
             instancia = new Conexion();           
@@ -37,20 +52,15 @@ public class Conexion {
         return instancia;
     }
 
-    public static Conexion getInstancia() {
-        return instancia;
+    public Conexion(Connection conexion) {
+        this.conexion = conexion;
     }
 
-    public static void setInstancia(Conexion instancia) {
-        Conexion.instancia = instancia;
+    public Connection getConexion() {
+       return conexion;
     }
 
-    public Object getConexion() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setConexion(Connection conexion){
+        this.conexion = conexion;
     }
-    
-    
-    
-                                                
-    
 }
