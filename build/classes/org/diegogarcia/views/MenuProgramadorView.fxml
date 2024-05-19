@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="966.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.diegogarcia.controller.MenuProgramadorController">
+   <children>
+      <ImageView fitHeight="544.0" fitWidth="969.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/FondoProgramador.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnRegresar" layoutY="470.0" mnemonicParsing="false" onAction="#handleButtonActionProgramador" prefHeight="73.0" prefWidth="79.0" style="-fx-background-color: black;">
+         <graphic>
+            <ImageView fx:id="imgRegresar" fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/RegresarMenuPrincipal.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="177.0" fitWidth="122.0" layoutX="163.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Suscribete%20a%20mi%20onlyfans.jpeg" />
+         </image>
+      </ImageView>
+      <Pane layoutX="518.0" layoutY="484.0" prefHeight="35.0" prefWidth="162.0" style="-fx-background-color: black;" />
+      <Pane layoutX="522.0" layoutY="443.0" prefHeight="14.0" prefWidth="162.0" style="-fx-background-color: black;" />
+      <Pane layoutX="488.0" layoutY="-2.0" prefHeight="35.0" prefWidth="479.0" style="-fx-background-color: black;" />
+      <Pane layoutX="488.0" layoutY="339.0" prefHeight="20.0" prefWidth="479.0" style="-fx-background-color: black;" />
+      <Pane layoutX="488.0" layoutY="176.0" prefHeight="20.0" prefWidth="479.0" style="-fx-background-color: black;" />
+   </children>
+</AnchorPane>

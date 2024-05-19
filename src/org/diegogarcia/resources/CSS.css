@@ -1,0 +1,49 @@
+.menubar{
+    -fx-background-color: #FFC501;
+    -fx-text-background-color: black;
+    -fx-border-width: 2.0;
+}
+
+
+.menu-item{
+    -fx-background-color: #FFEE4A;
+}
+
+.text-field {
+    -fx-background-color: #FE9600 , white , white;
+    -fx-background-insets: 0 -2 -2 -2, 0 0 0 0, 0 -1 3 -1;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+}
+
+.text-field:focused {
+    -fx-background-color: #FE9600 , white , white;
+    -fx-background-insets: 0 -2 -2 -2, 0 0 0 0, 0 -1 3 -1;
+}
+
+.Button{
+    -fx-background-color:  #77477E;
+    -fx-background-radius: 10; 
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+}
+.Button:hover{
+    -fx-background-color:  #9c667d;
+    -fx-background-radius: 10; 
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-border-color: #ce938b
+    -fx-border-radius : 11;
+    -fx-border-width: 3;
+}
+
+.Button:pressed{
+    -fx-background-color:  #9c667d;
+    -fx-background-radius: 10; 
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-border-color: #ce938b
+    -fx-border-radius : 11;
+    -fx-border-width: 3;
+    -fx-rotate: 10;
+}
