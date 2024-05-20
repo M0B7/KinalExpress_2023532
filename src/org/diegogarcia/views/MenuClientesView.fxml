@@ -130,7 +130,7 @@
                            </cursor></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnReporte" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#reportes" prefHeight="49.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Reporte" textFill="#fffafa" GridPane.rowIndex="4">
+                  <Button fx:id="btnReporte" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="49.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Reporte" textFill="#fffafa" GridPane.rowIndex="4">
                      <font>
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>

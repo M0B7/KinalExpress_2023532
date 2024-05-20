@@ -89,7 +89,26 @@ public class main extends Application {
         }
     }
     
+    public void menuProveedoresView(){
+        try{
+            MenuProveedorController menuProveedoresView = (MenuProveedorController)cambiarEscena("MenuProveedoresView.fxml", 1148,648);
+            menuProveedoresView.setEscenarioPrincipal(this);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     
+    public void menuComprasView(){
+        try{
+            MenuComprasController menuComprasView = (MenuComprasController)cambiarEscena("MenuCompraView.fxml", 995,648);
+            menuComprasView.setEscenarioPrincipal(this);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    
+
             
     public static void main(String[] args) {
         launch(args);   

@@ -4,6 +4,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -156,7 +157,6 @@ public class MenuClientesController implements Initializable {
             case ACTUALIZAR:
                 guardar();
                 desactivarControles();
-                cargarDatos();
                 limpiarControles();
                 btnAgregar.setText("Agregar");
                 btnEliminar.setText("Eliminar");
@@ -165,66 +165,31 @@ public class MenuClientesController implements Initializable {
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 tipoDeOperaciones = operaciones.NULL;
-                break;
         }
     }
 
     public void guardar() {
-        Clientes registro = new Clientes();
-        registro.setIdCliente(Integer.parseInt(txtIdCliente.getText()));
-        registro.setNombresCliente(txtNombreCliente.getText());
-        registro.setApellidosCliente(txtApellidoCliente.getText());
-        registro.setNitCliente(txtNitCliente.getText());
-        registro.setTelefonoCliente(txtTelefonoCliente.getText());
-        registro.setDireccionCliente(txtDireccionCliente.getText());
-        registro.setCorreoCliente(txtCorreoCliente.getText());
+        Clientes register = new Clientes();
+        register.setIdCliente(Integer.parseInt(txtIdCliente.getText()));
+        register.setNombresCliente(txtNombreCliente.getText());
+        register.setApellidosCliente(txtApellidoCliente.getText());
+        register.setDireccionCliente(txtDireccionCliente.getText());
+        register.setNitCliente(txtNitCliente.getText());
+        register.setTelefonoCliente(txtTelefonoCliente.getText());
+        register.setCorreoCliente(txtCorreoCliente.getText());
         try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarCliente(?, ?, ?, ?, ?, ?, ?)}");
-            procedimiento.setInt(1, registro.getIdCliente());
-            procedimiento.setString(2, registro.getNitCliente());
-            procedimiento.setString(3, registro.getNombresCliente());
-            procedimiento.setString(4, registro.getApellidosCliente());
-            procedimiento.setString(5, registro.getDireccionCliente());
-            procedimiento.setString(6, registro.getTelefonoCliente());
-            procedimiento.setString(7, registro.getCorreoCliente());
-            procedimiento.execute();
-            listaClientes.add(registro);
-        } catch (Exception e) {
+            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_AgregarCliente(?, ?, ?, ?, ?, ?, ?)}");
+            procedure.setInt(1, register.getIdCliente());
+            procedure.setString(2, register.getNombresCliente());
+            procedure.setString(3, register.getApellidosCliente());
+            procedure.setString(4, register.getDireccionCliente());
+            procedure.setString(5, register.getNitCliente());
+            procedure.setString(6, register.getTelefonoCliente());
+            procedure.setString(7, register.getCorreoCliente());
+            procedure.execute();
+            listaClientes.add(register);
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void eliminar() {
-        switch (tipoDeOperaciones) {
-            case ACTUALIZAR:
-                desactivarControles();
-                limpiarControles();
-                btnAgregar.setText("Agregar");
-                btnEliminar.setText("Eliminar");
-                btnEditar.setDisable(false);
-                btnReporte.setDisable(false);
-                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
-                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
-                tipoDeOperaciones = operaciones.NULL;
-                break;
-            default:
-                if (tblCliente.getSelectionModel().getSelectedItem() != null) {
-                    int respuesta = JOptionPane.showConfirmDialog(null, "Por favor confirma la eliminación del registro", "Eliminar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                    if (respuesta == JOptionPane.YES_NO_OPTION) {
-                        try {
-                            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_borrarCliente(?)}");
-                            procedimiento.setInt(1, ((Clientes) tblCliente.getSelectionModel().getSelectedItem()).getIdCliente());
-                            procedimiento.execute();
-                            listaClientes.remove(tblCliente.getSelectionModel().getSelectedItem());
-                            limpiarControles();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente para poder eliminarlo.");
-                }
-                break;
         }
     }
 
@@ -236,69 +201,109 @@ public class MenuClientesController implements Initializable {
                     btnReporte.setText("Cancelar");
                     btnAgregar.setDisable(true);
                     btnEliminar.setDisable(true);
-                    imgEditar.setImage(new Image("/org/diegogarcia/images/Actualizar.png"));
-                    imgReporte.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
+                    imgEditar.setImage(new Image("/org/diegogarcia/images/Guardar.png"));
+                    imgEliminar.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
                     activarControles();
                     txtIdCliente.setEditable(false);
                     tipoDeOperaciones = operaciones.ACTUALIZAR;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Seleccione un cliente para editarlo.");
+                    JOptionPane.showMessageDialog(null, "Debe de seleccionar un cliente para editar");
                 }
                 break;
             case ACTUALIZAR:
                 actualizar();
                 btnEditar.setText("Editar");
-                btnReporte.setText("Reporte");
+                btnReporte.setText("Reportes");
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
                 imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
-                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporte.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 desactivarControles();
                 limpiarControles();
                 tipoDeOperaciones = operaciones.NULL;
                 cargarDatos();
+
                 break;
         }
     }
 
     public void actualizar() {
+        // Verificar si se ha seleccionado un cliente
         try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_editarCliente(?, ?, ?, ?, ?, ?, ?)}");
-            Clientes registro = tblCliente.getSelectionModel().getSelectedItem();
-            registro.setNitCliente(txtNitCliente.getText());
-            registro.setNombresCliente(txtNombreCliente.getText());
-            registro.setApellidosCliente(txtApellidoCliente.getText());
-            registro.setTelefonoCliente(txtTelefonoCliente.getText());
-            registro.setDireccionCliente(txtDireccionCliente.getText());
-            registro.setCorreoCliente(txtCorreoCliente.getText());
-            procedimiento.setInt(1, registro.getIdCliente());
-            procedimiento.setString(2, registro.getNitCliente());
-            procedimiento.setString(3, registro.getNombresCliente());
-            procedimiento.setString(4, registro.getApellidosCliente());
-            procedimiento.setString(5, registro.getDireccionCliente());
-            procedimiento.setString(6, registro.getTelefonoCliente());
-            procedimiento.setString(7, registro.getCorreoCliente());
-            procedimiento.execute();
-        } catch (Exception e) {
+            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_editarCliente(?,?,?,?,?,?,?)}");
+            Clientes register = (Clientes) tblCliente.getSelectionModel().getSelectedItem();
+
+            register.setNombresCliente(txtNombreCliente.getText());
+            register.setNitCliente(txtNitCliente.getText());
+            register.setApellidosCliente(txtApellidoCliente.getText());
+            register.setTelefonoCliente(txtTelefonoCliente.getText());
+            register.setDireccionCliente(txtDireccionCliente.getText());
+            register.setCorreoCliente(txtCorreoCliente.getText());
+            procedure.setInt(1, register.getIdCliente());
+            procedure.setString(2, register.getNitCliente());
+            procedure.setString(3, register.getNombresCliente());
+            procedure.setString(4, register.getApellidosCliente());
+            procedure.setString(5, register.getDireccionCliente());
+            procedure.setString(6, register.getTelefonoCliente());
+            procedure.setString(7, register.getCorreoCliente());
+            procedure.execute();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
-    public void reportes() {
+    public void eliminar() {
+
         switch (tipoDeOperaciones) {
             case ACTUALIZAR:
                 desactivarControles();
                 limpiarControles();
+                btnAgregar.setText("Agregar");
                 btnEditar.setText("Editar");
-                btnReporte.setText("Reporte");
-                btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
+                btnReporte.setDisable(false);
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
-                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporte.png"));
                 tipoDeOperaciones = operaciones.NULL;
+                cancelar();
+                break;
+            default:
+                if (tblCliente.getSelectionModel().getSelectedItem() != null) {
+                    int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que quieres eliminar al cliente?", "Eliminar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (respuesta == JOptionPane.YES_NO_OPTION) {
+                        try {
+                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_EliminarClientes(?)}");
+                            procedure.setInt(1, ((Clientes) tblCliente.getSelectionModel().getSelectedItem()).getIdCliente());
+                            procedure.execute();
+                            listaClientes.remove(tblCliente.getSelectionModel().getSelectedItem());
+                            limpiarControles();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente para eliminar");
+                }
+                break;
+
+        }
+    }
+
+    public void cancelar() {
+        switch (tipoDeOperaciones) {
+            case NULL:
+                btnReporte.setDisable(false);
+                btnAgregar.setDisable(false);
+                btnEditar.setDisable(false);
+                btnEliminar.setDisable(false);
+                btnAgregar.setText("Agregar");
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 break;
         }
     }
+   
+    
 
     public void desactivarControles() {
         txtIdCliente.setEditable(false);

@@ -47,3 +47,30 @@
     -fx-border-width: 3;
     -fx-rotate: 10;
 }
+
+
+.table-row-cell:hover {
+    -fx-background-color: #77477E; 
+}
+
+
+.table-row-cell:hover .table-cell {
+    -fx-text-fill: white; 
+    -fx-font-weight: bold; 
+}
+
+
+.table-row-cell:selected {
+    -fx-background-color: #FFEE4A;
+}
+
+
+.table-view .column-header-background {
+    -fx-background-color: #FE9600; 
+}
+
+
+.table-view .column-header {
+    -fx-text-fill: white; 
+    -fx-font-weight: bold; 
+}
