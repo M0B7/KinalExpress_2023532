@@ -260,18 +260,18 @@ public class MenuFacturaController implements Initializable {
     }
     
     public void guardarFactura(){
-        Factura registro = new Factura();
-        registro.setFechaFactura(dpFecha.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        registro.setCodigoCliente(((Clientes) cbxCliente.getSelectionModel().getSelectedItem()).getCodigoCliente());
-        registro.setCodigoEmpleado(((Empleados) cbxEmpleado.getSelectionModel().getSelectedItem()).getCodigoEmpleado());
+        Facturas registro = new Facturas();
+        registro.setFechaFactura(dpFechaFactura.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        registro.setIdCliente(((Clientes) cbmCliente.getSelectionModel().getSelectedItem()).getIdCliente());
+        registro.setIdEmpleado(((Empleados) cbmEmpleado.getSelectionModel().getSelectedItem()).getIdEmpleado());
         registro.setEstado(txtEstado.getText());
         
         try{
             PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarFactura(?,?,?,?)}");
             procedimiento.setString(1, registro.getEstado());
             procedimiento.setString(2, registro.getFechaFactura());
-            procedimiento.setInt(3, registro.getCodigoCliente());
-            procedimiento.setInt(4, registro.getCodigoEmpleado());
+            procedimiento.setInt(3, registro.getIdCliente());
+            procedimiento.setInt(4, registro.getIdEmpleado());
             
             procedimiento.execute();
         }catch(Exception e){
@@ -280,28 +280,28 @@ public class MenuFacturaController implements Initializable {
     }
     
     public void seleccionarTupla() {
-        int codEmpleado = ((Factura) tblFactura.getSelectionModel().getSelectedItem()).getCodigoEmpleado();
+        int codEmpleado = ((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdEmpleado();
         
-        txtNumFact.setText(String.valueOf(((Factura) tblFactura.getSelectionModel().getSelectedItem()).getNumeroFactura()));
-        txtEstado.setText(((Factura) tblFactura.getSelectionModel().getSelectedItem()).getEstado());
-        txtTotal.setText(String.valueOf(((Factura) tblFactura.getSelectionModel().getSelectedItem()).getTotalFactura()));
-        dpFecha.setValue(LocalDate.parse(((Factura) tblFactura.getSelectionModel().getSelectedItem()).getFechaFactura()));
-        cbxCliente.getSelectionModel().select(buscarCliente(((Factura) tblFactura.getSelectionModel().getSelectedItem()).getCodigoCliente()));
-        cbxEmpleado.getSelectionModel().select(buscarEmpleado(codEmpleado));
+        txtIdFactura.setText(String.valueOf(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdFactura()));
+        txtEstado.setText(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getEstado());
+        txtTotalFactura.setText(String.valueOf(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getTotalFactura()));
+        dpFechaFactura.setValue(LocalDate.parse(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getFechaFactura()));
+        cbmCliente.getSelectionModel().select(buscarCliente(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdCliente()));
+        cbmEmpleado.getSelectionModel().select(buscarEmpleado(codEmpleado));
     }
     
     public Clientes buscarCliente(int cod){
         Clientes result=null;
         
         try{
-           PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_buscarClientes(?)}");
+           PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_buscarCliente(?)}");
            procedimiento.setInt(1, cod);
            
            ResultSet registro = procedimiento.executeQuery();
            
            while(registro.next()){
-               result=new Clientes(registro.getInt("codigoCliente"),
-                        registro.getString("NITCliente"),
+               result=new Clientes(registro.getInt("idCliente"),
+                        registro.getString("nitCliente"),
                         registro.getString("nombreCliente"),
                         registro.getString("apellidosCliente"),
                         registro.getString("direccionCliente"),
@@ -320,19 +320,18 @@ public class MenuFacturaController implements Initializable {
         Empleados result=null;
         
         try{
-           PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_buscarEmpleados(?)}");
+           PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_buscarEmpleado(?)}");
            procedimiento.setInt(1, cod);
            
            ResultSet registro = procedimiento.executeQuery();
            
            while(registro.next()){
-               result=new Empleados(registro.getInt("codigoEmpleado"),
-                                   registro.getString("nombresEmpleado"),
-                                 registro.getString("apellidosEmpleado"),
+               result=new Empleados(registro.getInt("idEmpleado"),
+                                   registro.getString("nombreEmpleado"),
+                                 registro.getString("apellidoEmpleado"),
                                           registro.getDouble("sueldo"),
-                                        registro.getString("direccion"), 
                                            registro.getString("turno"),
-                                registro.getInt("codigoCargoEmpleado"));
+                                registro.getInt("idCargoEmpleado"));
            }
            
         }catch(Exception e){
@@ -349,22 +348,21 @@ public class MenuFacturaController implements Initializable {
                 limpiarControles();
                 btnAgregar.setText("Agregar");
                 btnEliminar.setText("Eliminar");
-                imgAgregar.setImage(new Image("/org/josefigueroa/images/agregar.png"));
-                imgEliminar.setImage(new Image("/org/josefigueroa/images/eliminar.png")); 
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png")); 
                 btnReporte.setDisable(false);
                 btnEditar.setDisable(false);
-                btnInicio.setDisable(false);
                 tipoOperaciones = operaciones.NULL;
                 break;
             default:
                 if (tblFactura.getSelectionModel().getSelectedItem() != null) {
 
-                    int resp = JOptionPane.showConfirmDialog(null, "Confirmar eliminar la factura", "Eliminar factura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    int resp = JOptionPane.showConfirmDialog(null, "Desea eliminar la factura?", "Eliminar factura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                     if (resp == JOptionPane.YES_NO_OPTION) {
                         try {
                             PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_eliminarFactura(?)}");
-                            procedimiento.setInt(1, ((Factura) tblFactura.getSelectionModel().getSelectedItem()).getNumeroFactura());
+                            procedimiento.setInt(1, ((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdFactura());
                             boolean execute = procedimiento.execute();
                             listarFactura.remove(tblFactura.getSelectionModel().getSelectedItem());
                             limpiarControles();
@@ -385,30 +383,28 @@ public class MenuFacturaController implements Initializable {
         switch (tipoOperaciones) {
             case NULL:
                 if (tblFactura.getSelectionModel().getSelectedItem() != null) {
-                    imgReporte.setImage(new Image("/org/josefigueroa/images/cancelar.png"));
-                    imgEditar.setImage(new Image("/org/josefigueroa/images/guardar.png"));
+                    imgReporte.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
+                    imgEditar.setImage(new Image("/org/diegogarcia/images/Guardar.png"));
                     btnReporte.setText("Cancelar");
                     btnEditar.setText("actualizar");
                     btnAgregar.setDisable(true);
                     btnEliminar.setDisable(true);
-                    btnInicio.setDisable(true);
-                    txtNumFact.setDisable(true);
+                    txtIdFactura.setDisable(true);
                     activarControles();
                     tipoOperaciones = operaciones.ACTUALIZAR;
                     break;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Seleccione una tupla para editar");
+                    JOptionPane.showMessageDialog(null, "Seleccione una fila para editar");
                     break;
                 }
             case ACTUALIZAR:
                 actualizar();
-                imgReporte.setImage(new Image("/org/josefigueroa/images/reporte.png"));
-                imgEditar.setImage(new Image("/org/josefigueroa/images/editar.png"));                
+                imgReporte.setImage(new Image("/org/diegogarciaa/images/Reporte.png"));
+                imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));                
                 btnReporte.setText("Reporte");
                 btnEditar.setText("Editar");
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
-                btnInicio.setDisable(false);
                 desactivarControles();
                 limpiarControles();
                 tipoOperaciones = operaciones.NULL;
@@ -417,22 +413,22 @@ public class MenuFacturaController implements Initializable {
     }
     
     public void actualizar(){
-        Factura registro = (Factura)tblFactura.getSelectionModel().getSelectedItem();
+        Facturas registro = (Facturas)tblFactura.getSelectionModel().getSelectedItem();
         
-        registro.setFechaFactura(dpFecha.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        registro.setCodigoCliente(((Clientes) cbxCliente.getSelectionModel().getSelectedItem()).getCodigoCliente());
-        registro.setCodigoEmpleado(((Empleados) cbxEmpleado.getSelectionModel().getSelectedItem()).getCodigoEmpleado());
+        registro.setFechaFactura(dpFechaFactura.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        registro.setIdCliente(((Clientes) cbmCliente.getSelectionModel().getSelectedItem()).getIdCliente());
+        registro.setIdEmpleado(((Empleados) cbmEmpleado.getSelectionModel().getSelectedItem()).getIdEmpleado());
         registro.setEstado(txtEstado.getText());
-        registro.setTotalFactura(Double.parseDouble(txtTotal.getText()));
+        registro.setTotalFactura(Double.parseDouble(txtTotalFactura.getText()));
         
         try{
             PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_actualizarFactura(?,?,?,?,?,?)}");
-            procedimiento.setInt(1, registro.getNumeroFactura());
+            procedimiento.setInt(1, registro.getIdFactura());
             procedimiento.setString(2, registro.getEstado());
             procedimiento.setDouble(3, registro.getTotalFactura());
             procedimiento.setString(4, registro.getFechaFactura());
-            procedimiento.setInt(5, registro.getCodigoCliente());
-            procedimiento.setInt(6, registro.getCodigoEmpleado());
+            procedimiento.setInt(5, registro.getIdCliente());
+            procedimiento.setInt(6, registro.getIdEmpleado());
             
             procedimiento.execute();
             
@@ -445,13 +441,12 @@ public class MenuFacturaController implements Initializable {
     public void reporte() {
         switch (tipoOperaciones) {
             case ACTUALIZAR:
-                imgEditar.setImage(new Image("/org/josefigueroa/images/editar.png"));
-                imgReporte.setImage(new Image("/org/josefigueroa/images/reporte.png"));
+                imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
+                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporte.png"));
                 btnReporte.setText("Reporte");
                 btnEditar.setText("Editar");
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
-                btnInicio.setDisable(false);
                 desactivarControles();
                 limpiarControles();
                 tipoOperaciones = operaciones.NULL;
@@ -463,7 +458,7 @@ public class MenuFacturaController implements Initializable {
     
     @FXML
     public void handleButtonAction(ActionEvent event) {
-        if (event.getSource() == btnInicio) {
+        if (event.getSource() == btnRegresar) {
             escenarioPrincipal.menuPrincipalView();
         } else if (event.getSource() == btnAgregar) {
             activarControles();
