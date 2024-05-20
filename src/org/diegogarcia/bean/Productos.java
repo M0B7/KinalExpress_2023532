@@ -15,6 +15,8 @@ public class Productos {
     private double precioMayor;
     private String imagenProducto;
     private int existencia;
+    private int idTipoProducto;
+    private int idProveedores;
     
     
     
@@ -23,7 +25,7 @@ public class Productos {
     }
     
     public Productos(int idProductos, String descripcionProducto, double precioUnitario, double precioDocena, double precioMayor,
-            String imagenProducto, int existencia){
+            String imagenProducto, int existencia, int idTipoProducto, int idProveedores){
         this.idProducto = idProducto;
         this.descripcionProducto = descripcionProducto;
         this.precioUnitario = precioUnitario;
@@ -31,8 +33,27 @@ public class Productos {
         this.precioMayor = precioMayor;
         this.imagenProducto = imagenProducto;
         this.existencia = existencia;
+        this.idTipoProducto = idTipoProducto;
+        this.idProveedores = idProveedores;
         
     }
+
+    public int getIdTipoProducto() {
+        return idTipoProducto;
+    }
+
+    public void setIdTipoProducto(int idTipoProducto) {
+        this.idTipoProducto = idTipoProducto;
+    }
+
+    public int getIdProveedores() {
+        return idProveedores;
+    }
+
+    public void setIdProveedores(int idProveedores) {
+        this.idProveedores = idProveedores;
+    }
+    
 
     public int getIdProducto() {
         return idProducto;

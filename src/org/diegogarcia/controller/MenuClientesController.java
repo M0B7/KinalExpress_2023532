@@ -32,7 +32,7 @@ public class MenuClientesController implements Initializable {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
     }
     private operaciones tipoDeOperaciones = operaciones.NULL;
-    
+
     ObservableList<Clientes> listaClientes;
 
     @FXML
@@ -127,13 +127,13 @@ public class MenuClientesController implements Initializable {
             ResultSet resultado = procedimiento.executeQuery();
             while (resultado.next()) {
                 lista.add(new Clientes(
-                    resultado.getInt("idCliente"),
-                    resultado.getString("nitCliente"),
-                    resultado.getString("nombresCliente"),
-                    resultado.getString("apellidosCliente"),
-                    resultado.getString("direccionCliente"),
-                    resultado.getString("telefonoCliente"),
-                    resultado.getString("correoCliente")
+                        resultado.getInt("idCliente"),
+                        resultado.getString("nitCliente"),
+                        resultado.getString("nombresCliente"),
+                        resultado.getString("apellidosCliente"),
+                        resultado.getString("direccionCliente"),
+                        resultado.getString("telefonoCliente"),
+                        resultado.getString("correoCliente")
                 ));
             }
         } catch (Exception e) {
@@ -302,8 +302,6 @@ public class MenuClientesController implements Initializable {
                 break;
         }
     }
-   
-    
 
     public void desactivarControles() {
         txtIdCliente.setEditable(false);

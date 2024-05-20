@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -17,14 +18,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="995.0" style="-fx-background-color: #FFC501;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.diegogarcia.controller.MenuClientesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="995.0" style="-fx-background-color: #FFC501;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.diegogarcia.controller.MenuEmpleadoController">
    <children>
       <Text layoutX="42.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Empleados" wrappingWidth="324.7421875">
          <font>
             <Font name="Bauhaus 93" size="67.0" />
          </font>
       </Text>
-      <TableView fx:id="tblEmpleados" layoutX="25.0" layoutY="330.0" onMouseClicked="#seleccionarElemento" prefHeight="288.0" prefWidth="649.0" style="-fx-border-color: white;">
+      <TableView fx:id="tblEmpleados" layoutX="25.0" layoutY="330.0" prefHeight="288.0" prefWidth="649.0" style="-fx-border-color: white;">
          <columns>
             <TableColumn fx:id="colIdEmpleado" minWidth="23.0" prefWidth="98.0" text="idEmpleado" />
             <TableColumn fx:id="colNombreEmpleado" minWidth="0.0" prefWidth="113.0" text="nombreEmpleado" />
@@ -66,12 +67,11 @@
             <Font name="Bauhaus 93" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtNombreEmpleado" layoutX="157.0" layoutY="205.0" prefHeight="25.0" prefWidth="149.0" style="-fx-border-color: white; -fx-border-radius: 15; -fx-background-radius: 15;" />
-      <TextField fx:id="txtApellidoEmpleado" layoutX="156.0" layoutY="266.0" style="-fx-border-color: white; -fx-background-radius: 15; -fx-border-radius: 15;" />
-      <TextField fx:id="txtSueldo" layoutX="481.0" layoutY="143.0" style="-fx-border-color: white; -fx-background-radius: 15; -fx-border-radius: 15;" />
-      <TextField fx:id="txtTurno" layoutX="482.0" layoutY="205.0" style="-fx-border-color: white; -fx-background-radius: 15; -fx-border-radius: 15;" />
-      <TextField fx:id="txtIdCargoEmpleado" layoutX="483.0" layoutY="268.0" style="-fx-border-color: white; -fx-background-radius: 15; -fx-border-radius: 15;" />
-      <TextField fx:id="txtIdEmpleado" layoutX="157.0" layoutY="145.0" prefHeight="25.0" prefWidth="149.0" style="-fx-border-color: white; -fx-border-radius: 15; -fx-background-radius: 15;" />
+      <TextField fx:id="txtNombreEmpleado" layoutX="157.0" layoutY="205.0" prefHeight="25.0" prefWidth="149.0" style="-fx-border-color: white; -fx-border-radius: 15; -fx-background-radius: 15;" stylesheets="@../resources/CSS.css" />
+      <TextField fx:id="txtApellidoEmpleado" layoutX="156.0" layoutY="266.0" style="-fx-border-color: white; -fx-background-radius: 15; -fx-border-radius: 15;" stylesheets="@../resources/CSS.css" />
+      <TextField fx:id="txtSueldo" layoutX="481.0" layoutY="143.0" style="-fx-border-color: white; -fx-background-radius: 15; -fx-border-radius: 15;" stylesheets="@../resources/CSS.css" />
+      <TextField fx:id="txtTurno" layoutX="482.0" layoutY="205.0" style="-fx-border-color: white; -fx-background-radius: 15; -fx-border-radius: 15;" stylesheets="@../resources/CSS.css" />
+      <TextField fx:id="txtIdEmpleado" layoutX="157.0" layoutY="145.0" prefHeight="25.0" prefWidth="149.0" style="-fx-border-color: white; -fx-border-radius: 15; -fx-background-radius: 15;" stylesheets="@../resources/CSS.css" />
       <Label layoutX="62.0" layoutY="149.0" text="ID Empleado">
          <font>
             <Font name="Bauhaus 93" size="14.0" />
@@ -91,7 +91,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="58.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-border-radius: 10;" text="Editar" textFill="WHITE" GridPane.rowIndex="1">
+                  <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" prefHeight="58.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Editar" textFill="WHITE" GridPane.rowIndex="1">
                      <font>
                         <Font name="Bauhaus 93" size="18.0" />
                      </font>
@@ -103,7 +103,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnAgregar" mnemonicParsing="false" prefHeight="57.0" prefWidth="156.0" style="-fx-background-color: #77477e; -fx-background-radius: 10; -fx-border-radius: 10;" text="Agregar" textFill="#fffafa" GridPane.rowIndex="2">
+                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#Agregar" prefHeight="57.0" prefWidth="156.0" style="-fx-background-color: #77477e; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Agregar" textFill="#fffafa" GridPane.rowIndex="2">
                      <font>
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>
@@ -115,7 +115,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnEliminar" mnemonicParsing="false" prefHeight="59.0" prefWidth="142.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-focus-traversable: 10;" text="Eliminar" textFill="#fffafa" GridPane.rowIndex="3">
+                  <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminar" prefHeight="59.0" prefWidth="142.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-focus-traversable: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Eliminar" textFill="#fffafa" GridPane.rowIndex="3">
                      <font>
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>
@@ -127,7 +127,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnRegresar" mnemonicParsing="false" prefHeight="57.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-border-radius: 10;">
+                  <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="57.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css">
                      <graphic>
                         <ImageView fx:id="ImgRegresar" fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -139,7 +139,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnReporte" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="49.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10;" text="Reporte" textFill="#fffafa" GridPane.rowIndex="4">
+                  <Button fx:id="btnReporte" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#reporte" prefHeight="49.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Reporte" textFill="#fffafa" GridPane.rowIndex="4">
                      <font>
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>
@@ -167,5 +167,6 @@
          </children>
       </Pane>
       <Line endX="216.0" fill="#ffee4a" layoutX="146.0" layoutY="107.0" startX="-100.0" stroke="#ffee4a" strokeWidth="5.0" />
+      <ComboBox fx:id="cmbCargo" layoutX="483.0" layoutY="270.0" prefWidth="150.0" style="-fx-background-color: white;" />
    </children>
 </AnchorPane>

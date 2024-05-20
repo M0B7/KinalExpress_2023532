@@ -91,7 +91,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <ImageView fitHeight="317.0" fitWidth="343.0" layoutX="315.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="317.0" fitWidth="343.0" layoutX="302.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/Logo.png" />
          </image>

@@ -19,6 +19,10 @@ public class Facturas {
         this.fechaFactura = fechaFactura;
     }
 
+    public Facturas(int aInt, String string, double aDouble, String string0, int aInt0, int aInt1) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public int getIdFactura() {
         return idFactura;
     }

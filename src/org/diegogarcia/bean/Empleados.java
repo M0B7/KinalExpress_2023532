@@ -27,6 +27,14 @@ public class Empleados {
         this.turno = turno;
     }
 
+    public Empleados(int aInt, String string, String string0, double aDouble, String string1, String string2, int aInt0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Empleados(int aInt, String string, String string0, double aDouble, String string1, int aInt0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public int getIdEmpleado() {
         return idEmpleado;
     }
@@ -65,6 +73,14 @@ public class Empleados {
 
     public void setTurno(String turno) {
         this.turno = turno;
+    }
+
+    public void setIdCargoEmpleado(int idCargoEmpleado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getIdCargoEmpleado() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

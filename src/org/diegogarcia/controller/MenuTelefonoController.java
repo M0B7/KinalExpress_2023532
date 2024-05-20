@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import org.diegogarcia.system.main;
 
-public class MenuEmailController implements Initializable {
+public class MenuTelefonoController implements Initializable {
 
     private main escenarioPrincipal;
     @FXML

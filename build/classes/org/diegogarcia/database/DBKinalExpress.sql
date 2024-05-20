@@ -1150,3 +1150,111 @@ begin
 end$$
 DELIMITER ;
 
+-- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
+-- TRIGGERS
+-- ------
+
+-- Actualiza el total de la factura al eliminar un DetalleFactura
+DELIMITER $$
+create trigger ActualizarTotal after delete on DetalleCompras
+for each row
+begin
+    update Compras
+    set totalDocumento = totalDocumento - OLD.precioUnitario * OLD.cantidad
+    where idCompra = OLD.idCompra;
+end $$
+DELIMITER ;
+
+
+
+-- Actualiza el  total de la factura al actualizar su detalle
+/*DELIMITER $$
+create trigger ActualizarTotalFactura after update on DetalleFactura
+for each row
+begin
+    update Factura
+    set totalFactura = totalFactura + (new.precioUnitario * new.cantidad) - (OLD.precioUnitario * OLD.cantidad)
+    where numeroDeFactura = new.numeroDeFactura;
+end $$
+DELIMITER ;
+*/
+
+DELIMITER ;
+
+-- Actualiza el total de la factura al insertar
+DELIMITER $$
+create trigger ActualizarTotalInsert after insert on DetalleCompras
+for each row
+begin
+    update Compras
+    set totalDocumento = totalDocumento + new.precioUnitario * new.cantidad
+    where idCompra = new.idCompra;
+end
+$$
+DELIMITER ;
+
+
+/*
+-- Actualiza el total de Compras al actualizar su detalle
+DELIMITER $$
+create trigger ActualizarTotalCompra after insert on DetalleCompras
+for each row 
+begin
+    update Compras
+    set totalDocumento = totalDocumento + (new.precioUnitario * new.cantidad) - (OLD.precioUnitario * OLD.cantidad)
+    where idCompra = new.idCompra;
+end $$
+DELIMITER ;
+
+*/
+
+-- actualiza la cantidad en productos disponibles luego de inserta en detalle factura
+
+/*DELIMITER $$
+create trigger ActualizarStockInsert after insert on DetalleFactura
+for each row 
+begin
+    call ActualizarStockInsert(new.idProducto, new.cantidad);
+end;
+$$
+DELIMITER ;
+
+*/
+
+/*
+-- actualiza el stock al eliminar algo en datelleFactura
+DELIMITER $$
+create trigger ActualizarStockDelete after delete on DetalleFactura
+for each row
+begin
+    call ActualizarStockDelete(OLD.idProducto, OLD.cantidad);
+end;
+$$
+DELIMITER ;
+*/
+
+DELIMITER $$
+
+create trigger AfterInsertDetalleCompra after insert on DetalleCompra
+for each row
+begin
+    declare precioUnitario decimal(10,2);
+    declare precioDocena decimal(10,2);
+    declare precioMayor decimal(10,2);
+
+    -- Calcula los precios
+    set precioUnitario = new.precioUnitario * 1.40;
+    set precioDocena = precioUnitario * 1.35;
+    set precioMayor = precioUnitario * 1.25;
+
+ -- Precios ya calculados
+    update Productos
+    set precioUnitario = new.precioUnitario,
+        precioDocena = precioDocena,
+        precioMayor = precioMayor
+    where idProducto = new.idProducto;
+    
+end $$
+
+DELIMITER ;
+

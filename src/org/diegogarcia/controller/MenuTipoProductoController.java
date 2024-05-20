@@ -19,40 +19,40 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.swing.JOptionPane;
-import org.diegogarcia.bean.Compras;
+import org.diegogarcia.bean.Proveedores;
+import org.diegogarcia.bean.TipoProducto;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
 /**
- * @author informatica
+ * Nombre: Diego Fernando Garcia Galvez
+ * 2023532
+ * PE5AM
+ * Fecha de creacion: 15/04/2024
+ * Fecha de Modificacion: 17/04, 23/04, 24/04, 30/04, 06/05, 07/05, 8/5
  */
-public class MenuComprasController implements Initializable {
+
+public class MenuTipoProductoController implements Initializable {
 
     private main escenarioPrincipal;
-
-    private ObservableList<Compras> listaCompras;
-
+    private ObservableList<TipoProducto> listaTipoProducto;
+    
     private enum operaciones {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
     }
     private operaciones tipoDeOperaciones = operaciones.NULL;
+
     @FXML
     private Button btnRegresar;
+    
+    @FXML
+    private TableView tblTipoProducto;
 
     @FXML
-    private TableView tblCompras;
+    private TableColumn colIdTipoProducto;
 
     @FXML
-    private ImageView imgAgregar;
-
-    @FXML
-    private ImageView imgEditar;
-
-    @FXML
-    private ImageView imgEliminar;
-
-    @FXML
-    private ImageView imgReporte;
+    private TableColumn colDescripcion;
 
     @FXML
     private Button btnAgregar;
@@ -67,28 +67,47 @@ public class MenuComprasController implements Initializable {
     private Button btnReporte;
 
     @FXML
-    private TableColumn colIdCompras;
+    private ImageView imgAgregar;
 
     @FXML
-    private TableColumn colFechaDocumento;
+    private ImageView imgEliminar;
 
     @FXML
-    private TableColumn colDescripcion;
+    private ImageView imgReporte;
 
     @FXML
-    private TableColumn colTotalDocumento;
-
-    @FXML
-    private TextField txtIdCompra;
-
-    @FXML
-    private TextField txtFechaDocumento;
-
-    @FXML
-    private TextField txtTotalDocumento;
+    private ImageView imgEditar;
 
     @FXML
     private TextField txtDescripcion;
+
+    @FXML
+    private TextField txtIdTipoProducto;
+    
+    public ObservableList<TipoProducto> getTipoProducto() {
+        ArrayList<TipoProducto> lista = new ArrayList<>();
+        try {
+            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_listarTipoProductos()}");
+            ResultSet resultado = procedimiento.executeQuery();
+            while (resultado.next()) {
+                lista.add(new TipoProducto(resultado.getInt("idTipoProducto"),
+                        resultado.getString("descripcion")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listaTipoProducto = FXCollections.observableList(lista);
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        Connection conexion = Conexion.getInstance().getConexion();
+        if (conexion != null) {
+            cargarDatos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
+        }
+    }
 
     public main getEscenarioPrincipal() {
         return escenarioPrincipal;
@@ -105,71 +124,34 @@ public class MenuComprasController implements Initializable {
     public void setBtnRegresar(Button btnRegresar) {
         this.btnRegresar = btnRegresar;
     }
-
-    public ObservableList<Compras> getCompras() {
-        ArrayList<Compras> lista = new ArrayList<>();
-        try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_listarCompras ()}");
-            ResultSet resultado = procedimiento.executeQuery();
-            while (resultado.next()) {
-                lista.add(new Compras(resultado.getInt("idCompra"),
-                        resultado.getString("fechaDocumento"),
-                        resultado.getString("descripcion"),
-                        resultado.getInt("totalDocumento")
-                ));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return listaCompras = FXCollections.observableList(lista);
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        Connection conexion = Conexion.getInstance().getConexion();
-        if (conexion != null) {
-            cargarDatos();
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
-        }
-    }
-
+    
     public void cargarDatos() {
-        tblCompras.setItems(getCompras());
-        colIdCompras.setCellValueFactory(new PropertyValueFactory<Compras, Integer>("idCompra"));
-        colFechaDocumento.setCellValueFactory(new PropertyValueFactory<Compras, String>("fechaDocumento"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory<Compras, String>("descripcion"));
-        colTotalDocumento.setCellValueFactory(new PropertyValueFactory<Compras, String>("totalDocumento"));
+        tblTipoProducto.setItems(getTipoProducto());
+        colIdTipoProducto.setCellValueFactory(new PropertyValueFactory<TipoProducto, Integer>("idTipoProducto"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<TipoProducto, String>("descripcion"));
     }
-
+    
+    
     public void seleccionar() {
-        txtIdCompra.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getIdCompra()));
-        txtFechaDocumento.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getFechaDocumento()));
-        txtDescripcion.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getDescripcion()));
-        txtTotalDocumento.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getTotalDocumento()));
+        txtIdTipoProducto.setText(String.valueOf(((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getIdTipoProducto()));
+        txtDescripcion.setText(String.valueOf(((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getDescripcion()));
     }
-
+    
     public void activarControles() {
-        txtIdCompra.setEditable(true);
-        txtFechaDocumento.setEditable(true);
+        txtIdTipoProducto.setEditable(true);
         txtDescripcion.setEditable(true);
-        txtTotalDocumento.setEditable(true);
     }
-
+    
     public void desactivarControles() {
-        txtIdCompra.setEditable(false);
-        txtFechaDocumento.setEditable(false);
+        txtIdTipoProducto.setEditable(false);
         txtDescripcion.setEditable(false);
-        txtTotalDocumento.setEditable(false);
     }
-
+    
     public void limpiarControles() {
-        txtIdCompra.clear();
-        txtFechaDocumento.clear();
+        txtIdTipoProducto.clear();
         txtDescripcion.clear();
-        txtTotalDocumento.clear();
     }
-
+    
     public void Agregar() {
         switch (tipoDeOperaciones) {
             case NULL:
@@ -180,10 +162,8 @@ public class MenuComprasController implements Initializable {
                 btnReporte.setDisable(true);
                 imgAgregar.setImage((new Image("/org/diegogarcia/images/Guardar.png")));
                 imgEliminar.setImage((new Image("/org/diegogarcia/images/Cancelar.png")));
-
-                tipoDeOperaciones = MenuComprasController.operaciones.ACTUALIZAR;
+                tipoDeOperaciones = MenuTipoProductoController.operaciones.ACTUALIZAR;
                 break;
-
             case ACTUALIZAR:
                 guardar();
                 desactivarControles();
@@ -195,33 +175,25 @@ public class MenuComprasController implements Initializable {
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 cargarDatos();
-                tipoDeOperaciones = MenuComprasController.operaciones.NULL;
+                tipoDeOperaciones = MenuTipoProductoController.operaciones.NULL;
                 break;
 
         }
     }
-
+    
     public void guardar() {
-        Compras registro = new Compras();
-        registro.setIdCompra(Integer.parseInt(txtIdCompra.getText()));
-        txtIdCompra.setDisable(true);
-        registro.setFechaDocumento(txtFechaDocumento.getText());
+        TipoProducto registro = new TipoProducto();
         registro.setDescripcion(txtDescripcion.getText());
-        registro.setTotalDocumento(Integer.parseInt(txtTotalDocumento.getText()));
         try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarCompra( ?, ?, ?)}");
-            txtIdCompra.setDisable(true);
-            procedimiento.setInt(1, registro.getIdCompra());
-            procedimiento.setString(1, registro.getFechaDocumento());
-            procedimiento.setString(2, registro.getDescripcion());
-            procedimiento.setDouble(3, registro.getTotalDocumento());
+            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarTipoProducto(?)}");
+            procedimiento.setString(1, registro.getDescripcion());
             procedimiento.execute();
-            listaCompras.add(registro);
+            listaTipoProducto.add(registro);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    
     public void eliminar() {
         switch (tipoDeOperaciones) {
             case ACTUALIZAR:
@@ -231,35 +203,35 @@ public class MenuComprasController implements Initializable {
                 btnEliminar.setText("Eliminar");
                 btnEditar.setDisable(false);
                 btnReporte.setDisable(false);
-                imgAgregar.setImage((new Image("/org/diegogarcoa/images/Agregar.png")));
+                imgAgregar.setImage((new Image("/org/diegogarcia/images/Agregar.png")));
                 imgEliminar.setImage((new Image("/org/diegogarcia/images/Eliminar.png")));
-                tipoDeOperaciones = MenuComprasController.operaciones.NULL;
+                tipoDeOperaciones = MenuTipoProductoController.operaciones.NULL;
                 break;
             default:
-                if (tblCompras.getSelectionModel().getSelectedItem() != null) {
-                    int respuesta = JOptionPane.showConfirmDialog(null, "Confirmar la eliminacion del registro", "Eliminar Compra", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (tblTipoProducto.getSelectionModel().getSelectedItem() != null) {
+                    int respuesta = JOptionPane.showConfirmDialog(null, "Confirmar la eliminacion del registro", "Eliminar Proveedor", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (respuesta == JOptionPane.YES_NO_OPTION) {
                         try {
-                            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_eliminarCompra(?)}");
-                            procedimiento.setInt(1, ((Compras) tblCompras.getSelectionModel().getSelectedItem()).getIdCompra());
+                            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_eliminarTipoProducto(?)}");
+                            procedimiento.setInt(1, ((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getIdTipoProducto());
                             procedimiento.execute();
-                            listaCompras.remove(tblCompras.getSelectionModel().getSelectedItem());
+                            listaTipoProducto.remove(tblTipoProducto.getSelectionModel().getSelectedItem());
                             limpiarControles();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Debe de seleccionar una compra para eliminar");
+                    JOptionPane.showMessageDialog(null, "Debe de seleccionar un cliente para eliminar");
                 }
                 break;
         }
     }
-
+    
     public void editar() {
         switch (tipoDeOperaciones) {
             case NULL:
-                if (tblCompras.getSelectionModel().getSelectedItem() != null) {
+                if (tblTipoProducto.getSelectionModel().getSelectedItem() != null) {
                     btnEditar.setText("Actualizar");
                     btnReporte.setText("Cancelar");
                     btnAgregar.setDisable(true);
@@ -267,7 +239,7 @@ public class MenuComprasController implements Initializable {
                     imgEditar.setImage(new Image("/org/diegogarcia/images/Guardar.png"));
                     imgReporte.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
                     activarControles();
-                    txtIdCompra.setEditable(false);
+                    txtIdTipoProducto.setEditable(false);
                     tipoDeOperaciones = operaciones.ACTUALIZAR;
                 } else {
                     JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente para editar");
@@ -288,24 +260,21 @@ public class MenuComprasController implements Initializable {
                 break;
         }
     }
-
-    public void actualizar() {
-        try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_editarCompra (?, ?, ?, ?)}");
-            Compras registro = (Compras) tblCompras.getSelectionModel().getSelectedItem();
-            registro.setFechaDocumento(txtFechaDocumento.getText());
+    
+    public void actualizar(){
+        try{
+            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_actualizarTipoProducto (?, ?)}");
+            TipoProducto registro = (TipoProducto)tblTipoProducto.getSelectionModel().getSelectedItem();
+            //registro.setCodigoTipoProducto(txtCodigoProducto.getText());
             registro.setDescripcion(txtDescripcion.getText());
-            registro.setTotalDocumento(Integer.parseInt(txtTotalDocumento.getText()));
-            procedimiento.setInt(1, registro.getIdCompra());
-            procedimiento.setString(2, registro.getFechaDocumento());
-            procedimiento.setString(3, registro.getDescripcion());
-            procedimiento.setInt(4, (int) registro.getTotalDocumento());
+            procedimiento.setInt(1, registro.getIdTipoProducto());
+            procedimiento.setString(2, registro.getDescripcion());
             procedimiento.execute();
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
-
+    
     public void reporte() {
         switch (tipoDeOperaciones) {
             case ACTUALIZAR:
@@ -316,12 +285,12 @@ public class MenuComprasController implements Initializable {
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
                 imgEditar.setImage(new Image("/org/diegogarcia/images/Actualizar.png"));
-                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporteria.png"));
+                imgReporte.setImage(new Image("/org/diegogarcia/images/ReportesClientes.png"));
                 tipoDeOperaciones = operaciones.NULL;
                 break;
         }
     }
-
+    
     @FXML
     public void handleButtonAction(ActionEvent event) {
         if (event.getSource() == btnRegresar) {
