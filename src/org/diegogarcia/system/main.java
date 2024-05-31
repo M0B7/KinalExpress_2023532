@@ -27,6 +27,8 @@ public class main extends Application {
 
     private Stage escenarioPrincipal;
     private Scene escena;
+    
+    
 
     @Override
     public void start(Stage escenarioPrincipal) throws Exception {
@@ -38,6 +40,9 @@ public class main extends Application {
 
         escenarioPrincipal.show();
     }
+    
+    
+    
 
     public Initializable cambiarEscena(String fxmlName, int width, int heigth) throws Exception {
         Initializable resultado;
@@ -53,12 +58,18 @@ public class main extends Application {
         escena = new Scene((AnchorPane) loader.load(file), width, heigth);
         escenarioPrincipal.setScene(escena);
         escenarioPrincipal.sizeToScene();
+        
+        
 
         resultado = (Initializable) loader.getController();
+        
+        
 
         return resultado;
     }
 
+    
+    
     public void menuPrincipalView() {
         try {
             MenuPrincipalController menuPrincipalView = (MenuPrincipalController) cambiarEscena("MenuPrincipalView.fxml", 907, 453);

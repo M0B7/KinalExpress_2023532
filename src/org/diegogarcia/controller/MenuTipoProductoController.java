@@ -24,65 +24,95 @@ import org.diegogarcia.bean.TipoProducto;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
-/**
- * Nombre: Diego Fernando Garcia Galvez
- * 2023532
- * PE5AM
- * Fecha de creacion: 15/04/2024
- * Fecha de Modificacion: 17/04, 23/04, 24/04, 30/04, 06/05, 07/05, 8/5
- */
+
+// *************************************************************************************************************
+
 
 public class MenuTipoProductoController implements Initializable {
 
     private main escenarioPrincipal;
-    private ObservableList<TipoProducto> listaTipoProducto;
+    
     
     private enum operaciones {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
     }
     private operaciones tipoDeOperaciones = operaciones.NULL;
+    
+    
+// *************************************************************************************************************
 
-    @FXML
-    private Button btnRegresar;
+    private ObservableList<TipoProducto> listaTipoProducto;
     
     @FXML
+    private Button btnRegresar;
+    @FXML
+    private Button btnEditar;
+    @FXML
+    private Button btnAgregar;
+    @FXML
+    private Button btnEliminar;
+    @FXML
+    private Button btnReporte;
+
+    @FXML
+    private ImageView imgRegresar;
+    @FXML
+    private ImageView imgEditar;
+    @FXML
+    private ImageView imgAgregar;
+    @FXML
+    private ImageView imgEliminar;
+    @FXML
+    private ImageView imgReporte;
+    
+    
+
+    @FXML
     private TableView tblTipoProducto;
+    
 
     @FXML
     private TableColumn colIdTipoProducto;
 
     @FXML
     private TableColumn colDescripcion;
-
-    @FXML
-    private Button btnAgregar;
-
-    @FXML
-    private Button btnEditar;
-
-    @FXML
-    private Button btnEliminar;
-
-    @FXML
-    private Button btnReporte;
-
-    @FXML
-    private ImageView imgAgregar;
-
-    @FXML
-    private ImageView imgEliminar;
-
-    @FXML
-    private ImageView imgReporte;
-
-    @FXML
-    private ImageView imgEditar;
+    
+    
 
     @FXML
     private TextField txtDescripcion;
 
     @FXML
     private TextField txtIdTipoProducto;
+    
+      
+// *************************************************************************************************************    
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        Connection conexion = Conexion.getInstance().getConexion();
+        if (conexion != null) {
+            cargarDatos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
+        }
+    }
+    
+    
+    public void cargarDatos() {
+        tblTipoProducto.setItems(getTipoProducto());
+        colIdTipoProducto.setCellValueFactory(new PropertyValueFactory<TipoProducto, Integer>("idTipoProducto"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<TipoProducto, String>("descripcion"));
+    }
+    
+    
+    public void seleccionar() {
+        txtIdTipoProducto.setText(String.valueOf(((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getIdTipoProducto()));
+        txtDescripcion.setText(String.valueOf(((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getDescripcion()));
+    }
+
+// *************************************************************************************************************   
+    
     
     public ObservableList<TipoProducto> getTipoProducto() {
         ArrayList<TipoProducto> lista = new ArrayList<>();
@@ -99,60 +129,13 @@ public class MenuTipoProductoController implements Initializable {
         }
         return listaTipoProducto = FXCollections.observableList(lista);
     }
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        Connection conexion = Conexion.getInstance().getConexion();
-        if (conexion != null) {
-            cargarDatos();
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
-        }
-    }
 
-    public main getEscenarioPrincipal() {
-        return escenarioPrincipal;
-    }
-
-    public void setEscenarioPrincipal(main escenarioPrincipal) {
-        this.escenarioPrincipal = escenarioPrincipal;
-    }
-
-    public Button getBtnRegresar() {
-        return btnRegresar;
-    }
-
-    public void setBtnRegresar(Button btnRegresar) {
-        this.btnRegresar = btnRegresar;
-    }
-    
-    public void cargarDatos() {
-        tblTipoProducto.setItems(getTipoProducto());
-        colIdTipoProducto.setCellValueFactory(new PropertyValueFactory<TipoProducto, Integer>("idTipoProducto"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory<TipoProducto, String>("descripcion"));
-    }
+// *************************************************************************************************************   
     
     
-    public void seleccionar() {
-        txtIdTipoProducto.setText(String.valueOf(((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getIdTipoProducto()));
-        txtDescripcion.setText(String.valueOf(((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getDescripcion()));
-    }
     
-    public void activarControles() {
-        txtIdTipoProducto.setEditable(true);
-        txtDescripcion.setEditable(true);
-    }
     
-    public void desactivarControles() {
-        txtIdTipoProducto.setEditable(false);
-        txtDescripcion.setEditable(false);
-    }
-    
-    public void limpiarControles() {
-        txtIdTipoProducto.clear();
-        txtDescripcion.clear();
-    }
-    
-    public void Agregar() {
+    public void agregar() {
         switch (tipoDeOperaciones) {
             case NULL:
                 activarControles();
@@ -275,20 +258,71 @@ public class MenuTipoProductoController implements Initializable {
         }
     }
     
-    public void reporte() {
+    public void cancelar() {
+        switch (tipoDeOperaciones) {
+            case NULL:
+                btnReporte.setDisable(false);
+                btnAgregar.setDisable(false);
+                btnEditar.setDisable(false);
+                btnEliminar.setDisable(false);
+                btnAgregar.setText("Agregar");
+                btnEliminar.setText("Eliminar");
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
+                break;
+        }
+    }
+    
+    
+    
+     public void reporte() {
         switch (tipoDeOperaciones) {
             case ACTUALIZAR:
                 desactivarControles();
                 limpiarControles();
                 btnEditar.setText("Editar");
-                btnReporte.setText("Reporte");
+                btnReporte.setText("Reportes");
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
-                imgEditar.setImage(new Image("/org/diegogarcia/images/Actualizar.png"));
-                imgReporte.setImage(new Image("/org/diegogarcia/images/ReportesClientes.png"));
-                tipoDeOperaciones = operaciones.NULL;
-                break;
+                tipoDeOperaciones = MenuTipoProductoController.operaciones.NULL;
         }
+    }
+     
+     
+// *************************************************************************************************************  
+    
+    public void activarControles() {
+        txtIdTipoProducto.setEditable(true);
+        txtDescripcion.setEditable(true);
+    }
+    
+    public void desactivarControles() {
+        txtIdTipoProducto.setEditable(false);
+        txtDescripcion.setEditable(false);
+    }
+    
+    public void limpiarControles() {
+        txtIdTipoProducto.clear();
+        txtDescripcion.clear();
+    }
+    
+// *************************************************************************************************************  
+    
+    
+     public main getEscenarioPrincipal() {
+        return escenarioPrincipal;
+    }
+
+    public void setEscenarioPrincipal(main escenarioPrincipal) {
+        this.escenarioPrincipal = escenarioPrincipal;
+    }
+
+    public Button getBtnRegresar() {
+        return btnRegresar;
+    }
+
+    public void setBtnRegresar(Button btnRegresar) {
+        this.btnRegresar = btnRegresar;
     }
     
     @FXML

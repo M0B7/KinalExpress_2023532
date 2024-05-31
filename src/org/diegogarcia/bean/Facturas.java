@@ -1,26 +1,25 @@
 package org.diegogarcia.bean;
 
-
 public class Facturas {
-    
+
     private int idFactura;
     private String estado;
     private double totalFactura;
     private String fechaFactura;
-    
-    public Facturas(){
-        
+    private int idEmpleado;
+    private int idCliente;
+
+    public Facturas() {
+
     }
-    
-    public Facturas(int idFactura, String estado, double totalFactura, String fechaFactura){
+
+    public Facturas(int idFactura, String estado, double totalFactura, String fechaFactura, int idEmpleado, int idCliente) {
         this.idFactura = idFactura;
         this.estado = estado;
         this.totalFactura = totalFactura;
         this.fechaFactura = fechaFactura;
-    }
-
-    public Facturas(int aInt, String string, double aDouble, String string0, int aInt0, int aInt1) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.idEmpleado = idEmpleado;
+        this.idCliente = idCliente;
     }
 
     public int getIdFactura() {
@@ -55,21 +54,20 @@ public class Facturas {
         this.fechaFactura = fechaFactura;
     }
 
-    public void setIdCliente(int idCliente) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getIdEmpleado() {
+        return idEmpleado;
     }
 
     public void setIdEmpleado(int idEmpleado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.idEmpleado = idEmpleado;
     }
 
     public int getIdCliente() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return idCliente;
     }
 
-    public int getIdEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
-    
-    
+
 }

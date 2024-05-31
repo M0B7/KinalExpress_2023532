@@ -1,38 +1,29 @@
 package org.diegogarcia.bean;
 
 /**
- * Nombre: Diego Fernando Garcia Galvez
- * 2023532
- * PE5AM
- * Fecha de creacion: 15/04/2024
+ * Nombre: Diego Fernando Garcia Galvez 2023532 PE5AM Fecha de creacion:
+ * 15/04/2024
  */
-
 public class Empleados {
+
     private int idEmpleado;
     private String nombresEmpleado;
     private String apellidosEmpleado;
     private double sueldo;
     private String turno;
-    
-    
-    public Empleados(){
-        
+    private int idCargoEmpleado;
+
+    public Empleados() {
+
     }
-    
-    public Empleados(int idEmpleado, String nombresEmpleado, String apellidosEmpleado, double sueldo, String turno){
+
+    public Empleados(int idEmpleado, String nombresEmpleado, String apellidosEmpleado, double sueldo, String turno, int idCargoEmpleado) {
         this.idEmpleado = idEmpleado;
         this.nombresEmpleado = nombresEmpleado;
         this.apellidosEmpleado = apellidosEmpleado;
         this.sueldo = sueldo;
         this.turno = turno;
-    }
-
-    public Empleados(int aInt, String string, String string0, double aDouble, String string1, String string2, int aInt0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Empleados(int aInt, String string, String string0, double aDouble, String string1, int aInt0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.idCargoEmpleado = idCargoEmpleado;
     }
 
     public int getIdEmpleado() {
@@ -75,22 +66,12 @@ public class Empleados {
         this.turno = turno;
     }
 
-    public void setIdCargoEmpleado(int idCargoEmpleado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public int getIdCargoEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return idCargoEmpleado;
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public void setIdCargoEmpleado(int idCargoEmpleado) {
+        this.idCargoEmpleado = idCargoEmpleado;
+    }
+
 }
-
-
-

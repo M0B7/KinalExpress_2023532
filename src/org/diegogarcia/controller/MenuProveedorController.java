@@ -1,4 +1,3 @@
-
 package org.diegogarcia.controller;
 
 import java.net.URL;
@@ -25,44 +24,61 @@ import org.diegogarcia.bean.Proveedores;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
-/**
- * FXML Controller class
- *
- * @author Catherine
- */
+
+
+// *************************************************************************************************************
+
+
+
 public class MenuProveedorController implements Initializable {
 
     private main escenarioPrincipal;
     
     
-    private ObservableList<Proveedores> listaProveedores;
 
-    private enum Operaciones {
+    private enum operaciones {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
+        
     }
-    private Operaciones tipoDeOperaciones = Operaciones.NULL;
+        
+    private operaciones tipoDeOperaciones = operaciones.NULL;
+    
+    
+// *************************************************************************************************************
+    
+    
+    
+    private ObservableList<Proveedores> listaProveedores;
+     
+     
     @FXML
     private TableView<Proveedores> tblProveedores;
+    
+    
     @FXML
     private Button btnRegresar;
-    @FXML
-    private Button btnEliminar;
     @FXML
     private Button btnEditar;
     @FXML
     private Button btnAgregar;
     @FXML
+    private Button btnEliminar;
+    @FXML
     private Button btnReporte;
-   @FXML
-    private ImageView imgAgregar;
+
     @FXML
-    private ImageView imgGuardar;
-    @FXML
-    private ImageView imgEliminar;
+    private ImageView imgRegresar;
     @FXML
     private ImageView imgEditar;
     @FXML
+    private ImageView imgAgregar;
+    @FXML
+    private ImageView imgEliminar;
+    @FXML
     private ImageView imgReporte;
+    
+    
+    
     @FXML
     private TextField txtIdProveedor;
     @FXML
@@ -79,10 +95,12 @@ public class MenuProveedorController implements Initializable {
     private TextField txtContactoPrincipal;
     @FXML
     private TextField txtPaginaWeb;
+    
+    
     @FXML
     private TableColumn colIdProveedores;
     @FXML
-    private TableColumn colNITProveedor;
+    private TableColumn colNitProveedor;
     @FXML
     private TableColumn colNombreProveedor;
     @FXML
@@ -97,6 +115,10 @@ public class MenuProveedorController implements Initializable {
     private TableColumn colPaginaWeb;
     @FXML private Button btnEmail;
     @FXML private Button btnTelefono;
+    
+    
+// *************************************************************************************************************
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -111,7 +133,7 @@ public class MenuProveedorController implements Initializable {
     public void cargarDatos() {
         tblProveedores.setItems(getProveedor());
         colIdProveedores.setCellValueFactory(new PropertyValueFactory<>("idProveedores"));
-        colNITProveedor.setCellValueFactory(new PropertyValueFactory<>("nitProveedor"));
+        colNitProveedor.setCellValueFactory(new PropertyValueFactory<>("nitProveedor"));
         colNombreProveedor.setCellValueFactory(new PropertyValueFactory<>("nombreProveedor"));
         colApellidoProveedor.setCellValueFactory(new PropertyValueFactory<>("apellidosProveedor"));
         colDireccionProveedor.setCellValueFactory(new PropertyValueFactory<>("direccionProveedor"));
@@ -134,6 +156,8 @@ public class MenuProveedorController implements Initializable {
             txtPaginaWeb.setText(clienteSeleccionado.getPaginaWeb());
         }
     }
+    
+// *************************************************************************************************************
 
     public ObservableList<Proveedores> getProveedor() {
         ArrayList<Proveedores> lista = new ArrayList<>();
@@ -156,8 +180,13 @@ public class MenuProveedorController implements Initializable {
         }
         return listaProveedores = FXCollections.observableList(lista);
     }
+    
+    
+// *************************************************************************************************************
+    
+    
 
-    public void Agregar() {
+    public void agregar() {
         switch (tipoDeOperaciones) {
             case NULL:
                 activarControles();
@@ -167,7 +196,7 @@ public class MenuProveedorController implements Initializable {
                 btnReporte.setDisable(true);
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Guardar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
-                tipoDeOperaciones = MenuProveedorController.Operaciones.ACTUALIZAR;
+                tipoDeOperaciones = MenuProveedorController.operaciones.ACTUALIZAR;
                 break;
             case ACTUALIZAR:
                 guardar();
@@ -179,7 +208,7 @@ public class MenuProveedorController implements Initializable {
                 btnReporte.setDisable(false);
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
-                tipoDeOperaciones = MenuProveedorController.Operaciones.NULL;
+                tipoDeOperaciones = MenuProveedorController.operaciones.NULL;
         }
     }
 
@@ -222,7 +251,7 @@ public class MenuProveedorController implements Initializable {
                     imgEliminar.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
                     activarControles();
                     txtIdProveedor.setEditable(false);
-                    tipoDeOperaciones = MenuProveedorController.Operaciones.ACTUALIZAR;
+                    tipoDeOperaciones = MenuProveedorController.operaciones.ACTUALIZAR;
                 } else {
                     JOptionPane.showMessageDialog(null, "Debe de seleccionar un cliente para editar");
                 }
@@ -237,7 +266,7 @@ public class MenuProveedorController implements Initializable {
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 desactivarControles();
                 limpiarControles();
-                tipoDeOperaciones = MenuProveedorController.Operaciones.NULL;
+                tipoDeOperaciones = MenuProveedorController.operaciones.NULL;
                 cargarDatos();
 
                 break;
@@ -284,7 +313,7 @@ public class MenuProveedorController implements Initializable {
                 btnReporte.setDisable(false);
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
-                tipoDeOperaciones = MenuProveedorController.Operaciones.NULL;
+                tipoDeOperaciones = MenuProveedorController.operaciones.NULL;
                 cancelar();
                 break;
             default:
@@ -317,11 +346,30 @@ public class MenuProveedorController implements Initializable {
                 btnEditar.setDisable(false);
                 btnEliminar.setDisable(false);
                 btnAgregar.setText("Agregar");
+                btnEliminar.setText("Eliminar");
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 break;
         }
     }
-   
+    
+    
+    
+     public void reporte() {
+        switch (tipoDeOperaciones) {
+            case ACTUALIZAR:
+                desactivarControles();
+                limpiarControles();
+                btnEditar.setText("Editar");
+                btnReporte.setText("Reportes");
+                btnAgregar.setDisable(false);
+                btnEliminar.setDisable(false);
+                tipoDeOperaciones = MenuProveedorController.operaciones.NULL;
+        }
+    }
+
+     
+// *************************************************************************************************************
     
 
     public void desactivarControles() {
@@ -356,6 +404,13 @@ public class MenuProveedorController implements Initializable {
         txtContactoPrincipal.clear();
         txtPaginaWeb.clear();
     }
+    
+    
+// *************************************************************************************************************
+
+     public main getEscenarioPrincipal() {
+        return escenarioPrincipal;
+    }
 
     public void setEscenarioPrincipal(main escenarioPrincipal) {
         this.escenarioPrincipal = escenarioPrincipal;
@@ -370,7 +425,7 @@ public class MenuProveedorController implements Initializable {
     }
 
     @FXML
-    public void handleButtonActionProveedor(ActionEvent event) {
+    public void handleButtonAction(ActionEvent event) {
         if (event.getSource() == btnRegresar) {
             escenarioPrincipal.menuPrincipalView();
         }

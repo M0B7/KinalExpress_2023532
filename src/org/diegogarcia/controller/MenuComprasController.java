@@ -23,9 +23,12 @@ import org.diegogarcia.bean.Compras;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
-/**
- * @author informatica
- */
+
+
+// *************************************************************************************************************
+
+
+
 public class MenuComprasController implements Initializable {
 
     private main escenarioPrincipal;
@@ -36,36 +39,38 @@ public class MenuComprasController implements Initializable {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
     }
     private operaciones tipoDeOperaciones = operaciones.NULL;
-    @FXML
-    private Button btnRegresar;
+    
+    
+    
+ // *************************************************************************************************************
 
     @FXML
     private TableView tblCompras;
+    
 
     @FXML
-    private ImageView imgAgregar;
-
-    @FXML
-    private ImageView imgEditar;
-
-    @FXML
-    private ImageView imgEliminar;
-
-    @FXML
-    private ImageView imgReporte;
-
-    @FXML
-    private Button btnAgregar;
-
+    private Button btnRegresar;
     @FXML
     private Button btnEditar;
-
+    @FXML
+    private Button btnAgregar;
     @FXML
     private Button btnEliminar;
-
     @FXML
     private Button btnReporte;
 
+    @FXML
+    private ImageView imgRegresar;
+    @FXML
+    private ImageView imgEditar;
+    @FXML
+    private ImageView imgAgregar;
+    @FXML
+    private ImageView imgEliminar;
+    @FXML
+    private ImageView imgReporte;
+    
+    
     @FXML
     private TableColumn colIdCompras;
 
@@ -77,6 +82,9 @@ public class MenuComprasController implements Initializable {
 
     @FXML
     private TableColumn colTotalDocumento;
+    
+    
+    
 
     @FXML
     private TextField txtIdCompra;
@@ -89,22 +97,41 @@ public class MenuComprasController implements Initializable {
 
     @FXML
     private TextField txtDescripcion;
-
-    public main getEscenarioPrincipal() {
-        return escenarioPrincipal;
+    
+ 
+// *************************************************************************************************************
+    
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        Connection conexion = Conexion.getInstance().getConexion();
+        if (conexion != null) {
+            cargarDatos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
+        }
+    }
+    
+    
+    
+    public void cargarDatos() {
+        tblCompras.setItems(getCompras());
+        colIdCompras.setCellValueFactory(new PropertyValueFactory<Compras, Integer>("idCompra"));
+        colFechaDocumento.setCellValueFactory(new PropertyValueFactory<Compras, String>("fechaDocumento"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<Compras, String>("descripcion"));
+        colTotalDocumento.setCellValueFactory(new PropertyValueFactory<Compras, String>("totalDocumento"));
     }
 
-    public void setEscenarioPrincipal(main escenarioPrincipal) {
-        this.escenarioPrincipal = escenarioPrincipal;
+    public void seleccionarElemento() {
+        txtIdCompra.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getIdCompra()));
+        txtFechaDocumento.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getFechaDocumento()));
+        txtDescripcion.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getDescripcion()));
+        txtTotalDocumento.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getTotalDocumento()));
     }
-
-    public Button getBtnRegresar() {
-        return btnRegresar;
-    }
-
-    public void setBtnRegresar(Button btnRegresar) {
-        this.btnRegresar = btnRegresar;
-    }
+    
+    
+// *************************************************************************************************************
+    
 
     public ObservableList<Compras> getCompras() {
         ArrayList<Compras> lista = new ArrayList<>();
@@ -123,54 +150,13 @@ public class MenuComprasController implements Initializable {
         }
         return listaCompras = FXCollections.observableList(lista);
     }
+    
+    
+// *************************************************************************************************************
+    
+    
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        Connection conexion = Conexion.getInstance().getConexion();
-        if (conexion != null) {
-            cargarDatos();
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
-        }
-    }
-
-    public void cargarDatos() {
-        tblCompras.setItems(getCompras());
-        colIdCompras.setCellValueFactory(new PropertyValueFactory<Compras, Integer>("idCompra"));
-        colFechaDocumento.setCellValueFactory(new PropertyValueFactory<Compras, String>("fechaDocumento"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory<Compras, String>("descripcion"));
-        colTotalDocumento.setCellValueFactory(new PropertyValueFactory<Compras, String>("totalDocumento"));
-    }
-
-    public void seleccionar() {
-        txtIdCompra.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getIdCompra()));
-        txtFechaDocumento.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getFechaDocumento()));
-        txtDescripcion.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getDescripcion()));
-        txtTotalDocumento.setText(String.valueOf(((Compras) tblCompras.getSelectionModel().getSelectedItem()).getTotalDocumento()));
-    }
-
-    public void activarControles() {
-        txtIdCompra.setEditable(true);
-        txtFechaDocumento.setEditable(true);
-        txtDescripcion.setEditable(true);
-        txtTotalDocumento.setEditable(true);
-    }
-
-    public void desactivarControles() {
-        txtIdCompra.setEditable(false);
-        txtFechaDocumento.setEditable(false);
-        txtDescripcion.setEditable(false);
-        txtTotalDocumento.setEditable(false);
-    }
-
-    public void limpiarControles() {
-        txtIdCompra.clear();
-        txtFechaDocumento.clear();
-        txtDescripcion.clear();
-        txtTotalDocumento.clear();
-    }
-
-    public void Agregar() {
+    public void agregar() {
         switch (tipoDeOperaciones) {
             case NULL:
                 activarControles();
@@ -305,6 +291,21 @@ public class MenuComprasController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+     public void cancelar() {
+        switch (tipoDeOperaciones) {
+            case NULL:
+                btnReporte.setDisable(false);
+                btnAgregar.setDisable(false);
+                btnEditar.setDisable(false);
+                btnEliminar.setDisable(false);
+                btnAgregar.setText("Agregar");
+                btnEliminar.setText("Eliminar");
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
+                break;
+        }
+    }
 
     public void reporte() {
         switch (tipoDeOperaciones) {
@@ -320,6 +321,53 @@ public class MenuComprasController implements Initializable {
                 tipoDeOperaciones = operaciones.NULL;
                 break;
         }
+    }
+    
+    
+// *************************************************************************************************************
+    
+    
+
+    public void activarControles() {
+        txtIdCompra.setEditable(true);
+        txtFechaDocumento.setEditable(true);
+        txtDescripcion.setEditable(true);
+        txtTotalDocumento.setEditable(true);
+    }
+
+    public void desactivarControles() {
+        txtIdCompra.setEditable(false);
+        txtFechaDocumento.setEditable(false);
+        txtDescripcion.setEditable(false);
+        txtTotalDocumento.setEditable(false);
+    }
+
+    public void limpiarControles() {
+        txtIdCompra.clear();
+        txtFechaDocumento.clear();
+        txtDescripcion.clear();
+        txtTotalDocumento.clear();
+    }
+
+    
+// *************************************************************************************************************
+    
+    
+    
+     public main getEscenarioPrincipal() {
+        return escenarioPrincipal;
+    }
+
+    public void setEscenarioPrincipal(main escenarioPrincipal) {
+        this.escenarioPrincipal = escenarioPrincipal;
+    }
+
+    public Button getBtnRegresar() {
+        return btnRegresar;
+    }
+
+    public void setBtnRegresar(Button btnRegresar) {
+        this.btnRegresar = btnRegresar;
     }
 
     @FXML

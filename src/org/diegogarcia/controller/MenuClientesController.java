@@ -24,29 +24,58 @@ import org.diegogarcia.bean.Clientes;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
+
+// *************************************************************************************************************
+
 public class MenuClientesController implements Initializable {
+    
+    
 
     private main escenarioPrincipal;
+    
+    
 
     private enum operaciones {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
+        
     }
+        
     private operaciones tipoDeOperaciones = operaciones.NULL;
+    
+// *************************************************************************************************************
+    
 
-    ObservableList<Clientes> listaClientes;
-
+    private ObservableList<Clientes> listaClientes;
+    
+    
     @FXML
     private TableView<Clientes> tblCliente;
+
+    
     @FXML
     private Button btnRegresar;
-    @FXML
-    private Button btnEliminar;
     @FXML
     private Button btnEditar;
     @FXML
     private Button btnAgregar;
     @FXML
+    private Button btnEliminar;
+    @FXML
     private Button btnReporte;
+
+    
+    @FXML
+    private ImageView imgRegresar;
+    @FXML
+    private ImageView imgEditar;
+    @FXML
+    private ImageView imgAgregar;
+    @FXML
+    private ImageView imgEliminar;
+    @FXML
+    private ImageView imgReporte;
+
+    
     @FXML
     private TextField txtNitCliente;
     @FXML
@@ -61,16 +90,8 @@ public class MenuClientesController implements Initializable {
     private TextField txtTelefonoCliente;
     @FXML
     private TextField txtCorreoCliente;
-    @FXML
-    private ImageView imgAgregar;
-    @FXML
-    private ImageView imgGuardar;
-    @FXML
-    private ImageView imgEliminar;
-    @FXML
-    private ImageView imgEditar;
-    @FXML
-    private ImageView imgReporte;
+    
+    
     @FXML
     private TableColumn<Clientes, Integer> colClienteId;
     @FXML
@@ -85,6 +106,9 @@ public class MenuClientesController implements Initializable {
     private TableColumn<Clientes, String> colCorreoCliente;
     @FXML
     private TableColumn<Clientes, String> colNitCliente;
+    
+    
+  // *************************************************************************************************************
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -119,6 +143,8 @@ public class MenuClientesController implements Initializable {
             txtDireccionCliente.setText(clienteSeleccionado.getDireccionCliente());
         }
     }
+    
+// *************************************************************************************************************
 
     public ObservableList<Clientes> getClientes() {
         ArrayList<Clientes> lista = new ArrayList<>();
@@ -141,8 +167,10 @@ public class MenuClientesController implements Initializable {
         }
         return listaClientes = FXCollections.observableList(lista);
     }
+    
+// *************************************************************************************************************
 
-    public void Agregar() {
+    public void agregar() {
         switch (tipoDeOperaciones) {
             case NULL:
                 activarControles();
@@ -150,7 +178,7 @@ public class MenuClientesController implements Initializable {
                 btnEliminar.setText("Cancelar");
                 btnEditar.setDisable(true);
                 btnReporte.setDisable(true);
-                imgAgregar.setImage(new Image("/org/diegogarcia/images/Guardar.png"));
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Guadar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
                 tipoDeOperaciones = operaciones.ACTUALIZAR;
                 break;
@@ -298,11 +326,30 @@ public class MenuClientesController implements Initializable {
                 btnEditar.setDisable(false);
                 btnEliminar.setDisable(false);
                 btnAgregar.setText("Agregar");
+                btnEliminar.setText("Eliminar");
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 break;
         }
     }
+    
+    
+    
+     public void reporte() {
+        switch (tipoDeOperaciones) {
+            case ACTUALIZAR:
+                desactivarControles();
+                limpiarControles();
+                btnEditar.setText("Editar");
+                btnReporte.setText("Reportes");
+                btnAgregar.setDisable(false);
+                btnEliminar.setDisable(false);
+                tipoDeOperaciones = operaciones.NULL;
+        }
+    }
 
+// *************************************************************************************************************    
+    
     public void desactivarControles() {
         txtIdCliente.setEditable(false);
         txtNombreCliente.setEditable(false);
@@ -331,6 +378,15 @@ public class MenuClientesController implements Initializable {
         txtTelefonoCliente.clear();
         txtDireccionCliente.clear();
         txtCorreoCliente.clear();
+    }
+    
+    
+// *************************************************************************************************************
+    
+    
+    
+    public main getEscenarioPrincipal() {
+        return escenarioPrincipal;
     }
 
     public void setEscenarioPrincipal(main escenarioPrincipal) {

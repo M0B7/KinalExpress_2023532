@@ -1,6 +1,7 @@
 package org.diegogarcia.controller;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -28,7 +29,12 @@ import org.diegogarcia.bean.Facturas;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
+
+// *************************************************************************************************************
+
 public class MenuFacturaController implements Initializable {
+    
+    
     private main escenarioPrincipal;
     
     private ObservableList<Facturas> listarFactura;
@@ -40,11 +46,37 @@ public class MenuFacturaController implements Initializable {
         AGREGAR, EDITAR, ACTUALIZAR, ELIMINAR, CANCELAR, NULL
     }
 
-    private operaciones tipoOperaciones = operaciones.NULL;
+    private operaciones tipoDeOperaciones = operaciones.NULL;
+    
+// *************************************************************************************************************   
+    
+    @FXML
+    private Button btnRegresar;
+    @FXML
+    private Button btnEditar;
+    @FXML
+    private Button btnAgregar;
+    @FXML
+    private Button btnEliminar;
+    @FXML
+    private Button btnReporte;
+
+    @FXML
+    private ImageView imgRegresar;
+    @FXML
+    private ImageView imgEditar;
+    @FXML
+    private ImageView imgAgregar;
+    @FXML
+    private ImageView imgEliminar;
+    @FXML
+    private ImageView imgReporte;
     
    
     @FXML
     private TableView tblFactura;
+    
+    
 
     @FXML
     private TableColumn colIdFactura;
@@ -63,6 +95,8 @@ public class MenuFacturaController implements Initializable {
 
     @FXML
     private TableColumn colIdCliente;
+    
+    
 
     @FXML
     private TextField txtIdFactura;
@@ -72,9 +106,12 @@ public class MenuFacturaController implements Initializable {
 
     @FXML
     private TextField txtTotalFactura;
+    
+ 
 
     @FXML
     private DatePicker dpFechaFactura;
+    
 
     @FXML
     private ComboBox cbmCliente;
@@ -82,45 +119,23 @@ public class MenuFacturaController implements Initializable {
     @FXML
     private ComboBox cbmEmpleado;
     
-    @FXML
-    private Button btnAgregar;
-
-    @FXML
-    private ImageView imgAgregar;
-
-    @FXML
-    private Button btnEliminar;
-
-    @FXML
-    private ImageView imgEliminar;
-
-    @FXML
-    private Button btnReporte;
-
-    @FXML
-    private ImageView imgReporte;
-
-    @FXML
-    private Button btnEditar;
-
-    @FXML
-    private ImageView imgEditar;
-
-    @FXML
-    private Button btnRegresar;
-
-    @FXML
-    private ImageView imgRegresae;
+// *************************************************************************************************************
 
     
-    @Override
+     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarDatos();
-        cbmCliente.setItems(getClientes());
-        cbmEmpleado.setItems(getEmpleados());
-        cbmCliente.setDisable(true);
-        cbmEmpleado.setDisable(true);
-    }    
+        Connection conexion = Conexion.getInstance().getConexion();
+        if (conexion != null) {
+            cargarDatos();
+            cbmCliente.setItems(getClientes());
+            cbmEmpleado.setItems(getEmpleados());
+            cbmCliente.setDisable(true);
+            cbmEmpleado.setDisable(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
+        }
+
+    }
     
     public void cargarDatos() {
         desactivarControles();
@@ -133,31 +148,21 @@ public class MenuFacturaController implements Initializable {
         colIdEmpleado.setCellValueFactory(new PropertyValueFactory<Facturas, Integer>("idEmpleado"));
     }
     
-     public void desactivarControles() {
-        txtIdFactura.setEditable(false);
-        txtEstado.setEditable(false);
-        txtTotalFactura.setEditable(false);
-        dpFechaFactura.setEditable(false);
-        cbmCliente.setDisable(true);
-        cbmEmpleado.setDisable(true);
+    
+    public void seleccionarElemento() {
+        int codEmpleado = ((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdEmpleado();
+        
+        txtIdFactura.setText(String.valueOf(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdFactura()));
+        txtEstado.setText(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getEstado());
+        txtTotalFactura.setText(String.valueOf(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getTotalFactura()));
+        dpFechaFactura.setValue(LocalDate.parse(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getFechaFactura()));
+        cbmCliente.getSelectionModel().select(buscarCliente(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdCliente()));
+        cbmEmpleado.getSelectionModel().select(buscarEmpleado(codEmpleado));
     }
-
-    public void activarControles() {
-        txtIdFactura.setEditable(true);
-        txtEstado.setEditable(true);
-        dpFechaFactura.setEditable(true);
-        cbmCliente.setDisable(false);
-        cbmEmpleado.setDisable(false);
-    }
-
-    public void limpiarControles() {
-        txtIdFactura.clear();
-        txtEstado.clear();
-        txtTotalFactura.clear();
-        dpFechaFactura.setValue(null);
-        cbmCliente.setValue(null);
-        cbmEmpleado.setValue(null);
-    }
+    
+// *************************************************************************************************************
+    
+    
     
     public ObservableList<Facturas> getFactura() {
         ArrayList<Facturas> lista = new ArrayList<>();
@@ -226,12 +231,11 @@ public class MenuFacturaController implements Initializable {
         return listarClientes = FXCollections.observableList(lista);
     }
     
-    public void setEscenarioPrincipal(main escenarioPrincipal) {
-        this.escenarioPrincipal = escenarioPrincipal;
-    }
+// *************************************************************************************************************
     
-    public void agregarFactura() {
-        switch (tipoOperaciones) {
+    
+    public void agregar() {
+        switch (tipoDeOperaciones) {
             case NULL:
                 activarControles();
                 btnEliminar.setText("Cancelar");
@@ -241,10 +245,10 @@ public class MenuFacturaController implements Initializable {
                 txtIdFactura.setEditable(false);
                 btnReporte.setDisable(true);
                 btnEditar.setDisable(true);
-                tipoOperaciones = operaciones.ACTUALIZAR;
+                tipoDeOperaciones = operaciones.ACTUALIZAR;
                 break;
             case ACTUALIZAR:
-                guardarFactura();
+                guardar();
                 cargarDatos();
                 desactivarControles();
                 limpiarControles();
@@ -254,12 +258,12 @@ public class MenuFacturaController implements Initializable {
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/eliminar.png"));  
                 btnReporte.setDisable(false);
                 btnEditar.setDisable(false);
-                tipoOperaciones = operaciones.NULL;
+                tipoDeOperaciones = operaciones.NULL;
                 break;
         }
     }
     
-    public void guardarFactura(){
+    public void guardar(){
         Facturas registro = new Facturas();
         registro.setFechaFactura(dpFechaFactura.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         registro.setIdCliente(((Clientes) cbmCliente.getSelectionModel().getSelectedItem()).getIdCliente());
@@ -279,16 +283,6 @@ public class MenuFacturaController implements Initializable {
         }
     }
     
-    public void seleccionarTupla() {
-        int codEmpleado = ((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdEmpleado();
-        
-        txtIdFactura.setText(String.valueOf(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdFactura()));
-        txtEstado.setText(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getEstado());
-        txtTotalFactura.setText(String.valueOf(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getTotalFactura()));
-        dpFechaFactura.setValue(LocalDate.parse(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getFechaFactura()));
-        cbmCliente.getSelectionModel().select(buscarCliente(((Facturas) tblFactura.getSelectionModel().getSelectedItem()).getIdCliente()));
-        cbmEmpleado.getSelectionModel().select(buscarEmpleado(codEmpleado));
-    }
     
     public Clientes buscarCliente(int cod){
         Clientes result=null;
@@ -341,8 +335,8 @@ public class MenuFacturaController implements Initializable {
         return result;
     }
     
-    public void eliminarFactura() {
-        switch (tipoOperaciones) {
+    public void eliminar() {
+        switch (tipoDeOperaciones) {
             case ACTUALIZAR:
                 desactivarControles();
                 limpiarControles();
@@ -352,7 +346,7 @@ public class MenuFacturaController implements Initializable {
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png")); 
                 btnReporte.setDisable(false);
                 btnEditar.setDisable(false);
-                tipoOperaciones = operaciones.NULL;
+                tipoDeOperaciones = operaciones.NULL;
                 break;
             default:
                 if (tblFactura.getSelectionModel().getSelectedItem() != null) {
@@ -380,7 +374,7 @@ public class MenuFacturaController implements Initializable {
     }
     
     public void editar(){
-        switch (tipoOperaciones) {
+        switch (tipoDeOperaciones) {
             case NULL:
                 if (tblFactura.getSelectionModel().getSelectedItem() != null) {
                     imgReporte.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
@@ -391,7 +385,7 @@ public class MenuFacturaController implements Initializable {
                     btnEliminar.setDisable(true);
                     txtIdFactura.setDisable(true);
                     activarControles();
-                    tipoOperaciones = operaciones.ACTUALIZAR;
+                    tipoDeOperaciones = operaciones.ACTUALIZAR;
                     break;
                 } else {
                     JOptionPane.showMessageDialog(null, "Seleccione una fila para editar");
@@ -407,7 +401,7 @@ public class MenuFacturaController implements Initializable {
                 btnEliminar.setDisable(false);
                 desactivarControles();
                 limpiarControles();
-                tipoOperaciones = operaciones.NULL;
+                tipoDeOperaciones = operaciones.NULL;
                 cargarDatos();
         }
     }
@@ -438,31 +432,92 @@ public class MenuFacturaController implements Initializable {
         }
     }
     
-    public void reporte() {
-        switch (tipoOperaciones) {
-            case ACTUALIZAR:
-                imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
-                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporte.png"));
-                btnReporte.setText("Reporte");
-                btnEditar.setText("Editar");
+    public void cancelar() {
+        switch (tipoDeOperaciones) {
+            case NULL:
+                btnReporte.setDisable(false);
                 btnAgregar.setDisable(false);
+                btnEditar.setDisable(false);
                 btnEliminar.setDisable(false);
+                btnAgregar.setText("Agregar");
+                btnEliminar.setText("Eliminar");
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
+                break;
+        }
+    }
+
+    public void reporte() {
+        switch (tipoDeOperaciones) {
+            case ACTUALIZAR:
                 desactivarControles();
                 limpiarControles();
-                tipoOperaciones = operaciones.NULL;
-                cargarDatos();
-            case NULL:
+                btnEditar.setText("Editar");
+                btnReporte.setText("Reporte");
+                btnAgregar.setDisable(false);
+                btnEliminar.setDisable(false);
+                imgEditar.setImage(new Image("/org/diegogarcia/images/Actualizar.png"));
+                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporteria.png"));
+                tipoDeOperaciones = MenuFacturaController.operaciones.NULL;
                 break;
         }
     }
     
+    
+    
+    // *************************************************************************************************************   
+    
+    
+     public void desactivarControles() {
+        txtIdFactura.setEditable(false);
+        txtEstado.setEditable(false);
+        txtTotalFactura.setEditable(false);
+        dpFechaFactura.setEditable(false);
+        cbmCliente.setDisable(true);
+        cbmEmpleado.setDisable(true);
+    }
+
+    public void activarControles() {
+        txtIdFactura.setEditable(true);
+        txtEstado.setEditable(true);
+        dpFechaFactura.setEditable(true);
+        cbmCliente.setDisable(false);
+        cbmEmpleado.setDisable(false);
+    }
+
+    public void limpiarControles() {
+        txtIdFactura.clear();
+        txtEstado.clear();
+        txtTotalFactura.clear();
+        dpFechaFactura.setValue(null);
+        cbmCliente.setValue(null);
+        cbmEmpleado.setValue(null);
+    }
+    
+    
+// *************************************************************************************************************   
+    
+    public main getEscenarioPrincipal() {
+        return escenarioPrincipal;
+    }
+
+    public void setEscenarioPrincipal(main escenarioPrincipal) {
+        this.escenarioPrincipal = escenarioPrincipal;
+    }
+
+    public Button getBtnRegresar() {
+        return btnRegresar;
+    }
+
+    public void setBtnRegresar(Button btnRegresar) {
+        this.btnRegresar = btnRegresar;
+    }
+
     @FXML
     public void handleButtonAction(ActionEvent event) {
         if (event.getSource() == btnRegresar) {
             escenarioPrincipal.menuPrincipalView();
-        } else if (event.getSource() == btnAgregar) {
-            activarControles();
-
         }
     }
+
 }

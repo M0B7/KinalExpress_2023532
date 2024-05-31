@@ -9,11 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import org.diegogarcia.system.main;
 
-/**
- * Nombre: Diego Fernando Garcia Galvez 2023532 PE5AM Fecha de creacion:
- * 15/04/2024 Fecha de Modificacion: 17/04, 23/04, 24/04, 30/04, 06/05, 07/05,
- * 8/5
- */
+// *************************************************************************************************************
+
+
 public class MenuPrincipalController implements Initializable {
 
     private main escenarioPrincipal;
@@ -30,6 +28,9 @@ public class MenuPrincipalController implements Initializable {
     MenuItem btnMenuEmpleados;
     @FXML
     MenuItem btnMenuProductos;
+    
+    
+// *************************************************************************************************************
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

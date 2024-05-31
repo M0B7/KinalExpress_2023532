@@ -71,7 +71,7 @@
                   </Button>
                   <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="57.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css">
                      <graphic>
-                        <ImageView fx:id="ImgRegresar" fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgRegresar" fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/RegresarMenuPrincipal.png" />
                            </image>
@@ -86,7 +86,7 @@
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>
                      <graphic>
-                        <ImageView fx:id="imgReporteria" fitHeight="30.0" fitWidth="24.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgReporte" fitHeight="30.0" fitWidth="24.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/Reporteria.png" />
                            </image>

@@ -73,6 +73,7 @@
       </Label>
       <Pane layoutX="701.0" layoutY="-5.0" prefHeight="655.0" prefWidth="297.0" style="-fx-background-color: #03001c;">
          <children>
+            <Line endX="-100.0" endY="352.0" fill="#ffee4a" layoutX="101.0" layoutY="300.0" startX="-100.0" startY="-109.0" stroke="#ffee4a" strokeWidth="5.0" />
             <GridPane layoutX="88.0" layoutY="278.0" prefHeight="335.0" prefWidth="121.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -97,7 +98,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#Agregar" prefHeight="57.0" prefWidth="156.0" style="-fx-background-color: #77477e; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Agregar" textFill="#fffafa" GridPane.rowIndex="2">
+                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregar" prefHeight="57.0" prefWidth="156.0" style="-fx-background-color: #77477e; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css" text="Agregar" textFill="#fffafa" GridPane.rowIndex="2">
                      <font>
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>
@@ -123,7 +124,7 @@
                   </Button>
                   <Button fx:id="btnRegresar" mnemonicParsing="false" prefHeight="57.0" prefWidth="121.0" style="-fx-background-color: #77477E; -fx-background-radius: 10; -fx-border-radius: 10;" styleClass="Button" stylesheets="@../resources/CSS.css">
                      <graphic>
-                        <ImageView fx:id="ImgRegresar" fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgRegresar" fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/RegresarMenuPrincipal.png" />
                            </image>
@@ -138,7 +139,7 @@
                         <Font name="Bauhaus 93" size="16.0" />
                      </font>
                      <graphic>
-                        <ImageView fx:id="imgReporteria" fitHeight="30.0" fitWidth="24.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgReporte" fitHeight="30.0" fitWidth="24.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/Reporteria.png" />
                            </image>
@@ -157,7 +158,6 @@
                   <Image url="@../images/Separador.png" />
                </image>
             </ImageView>
-            <Line endX="-100.0" endY="352.0" fill="#ffee4a" layoutX="101.0" layoutY="300.0" startX="-100.0" startY="-90.0" stroke="#ffee4a" strokeWidth="5.0" />
          </children>
       </Pane>
       <Line endX="155.0" fill="#ffee4a" layoutX="146.0" layoutY="107.0" startX="-100.0" stroke="#ffee4a" strokeWidth="5.0" />

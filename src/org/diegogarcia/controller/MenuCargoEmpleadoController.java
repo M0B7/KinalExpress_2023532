@@ -1,6 +1,7 @@
 package org.diegogarcia.controller;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,71 +24,103 @@ import org.diegogarcia.bean.CargoEmpleado;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
-public class MenuCargoEmpleadoController implements Initializable {
 
-    private ObservableList<CargoEmpleado> listaCargoEmpleado;
+// *************************************************************************************************************
+
+public class MenuCargoEmpleadoController implements Initializable {
+    
+    
     private main escenarioPrincipal;
 
-    private static class colIdCargo {
-
-        private static void setCellValueFactory(PropertyValueFactory<CargoEmpleado, Integer> propertyValueFactory) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        public colIdCargo() {
-        }
-    }
-
     private enum operaciones {
-        AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NINGUNO
+        AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
+
     }
-    private operaciones tipoDeOperaciones = operaciones.NINGUNO;
+
+    private operaciones tipoDeOperaciones = operaciones.NULL;
+    
+    
+// *************************************************************************************************************
+
+    private ObservableList<CargoEmpleado> listaCargoEmpleado;
+    
+    
+   
+    @FXML
+    private Button btnRegresar;
+    @FXML
+    private Button btnEditar;
+    @FXML
+    private Button btnAgregar;
+    @FXML
+    private Button btnEliminar;
+    @FXML
+    private Button btnReporte;
 
     @FXML
+    private ImageView imgRegresar;
+    @FXML
+    private ImageView imgEditar;
+    @FXML
+    private ImageView imgAgregar;
+    @FXML
+    private ImageView imgEliminar;
+    @FXML
+    private ImageView imgReporte;
+
+    
+    @FXML
     private TableView<CargoEmpleado> tblCargoEmpleado;
+    
+    
     @FXML
     private TableColumn colIdCargo;
     @FXML
     private TableColumn colCargoEmpleado;
     @FXML
     private TableColumn colDescripcionCargo;
+    
+    
     @FXML
     private TextField txtIdCargo;
     @FXML
     private TextField txtCargo;
     @FXML
     private TextField txtDescripcion;
-    @FXML
-    private Button btnRegresar;
-    @FXML
-    private Button btnAgregar;
-    @FXML
-    private Button btnEditar;
-    @FXML
-    private Button btnEliminar;
-    @FXML
-    private Button btnReporte;
-    @FXML
-    private ImageView imgAgregar;
-    @FXML
-    private ImageView imgEditar;
-    @FXML
-    private ImageView imgBuscar;
-    @FXML
-    private ImageView imgEliminar;
-
-    public void menuPrincipalView() {
-        escenarioPrincipal.menuPrincipalView();
-    }
-
-    public void setEscenarioPrincipal(main escenarioPrincipal) {
-        this.escenarioPrincipal = escenarioPrincipal;
-    }
+    
+    
+// *************************************************************************************************************
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarDatosCE();
+        Connection conexion = Conexion.getInstance().getConexion();
+        if (conexion != null) {
+            cargarDatos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
+        }
     }
+    
+    
+     public void cargarDatos() {
+        tblCargoEmpleado.setItems(getCargoEmpleado());
+        colIdCargo.setCellValueFactory(new PropertyValueFactory<CargoEmpleado, Integer>("idCargoEmpleado"));
+        colCargoEmpleado.setCellValueFactory(new PropertyValueFactory<CargoEmpleado, String>("nombreCargo"));
+        colDescripcionCargo.setCellValueFactory(new PropertyValueFactory<CargoEmpleado, String>("descripcionCargo"));
+
+    }
+
+    public void seleccionarElemento() {
+
+        txtIdCargo.setText(String.valueOf(((CargoEmpleado) tblCargoEmpleado.getSelectionModel().getSelectedItem()).getIdCargoEmpleado()));
+        txtCargo.setText((((CargoEmpleado) tblCargoEmpleado.getSelectionModel().getSelectedItem()).getNombreCargo()));
+        txtDescripcion.setText(((CargoEmpleado) tblCargoEmpleado.getSelectionModel().getSelectedItem()).getDescripcionCargo());
+    }
+    
+    
+// *************************************************************************************************************
+    
+    
 
     public ObservableList<CargoEmpleado> getCargoEmpleado() {
         ArrayList<CargoEmpleado> lista = new ArrayList<>();
@@ -110,24 +143,13 @@ public class MenuCargoEmpleadoController implements Initializable {
         return listaCargoEmpleado = FXCollections.observableList(lista);
     }
 
-    public void cargarDatosCE() {
-        tblCargoEmpleado.setItems(getCargoEmpleado());
-        colIdCargo.setCellValueFactory(new PropertyValueFactory<CargoEmpleado, Integer>("idCargoEmpleado"));
-        colCargoEmpleado.setCellValueFactory(new PropertyValueFactory<CargoEmpleado, String>("nombreCargo"));
-        colDescripcionCargo.setCellValueFactory(new PropertyValueFactory<CargoEmpleado, String>("descripcionCargo"));
-
-    }
-
-    public void seleccionarElemento() {
-
-        txtIdCargo.setText(String.valueOf(((CargoEmpleado) tblCargoEmpleado.getSelectionModel().getSelectedItem()).getIdCargoEmpleado()));
-        txtCargo.setText((((CargoEmpleado) tblCargoEmpleado.getSelectionModel().getSelectedItem()).getNombreCargo()));
-        txtDescripcion.setText(((CargoEmpleado) tblCargoEmpleado.getSelectionModel().getSelectedItem()).getDescripcionCargo());
-    }
-
-    public void Agregar() {
+  
+// *************************************************************************************************************
+    
+    
+    public void agregar() {
         switch (tipoDeOperaciones) {
-            case NINGUNO:
+            case NULL:
                 activarControles();
                 btnAgregar.setText("Guardar");
                 btnEliminar.setText("Cancelar");
@@ -147,7 +169,7 @@ public class MenuCargoEmpleadoController implements Initializable {
                 btnReporte.setDisable(false);
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/waste.png"));
-                tipoDeOperaciones = MenuCargoEmpleadoController.operaciones.NINGUNO;
+                tipoDeOperaciones = MenuCargoEmpleadoController.operaciones.NULL;
         }
     }
 
@@ -172,14 +194,14 @@ public class MenuCargoEmpleadoController implements Initializable {
 
     public void editar() {
         switch (tipoDeOperaciones) {
-            case NINGUNO:
+            case NULL:
                 if (tblCargoEmpleado.getSelectionModel().getSelectedItem() != null) {
                     btnEditar.setText("Actualizar");
                     btnReporte.setText("Cancelar");
                     btnAgregar.setDisable(true);
                     btnEliminar.setDisable(true);
                     imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
-                    imgBuscar.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
+                    imgReporte.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
                     activarControles();
                     txtIdCargo.setEditable(false);
                     tipoDeOperaciones = MenuCargoEmpleadoController.operaciones.ACTUALIZAR;
@@ -194,11 +216,11 @@ public class MenuCargoEmpleadoController implements Initializable {
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
                 imgEditar.setImage(new Image("/org/diegogarcia/images/editar.png"));
-                imgBuscar.setImage(new Image("/org/diegogarcia/images/buscar.png"));
+                imgReporte.setImage(new Image("/org/diegogarcia/images/buscar.png"));
                 desactivarControles();
                 limpiarControles();
-                tipoDeOperaciones = MenuCargoEmpleadoController.operaciones.NINGUNO;
-                cargarDatosCE();
+                tipoDeOperaciones = MenuCargoEmpleadoController.operaciones.NULL;
+                cargarDatos();
 
                 break;
         }
@@ -234,7 +256,7 @@ public class MenuCargoEmpleadoController implements Initializable {
                 btnReporte.setDisable(false);
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
-                tipoDeOperaciones = MenuCargoEmpleadoController.operaciones.NINGUNO;
+                tipoDeOperaciones = MenuCargoEmpleadoController.operaciones.NULL;
                 cancelar();
                 break;
             default:
@@ -261,16 +283,36 @@ public class MenuCargoEmpleadoController implements Initializable {
 
     public void cancelar() {
         switch (tipoDeOperaciones) {
-            case NINGUNO:
+            case NULL:
                 btnReporte.setDisable(false);
                 btnAgregar.setDisable(false);
                 btnEditar.setDisable(false);
                 btnEliminar.setDisable(false);
                 btnAgregar.setText("Agregar");
+                btnEliminar.setText("Eliminar");
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 break;
         }
     }
+    
+    
+     public void reporte() {
+        switch (tipoDeOperaciones) {
+            case ACTUALIZAR:
+                desactivarControles();
+                limpiarControles();
+                btnEditar.setText("Editar");
+                btnReporte.setText("Reportes");
+                btnAgregar.setDisable(false);
+                btnEliminar.setDisable(false);
+                tipoDeOperaciones = MenuCargoEmpleadoController.operaciones.NULL;
+        }
+    }
+    
+    
+// *************************************************************************************************************
+    
 
     public void desactivarControles() {
         txtIdCargo.setEditable(false);
@@ -291,11 +333,25 @@ public class MenuCargoEmpleadoController implements Initializable {
         txtDescripcion.clear();
 
     }
+    
+    
+// *************************************************************************************************************
+    
 
-    @FXML
+    public main getEscenarioPrincipal() {
+        return escenarioPrincipal;
+    }
+
+    public void setEscenarioPrincipal(main escenarioPrincipal) {
+        this.escenarioPrincipal = escenarioPrincipal;
+    }
+
     public void handleButtonAction(ActionEvent event) {
+
         if (event.getSource() == btnRegresar) {
             escenarioPrincipal.menuPrincipalView();
         }
     }
+
 }
+

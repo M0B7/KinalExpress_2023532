@@ -1247,7 +1247,7 @@ begin
     set precioDocena = precioUnitario * 1.35;
     set precioMayor = precioUnitario * 1.25;
 
- -- Precios ya calculados
+ -- Coloca los precios ya calculados
     update Productos
     set precioUnitario = new.precioUnitario,
         precioDocena = precioDocena,

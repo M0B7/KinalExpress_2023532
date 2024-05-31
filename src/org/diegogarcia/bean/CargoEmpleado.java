@@ -1,23 +1,20 @@
-
 package org.diegogarcia.bean;
 
 /**
- * Nombre: Diego Fernando Garcia Galvez
- * 2023532
- * PE5AM
- * Fecha de creacion: 15/04/2024
+ * Nombre: Diego Fernando Garcia Galvez 2023532 PE5AM Fecha de creacion:
+ * 15/04/2024
  */
-
 public class CargoEmpleado {
+
     private int idCargoEmpleado;
     private String nombreCargo;
     private String descripcionCargo;
-    
-    public CargoEmpleado(){
-        
+
+    public CargoEmpleado() {
+
     }
-    
-    public CargoEmpleado(int idCargoEmpleado, String nombreCargo, String descripcionCargo){
+
+    public CargoEmpleado(int idCargoEmpleado, String nombreCargo, String descripcionCargo) {
         this.idCargoEmpleado = idCargoEmpleado;
         this.nombreCargo = nombreCargo;
         this.descripcionCargo = descripcionCargo;
@@ -46,6 +43,5 @@ public class CargoEmpleado {
     public void setDescripcionCargo(String descripcionCargo) {
         this.descripcionCargo = descripcionCargo;
     }
-    
-    
+
 }

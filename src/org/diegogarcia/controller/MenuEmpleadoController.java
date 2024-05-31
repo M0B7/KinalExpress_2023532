@@ -25,11 +25,11 @@ import org.diegogarcia.bean.Empleados;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
-/**
- * Nombre: Diego Fernando Garcia Galvez 2023532 PE5AM Fecha de creacion:
- * 15/04/2024 Fecha de Modificacion: 17/04, 23/04, 24/04, 30/04, 06/05, 07/05,
- * 8/5
- */
+
+// *************************************************************************************************************
+
+
+
 public class MenuEmpleadoController implements Initializable {
 
     private main escenarioPrincipal;
@@ -41,40 +41,40 @@ public class MenuEmpleadoController implements Initializable {
         AGREGAR, EDITAR, ACTUALIZAR, ELIMINAR, CANCELAR, NULL
     }
 
-    private operaciones tipoOperaciones = operaciones.NULL;
+    private operaciones tipoDeOperaciones = operaciones.NULL;
+    
+    
+    
+// *************************************************************************************************************
 
+    @FXML
+    private Button btnRegresar;
+    @FXML
+    private Button btnEditar;
     @FXML
     private Button btnAgregar;
-
-    @FXML
-    private ImageView imgAgregar;
-
     @FXML
     private Button btnEliminar;
-
-    @FXML
-    private ImageView imgEliminar;
-
     @FXML
     private Button btnReporte;
 
     @FXML
-    private ImageView imgReporte;
-
-    @FXML
-    private Button btnEditar;
-
+    private ImageView imgRegresar;
     @FXML
     private ImageView imgEditar;
-
     @FXML
-    private Button btnRegresar;
-
+    private ImageView imgAgregar;
     @FXML
-    private ImageView imgInicio;
+    private ImageView imgEliminar;
+    @FXML
+    private ImageView imgReporte;
+    
+    
 
     @FXML
     private TableView tblEmpleados;
+    
+    
 
     @FXML
     private TableColumn colIdEmpleado;
@@ -93,6 +93,9 @@ public class MenuEmpleadoController implements Initializable {
 
     @FXML
     private TableColumn colIdCargoEmpleado;
+    
+    
+    
 
     @FXML
     private TextField txtIdEmpleado;
@@ -108,9 +111,15 @@ public class MenuEmpleadoController implements Initializable {
 
     @FXML
     private TextField txtTurno;
+    
+    
 
     @FXML
     private ComboBox cbmCargo;
+    
+    
+// *************************************************************************************************************
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -133,35 +142,22 @@ public class MenuEmpleadoController implements Initializable {
         colTurno.setCellValueFactory(new PropertyValueFactory<Empleados, String>("turno"));
         colIdCargoEmpleado.setCellValueFactory(new PropertyValueFactory<Empleados, Integer>("idCargoEmpleado"));
     }
+    
+    
+    public void seleccionarElemento() {
+        int idCargo = ((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getIdCargoEmpleado();
 
-    public void desactivarControles() {
-        txtIdEmpleado.setEditable(false);
-        txtNombreEmpleado.setEditable(false);
-        txtApellidoEmpleado.setEditable(false);
-        txtSueldo.setEditable(false);
-        txtTurno.setEditable(false);
-        cbmCargo.setDisable(false);
+        txtIdEmpleado.setText(String.valueOf(((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getIdEmpleado()));
+        txtNombreEmpleado.setText(((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getNombresEmpleado());
+        txtApellidoEmpleado.setText((((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getApellidosEmpleado()));
+        txtSueldo.setText(String.valueOf(((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getSueldo()));
+        txtTurno.setText(((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getTurno());
+        cbmCargo.getSelectionModel().select(buscar(idCargo));
     }
 
-    public void activarControles() {
-        txtIdEmpleado.setEditable(true);
-        txtNombreEmpleado.setEditable(true);
-        txtApellidoEmpleado.setEditable(true);
-        txtSueldo.setEditable(true);
-        txtTurno.setEditable(true);
-        cbmCargo.setDisable(true);
-    }
-
-    public void limpiarControles() {
-        txtIdEmpleado.clear();
-        txtNombreEmpleado.clear();
-        txtApellidoEmpleado.clear();
-        txtSueldo.clear();
-        txtTurno.clear();
-        cbmCargo.setValue(null);
-    }
-
-    public ObservableList<Empleados> getEmpleados() {
+// *************************************************************************************************************    
+    
+     public ObservableList<Empleados> getEmpleados() {
         ArrayList<Empleados> lista = new ArrayList<>();
 
         try {
@@ -201,9 +197,14 @@ public class MenuEmpleadoController implements Initializable {
 
         return listarCargoEmpleado = FXCollections.observableList(lista);
     }
+    
+    
+// *************************************************************************************************************   
+    
 
-    public void agregarEmpleados() {
-        switch (tipoOperaciones) {
+
+    public void agregar() {
+        switch (tipoDeOperaciones) {
             case NULL:
                 activarControles();
                 btnEliminar.setText("Cancelar");
@@ -213,10 +214,10 @@ public class MenuEmpleadoController implements Initializable {
                 txtIdEmpleado.setEditable(false);
                 btnReporte.setDisable(true);
                 btnEditar.setDisable(true);
-                tipoOperaciones = operaciones.ACTUALIZAR;
+                tipoDeOperaciones = operaciones.ACTUALIZAR;
                 break;
             case ACTUALIZAR:
-                guardarEmpleados();
+                guardar();
                 cargarDatos();
                 desactivarControles();
                 limpiarControles();
@@ -226,12 +227,12 @@ public class MenuEmpleadoController implements Initializable {
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 btnReporte.setDisable(false);
                 btnEditar.setDisable(false);
-                tipoOperaciones = operaciones.NULL;
+                tipoDeOperaciones = operaciones.NULL;
                 break;
         }
     }
 
-    public void guardarEmpleados() {
+    public void guardar() {
         Empleados registro = new Empleados();
         registro.setNombresEmpleado(txtNombreEmpleado.getText());
         registro.setApellidosEmpleado(txtApellidoEmpleado.getText());
@@ -253,42 +254,9 @@ public class MenuEmpleadoController implements Initializable {
         }
     }
 
-    public void seleccionar() {
-        int idCargo = ((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getIdCargoEmpleado();
-
-        txtIdEmpleado.setText(String.valueOf(((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getIdEmpleado()));
-        txtNombreEmpleado.setText(((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getNombresEmpleado());
-        txtApellidoEmpleado.setText((((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getApellidosEmpleado()));
-        txtSueldo.setText(String.valueOf(((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getSueldo()));
-        txtTurno.setText(((Empleados) tblEmpleados.getSelectionModel().getSelectedItem()).getTurno());
-        cbmCargo.getSelectionModel().select(buscar(idCargo));
-    }
-
-    public CargoEmpleado buscar(int idCargo) {
-        CargoEmpleado result = null;
-
-        try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_buscarCargoEmpleado(?)}");
-            procedimiento.setInt(1, idCargo);
-
-            ResultSet registro = procedimiento.executeQuery();
-
-            while (registro.next()) {
-                result = new CargoEmpleado(registro.getInt("idCargoEmpleado"),
-                        registro.getString("descripcion"),
-                        registro.getString("descripcionCargo"));
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    public void eliminarEmpleados() {
-        switch (tipoOperaciones) {
+    
+    public void eliminar() {
+        switch (tipoDeOperaciones) {
             case ACTUALIZAR:
                 desactivarControles();
                 limpiarControles();
@@ -298,7 +266,7 @@ public class MenuEmpleadoController implements Initializable {
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 btnReporte.setDisable(false);
                 btnEditar.setDisable(false);
-                tipoOperaciones = operaciones.NULL;
+                tipoDeOperaciones = operaciones.NULL;
                 break;
             default:
                 if (tblEmpleados.getSelectionModel().getSelectedItem() != null) {
@@ -325,8 +293,10 @@ public class MenuEmpleadoController implements Initializable {
         }
     }
 
+   
+
     public void editar() {
-        switch (tipoOperaciones) {
+        switch (tipoDeOperaciones) {
             case NULL:
                 if (tblEmpleados.getSelectionModel().getSelectedItem() != null) {
                     imgReporte.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
@@ -337,7 +307,7 @@ public class MenuEmpleadoController implements Initializable {
                     btnEliminar.setDisable(true);
                     txtIdEmpleado.setDisable(true);
                     activarControles();
-                    tipoOperaciones = operaciones.ACTUALIZAR;
+                    tipoDeOperaciones = operaciones.ACTUALIZAR;
                     break;
                 } else {
                     JOptionPane.showMessageDialog(null, "Seleccione una tupla para editar");
@@ -353,7 +323,7 @@ public class MenuEmpleadoController implements Initializable {
                 btnEliminar.setDisable(false);
                 desactivarControles();
                 limpiarControles();
-                tipoOperaciones = operaciones.NULL;
+                tipoDeOperaciones = operaciones.NULL;
                 cargarDatos();
         }
     }
@@ -381,36 +351,119 @@ public class MenuEmpleadoController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    public CargoEmpleado buscar(int idCargo) {
+        CargoEmpleado result = null;
 
-    public void reporte() {
-        switch (tipoOperaciones) {
-            case ACTUALIZAR:
-                imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
-                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporte.png"));
-                btnReporte.setText("Reporte");
-                btnEditar.setText("Editar");
-                btnAgregar.setDisable(false);
-                btnEliminar.setDisable(false);
-                desactivarControles();
-                limpiarControles();
-                tipoOperaciones = operaciones.NULL;
-                cargarDatos();
+        try {
+            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_buscarCargoEmpleado(?)}");
+            procedimiento.setInt(1, idCargo);
+
+            ResultSet registro = procedimiento.executeQuery();
+
+            while (registro.next()) {
+                result = new CargoEmpleado(registro.getInt("idCargoEmpleado"),
+                        registro.getString("descripcion"),
+                        registro.getString("descripcionCargo"));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public void cancelar() {
+        switch (tipoDeOperaciones) {
             case NULL:
+                btnReporte.setDisable(false);
+                btnAgregar.setDisable(false);
+                btnEditar.setDisable(false);
+                btnEliminar.setDisable(false);
+                btnAgregar.setText("Agregar");
+                btnEliminar.setText("Eliminar");
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 break;
         }
+    }
+
+    public void reporte() {
+        switch (tipoDeOperaciones) {
+            case ACTUALIZAR:
+                desactivarControles();
+                limpiarControles();
+                btnEditar.setText("Editar");
+                btnReporte.setText("Reporte");
+                btnAgregar.setDisable(false);
+                btnEliminar.setDisable(false);
+                imgEditar.setImage(new Image("/org/diegogarcia/images/Actualizar.png"));
+                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporteria.png"));
+                tipoDeOperaciones = MenuEmpleadoController.operaciones.NULL;
+                break;
+        }
+    }
+    
+// *************************************************************************************************************   
+    
+    
+    
+    public void desactivarControles() {
+        txtIdEmpleado.setEditable(false);
+        txtNombreEmpleado.setEditable(false);
+        txtApellidoEmpleado.setEditable(false);
+        txtSueldo.setEditable(false);
+        txtTurno.setEditable(false);
+        cbmCargo.setDisable(false);
+    }
+
+    public void activarControles() {
+        txtIdEmpleado.setEditable(true);
+        txtNombreEmpleado.setEditable(true);
+        txtApellidoEmpleado.setEditable(true);
+        txtSueldo.setEditable(true);
+        txtTurno.setEditable(true);
+        cbmCargo.setDisable(true);
+    }
+
+    public void limpiarControles() {
+        txtIdEmpleado.clear();
+        txtNombreEmpleado.clear();
+        txtApellidoEmpleado.clear();
+        txtSueldo.clear();
+        txtTurno.clear();
+        cbmCargo.setValue(null);
+    }
+    
+    
+// *************************************************************************************************************   
+    
+    
+    public main getEscenarioPrincipal() {
+        return escenarioPrincipal;
     }
 
     public void setEscenarioPrincipal(main escenarioPrincipal) {
         this.escenarioPrincipal = escenarioPrincipal;
     }
 
+    public Button getBtnRegresar() {
+        return btnRegresar;
+    }
+
+    public void setBtnRegresar(Button btnRegresar) {
+        this.btnRegresar = btnRegresar;
+    }
+
     @FXML
     public void handleButtonAction(ActionEvent event) {
         if (event.getSource() == btnRegresar) {
             escenarioPrincipal.menuPrincipalView();
-        } else if (event.getSource() == btnAgregar) {
-            activarControles();
-
         }
     }
+
 }
+
+

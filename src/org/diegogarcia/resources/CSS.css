@@ -1,12 +1,12 @@
 .menubar{
-    -fx-background-color: #FFC501;
+    -fx-background-color: white;
     -fx-text-background-color: black;
     -fx-border-width: 2.0;
 }
 
 
 .menu-item{
-    -fx-background-color: #FFEE4A;
+    -fx-background-color: white;
 }
 
 .text-field {
@@ -45,7 +45,7 @@
     -fx-border-color: #ce938b;
     -fx-border-radius:  11;
     -fx-border-width: 3;
-    -fx-rotate: 10;
+    -fx-rotate: 5;
 }
 
 
