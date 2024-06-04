@@ -49,7 +49,7 @@ public class MenuClientesController implements Initializable {
     
     
     @FXML
-    private TableView<Clientes> tblCliente;
+    private TableView tblClientes;
 
     
     @FXML
@@ -93,19 +93,19 @@ public class MenuClientesController implements Initializable {
     
     
     @FXML
-    private TableColumn<Clientes, Integer> colClienteId;
+    private TableColumn colIdCliente;
     @FXML
-    private TableColumn<Clientes, String> colNombreCliente;
+    private TableColumn colNombreCliente;
     @FXML
-    private TableColumn<Clientes, String> colApellidoCliente;
+    private TableColumn colApellidoCliente;
     @FXML
-    private TableColumn<Clientes, String> colDireccionCliente;
+    private TableColumn colDireccionCliente;
     @FXML
-    private TableColumn<Clientes, String> colTelefonoCliente;
+    private TableColumn colTelefonoCliente;
     @FXML
-    private TableColumn<Clientes, String> colCorreoCliente;
+    private TableColumn colCorreoCliente;
     @FXML
-    private TableColumn<Clientes, String> colNitCliente;
+    private TableColumn colNitCliente;
     
     
   // *************************************************************************************************************
@@ -121,8 +121,8 @@ public class MenuClientesController implements Initializable {
     }
 
     public void cargarDatos() {
-        tblCliente.setItems(getClientes());
-        colClienteId.setCellValueFactory(new PropertyValueFactory<>("idCliente"));
+        tblClientes.setItems(getClientes());
+        colIdCliente.setCellValueFactory(new PropertyValueFactory<>("idCliente"));
         colNitCliente.setCellValueFactory(new PropertyValueFactory<>("nitCliente"));
         colNombreCliente.setCellValueFactory(new PropertyValueFactory<>("nombresCliente"));
         colApellidoCliente.setCellValueFactory(new PropertyValueFactory<>("apellidosCliente"));
@@ -132,16 +132,14 @@ public class MenuClientesController implements Initializable {
     }
 
     public void seleccionarElemento() {
-        Clientes clienteSeleccionado = tblCliente.getSelectionModel().getSelectedItem();
-        if (clienteSeleccionado != null) {
-            txtIdCliente.setText(String.valueOf(clienteSeleccionado.getIdCliente()));
-            txtNitCliente.setText(clienteSeleccionado.getNitCliente());
-            txtNombreCliente.setText(clienteSeleccionado.getNombresCliente());
-            txtApellidoCliente.setText(clienteSeleccionado.getApellidosCliente());
-            txtTelefonoCliente.setText(clienteSeleccionado.getTelefonoCliente());
-            txtCorreoCliente.setText(clienteSeleccionado.getCorreoCliente());
-            txtDireccionCliente.setText(clienteSeleccionado.getDireccionCliente());
-        }
+            txtIdCliente.setText(String.valueOf(((Clientes)tblClientes.getSelectionModel().getSelectedItem()).getIdCliente()));
+            txtNitCliente.setText(String.valueOf(((Clientes)tblClientes.getSelectionModel().getSelectedItem()).getNitCliente()));
+            txtNombreCliente.setText(String.valueOf(((Clientes)tblClientes.getSelectionModel().getSelectedItem()).getNombresCliente()));
+            txtApellidoCliente.setText(String.valueOf(((Clientes)tblClientes.getSelectionModel().getSelectedItem()).getApellidosCliente()));
+            txtTelefonoCliente.setText(String.valueOf(((Clientes)tblClientes.getSelectionModel().getSelectedItem()).getTelefonoCliente()));
+            txtCorreoCliente.setText(String.valueOf(((Clientes)tblClientes.getSelectionModel().getSelectedItem()).getCorreoCliente()));
+            txtDireccionCliente.setText(String.valueOf(((Clientes)tblClientes.getSelectionModel().getSelectedItem()).getDireccionCliente()));
+
     }
     
 // *************************************************************************************************************
@@ -192,6 +190,7 @@ public class MenuClientesController implements Initializable {
                 btnReporte.setDisable(false);
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
+                cargarDatos();
                 tipoDeOperaciones = operaciones.NULL;
         }
     }
@@ -224,7 +223,7 @@ public class MenuClientesController implements Initializable {
     public void editar() {
         switch (tipoDeOperaciones) {
             case NULL:
-                if (tblCliente.getSelectionModel().getSelectedItem() != null) {
+                if (tblClientes.getSelectionModel().getSelectedItem() != null) {
                     btnEditar.setText("Actualizar");
                     btnReporte.setText("Cancelar");
                     btnAgregar.setDisable(true);
@@ -259,7 +258,7 @@ public class MenuClientesController implements Initializable {
         // Verificar si se ha seleccionado un cliente
         try {
             PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_editarCliente(?,?,?,?,?,?,?)}");
-            Clientes register = (Clientes) tblCliente.getSelectionModel().getSelectedItem();
+            Clientes register = (Clientes) tblClientes.getSelectionModel().getSelectedItem();
 
             register.setNombresCliente(txtNombreCliente.getText());
             register.setNitCliente(txtNitCliente.getText());
@@ -288,23 +287,22 @@ public class MenuClientesController implements Initializable {
                 desactivarControles();
                 limpiarControles();
                 btnAgregar.setText("Agregar");
-                btnEditar.setText("Editar");
-                btnEliminar.setDisable(false);
+                btnEliminar.setText("Eliminar");
+                btnEditar.setDisable(false);
                 btnReporte.setDisable(false);
-                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
-                imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
-                tipoDeOperaciones = operaciones.NULL;
-                cancelar();
+                imgAgregar.setImage((new Image("/org/diegogarcoa/images/Agregar.png")));
+                imgEliminar.setImage((new Image("/org/diegogarcia/images/Eliminar.png")));
+                tipoDeOperaciones = MenuClientesController.operaciones.NULL;
                 break;
             default:
-                if (tblCliente.getSelectionModel().getSelectedItem() != null) {
+                if (tblClientes.getSelectionModel().getSelectedItem() != null) {
                     int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que quieres eliminar al cliente?", "Eliminar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (respuesta == JOptionPane.YES_NO_OPTION) {
                         try {
-                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_EliminarClientes(?)}");
-                            procedure.setInt(1, ((Clientes) tblCliente.getSelectionModel().getSelectedItem()).getIdCliente());
+                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_eliminarCliente(?)}");
+                            procedure.setInt(1, ((Clientes) tblClientes.getSelectionModel().getSelectedItem()).getIdCliente());
                             procedure.execute();
-                            listaClientes.remove(tblCliente.getSelectionModel().getSelectedItem());
+                            listaClientes.remove(tblClientes.getSelectionModel().getSelectedItem());
                             limpiarControles();
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -329,6 +327,8 @@ public class MenuClientesController implements Initializable {
                 btnEliminar.setText("Eliminar");
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
+                tipoDeOperaciones = operaciones.NULL;
+                
                 break;
         }
     }

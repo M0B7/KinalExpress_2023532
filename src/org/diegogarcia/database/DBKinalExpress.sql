@@ -230,13 +230,13 @@ call sp_editarCliente(1, '6755945-1', 'Jordi', 'Wild', '4ta calle sur 1-20', 635
 -- BORRAR
 
 DELIMITER $$
-create procedure sp_borrarCliente(in idCli int)
+create procedure sp_eliminarCliente(in idCli int)
 begin
 	delete from Clientes where idCliente = idCli;
 end$$
 DELIMITER ;
 
-call sp_borrarCliente(1);
+call sp_eliminarCliente(1);
 
 
 -- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------

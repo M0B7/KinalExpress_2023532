@@ -28,7 +28,7 @@ public class Conexion {
     public Conexion () {
 		try{
                     Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-                    conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/DBKinalExpress?useSSL=false", "2023532_IN5BM", "Elmantecasxdpro1");
+                    conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/KinalExpress?useSSL=false", "YouCanDoIt", "Elmantecasxdpro1");
                 }catch(ClassNotFoundException e){
                     e.printStackTrace();
                 }catch(InstantiationException e){

@@ -156,7 +156,7 @@ public class MenuComprasController implements Initializable {
     
     
 
-    public void agregar() {
+   public void agregar() {
         switch (tipoDeOperaciones) {
             case NULL:
                 activarControles();
@@ -164,12 +164,10 @@ public class MenuComprasController implements Initializable {
                 btnEliminar.setText("Cancelar");
                 btnEditar.setDisable(true);
                 btnReporte.setDisable(true);
-                imgAgregar.setImage((new Image("/org/diegogarcia/images/Guardar.png")));
-                imgEliminar.setImage((new Image("/org/diegogarcia/images/Cancelar.png")));
-
-                tipoDeOperaciones = MenuComprasController.operaciones.ACTUALIZAR;
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Guadar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
+                tipoDeOperaciones = operaciones.ACTUALIZAR;
                 break;
-
             case ACTUALIZAR:
                 guardar();
                 desactivarControles();
@@ -181,28 +179,26 @@ public class MenuComprasController implements Initializable {
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 cargarDatos();
-                tipoDeOperaciones = MenuComprasController.operaciones.NULL;
-                break;
-
+                tipoDeOperaciones = operaciones.NULL;
         }
     }
 
     public void guardar() {
-        Compras registro = new Compras();
-        registro.setIdCompra(Integer.parseInt(txtIdCompra.getText()));
+        Compras register = new Compras();
+        register.setIdCompra(Integer.parseInt(txtIdCompra.getText()));
         txtIdCompra.setDisable(true);
-        registro.setFechaDocumento(txtFechaDocumento.getText());
-        registro.setDescripcion(txtDescripcion.getText());
-        registro.setTotalDocumento(Integer.parseInt(txtTotalDocumento.getText()));
+        register.setFechaDocumento(txtFechaDocumento.getText());
+        register.setDescripcion(txtDescripcion.getText());
+        register.setTotalDocumento(Integer.parseInt(txtTotalDocumento.getText()));
         try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarCompra( ?, ?, ?)}");
+            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarCompra( ?, ?, ?)}");
             txtIdCompra.setDisable(true);
-            procedimiento.setInt(1, registro.getIdCompra());
-            procedimiento.setString(1, registro.getFechaDocumento());
-            procedimiento.setString(2, registro.getDescripcion());
-            procedimiento.setDouble(3, registro.getTotalDocumento());
-            procedimiento.execute();
-            listaCompras.add(registro);
+            procedure.setInt(1, register.getIdCompra());
+            procedure.setString(1, register.getFechaDocumento());
+            procedure.setString(2, register.getDescripcion());
+            procedure.setDouble(3, register.getTotalDocumento());
+            procedure.execute();
+            listaCompras.add(register);
         } catch (Exception e) {
             e.printStackTrace();
         }

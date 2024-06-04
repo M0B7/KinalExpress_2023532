@@ -24,37 +24,24 @@ import org.diegogarcia.bean.Proveedores;
 import org.diegogarcia.db.Conexion;
 import org.diegogarcia.system.main;
 
-
-
 // *************************************************************************************************************
-
-
-
 public class MenuProveedorController implements Initializable {
 
     private main escenarioPrincipal;
-    
-    
 
     private enum operaciones {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
-        
+
     }
-        
+
     private operaciones tipoDeOperaciones = operaciones.NULL;
-    
-    
+
 // *************************************************************************************************************
-    
-    
-    
     private ObservableList<Proveedores> listaProveedores;
-     
-     
+
     @FXML
     private TableView<Proveedores> tblProveedores;
-    
-    
+
     @FXML
     private Button btnRegresar;
     @FXML
@@ -65,6 +52,10 @@ public class MenuProveedorController implements Initializable {
     private Button btnEliminar;
     @FXML
     private Button btnReporte;
+    @FXML
+    private Button btnEmail;
+    @FXML
+    private Button btnTelefono;
 
     @FXML
     private ImageView imgRegresar;
@@ -76,9 +67,7 @@ public class MenuProveedorController implements Initializable {
     private ImageView imgEliminar;
     @FXML
     private ImageView imgReporte;
-    
-    
-    
+
     @FXML
     private TextField txtIdProveedor;
     @FXML
@@ -95,8 +84,7 @@ public class MenuProveedorController implements Initializable {
     private TextField txtContactoPrincipal;
     @FXML
     private TextField txtPaginaWeb;
-    
-    
+
     @FXML
     private TableColumn colIdProveedores;
     @FXML
@@ -113,13 +101,8 @@ public class MenuProveedorController implements Initializable {
     private TableColumn colContactoPrincipal;
     @FXML
     private TableColumn colPaginaWeb;
-    @FXML private Button btnEmail;
-    @FXML private Button btnTelefono;
-    
-    
-// *************************************************************************************************************
-    
 
+// *************************************************************************************************************
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Connection conexion = Conexion.getInstance().getConexion();
@@ -141,7 +124,6 @@ public class MenuProveedorController implements Initializable {
         colContactoPrincipal.setCellValueFactory(new PropertyValueFactory<>("contactoPrincipal"));
         colPaginaWeb.setCellValueFactory(new PropertyValueFactory<>("paginaWeb"));
     }
-    
 
     public void seleccionarElemento() {
         Proveedores clienteSeleccionado = tblProveedores.getSelectionModel().getSelectedItem();
@@ -156,9 +138,8 @@ public class MenuProveedorController implements Initializable {
             txtPaginaWeb.setText(clienteSeleccionado.getPaginaWeb());
         }
     }
-    
-// *************************************************************************************************************
 
+// *************************************************************************************************************
     public ObservableList<Proveedores> getProveedor() {
         ArrayList<Proveedores> lista = new ArrayList<>();
         try {
@@ -166,26 +147,22 @@ public class MenuProveedorController implements Initializable {
             ResultSet resultado = procedimiento.executeQuery();
             while (resultado.next()) {
                 lista.add(new Proveedores(
-                    resultado.getInt("idProveedores"),
-                    resultado.getString("nitProveedor"),
-                    resultado.getString("nombreProveedor"),
-                    resultado.getString("apellidosProveedor"),
-                    resultado.getString("direccionProveedor"),
-                    resultado.getString("razonSocial"),
-                    resultado.getString("contactoPricipal"),
-                    resultado.getString("paginaWeb")));
+                        resultado.getInt("idProveedores"),
+                        resultado.getString("nitProveedor"),
+                        resultado.getString("nombreProveedor"),
+                        resultado.getString("apellidosProveedor"),
+                        resultado.getString("direccionProveedor"),
+                        resultado.getString("razonSocial"),
+                        resultado.getString("contactoPricipal"),
+                        resultado.getString("paginaWeb")));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return listaProveedores = FXCollections.observableList(lista);
     }
-    
-    
-// *************************************************************************************************************
-    
-    
 
+// *************************************************************************************************************
     public void agregar() {
         switch (tipoDeOperaciones) {
             case NULL:
@@ -352,10 +329,8 @@ public class MenuProveedorController implements Initializable {
                 break;
         }
     }
-    
-    
-    
-     public void reporte() {
+
+    public void reporte() {
         switch (tipoDeOperaciones) {
             case ACTUALIZAR:
                 desactivarControles();
@@ -368,10 +343,7 @@ public class MenuProveedorController implements Initializable {
         }
     }
 
-     
 // *************************************************************************************************************
-    
-
     public void desactivarControles() {
         txtIdProveedor.setEditable(false);
         txtNombreProveedor.setEditable(false);
@@ -404,11 +376,9 @@ public class MenuProveedorController implements Initializable {
         txtContactoPrincipal.clear();
         txtPaginaWeb.clear();
     }
-    
-    
-// *************************************************************************************************************
 
-     public main getEscenarioPrincipal() {
+// *************************************************************************************************************
+   public main getEscenarioPrincipal() {
         return escenarioPrincipal;
     }
 
