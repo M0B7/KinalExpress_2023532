@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,12 +24,14 @@ import javafx.scene.image.ImageView;
 import javax.swing.JOptionPane;
 import org.diegogarcia.bean.Proveedores;
 import org.diegogarcia.db.Conexion;
+import org.diegogarcia.reports.GenerarReportes;
 import org.diegogarcia.system.main;
 
 // *************************************************************************************************************
 public class MenuProveedorController implements Initializable {
 
     private main escenarioPrincipal;
+
 
     private enum operaciones {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
@@ -133,21 +137,24 @@ public class MenuProveedorController implements Initializable {
     }
 
     public void seleccionarElemento() {
-        Proveedores proveedorSeleccionado = tblProveedores.getSelectionModel().getSelectedItem();
-        if (proveedorSeleccionado != null) {
-            txtIdProveedor.setText(String.valueOf(proveedorSeleccionado.getIdProveedores()));
-            txtNitProveedor.setText(proveedorSeleccionado.getNitProveedor());
-            txtNombreProveedor.setText(proveedorSeleccionado.getNombreProveedor());
-            txtApellidoProveedor.setText(proveedorSeleccionado.getApellidosProveedor());
-            txtDireccionProveedor.setText(proveedorSeleccionado.getDireccionProveedor());
-            txtRazonSocial.setText(proveedorSeleccionado.getRazonSocial());
-            txtContactoPrincipal.setText(proveedorSeleccionado.getContactoPrincipal());
-            txtPaginaWeb.setText(proveedorSeleccionado.getPaginaWeb());
-            txtNumeroTelefono.setText(proveedorSeleccionado.getNumeroTelefono());
-        }
+            txtIdProveedor.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getIdProveedores()));
+            txtNitProveedor.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getNitProveedor()));
+            txtNombreProveedor.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getNombreProveedor()));
+            txtApellidoProveedor.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getApellidosProveedor()));
+            txtDireccionProveedor.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getDireccionProveedor()));
+            txtRazonSocial.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getRazonSocial()));
+            txtContactoPrincipal.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getContactoPrincipal()));
+            txtPaginaWeb.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getPaginaWeb()));
+            txtNumeroTelefono.setText(String.valueOf(((Proveedores)tblProveedores.getSelectionModel().getSelectedItem()).getNumeroTelefono()));
     }
+    
 
 // *************************************************************************************************************
+
+    /**
+     *
+     * @return
+     */
     public ObservableList<Proveedores> getProveedor() {
         ArrayList<Proveedores> lista = new ArrayList<>();
         try {
@@ -211,7 +218,7 @@ public class MenuProveedorController implements Initializable {
         register.setPaginaWeb(txtPaginaWeb.getText());
         register.setNumeroTelefono(txtNumeroTelefono.getText());
         try {
-            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{sp_agregarProveedor(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarProveedor(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             procedure.setInt(1, register.getIdProveedores());
             procedure.setString(2, register.getNombreProveedor());
             procedure.setString(3, register.getApellidosProveedor());
@@ -219,8 +226,8 @@ public class MenuProveedorController implements Initializable {
             procedure.setString(5, register.getNitProveedor());
             procedure.setString(6, register.getRazonSocial());
             procedure.setString(7, register.getContactoPrincipal());
-            procedure.setString(7, register.getPaginaWeb());
-            procedure.setString(8, register.getNumeroTelefono());
+            procedure.setString(8, register.getPaginaWeb());
+            procedure.setString(9, register.getNumeroTelefono());
             procedure.execute();
             listaProveedores.add(register);
         } catch (SQLException e) {
@@ -310,7 +317,7 @@ public class MenuProveedorController implements Initializable {
                     int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que quieres eliminar al proveedor?", "Eliminar Proveedor", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (respuesta == JOptionPane.YES_NO_OPTION) {
                         try {
-                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{sp_eliminarProveedor(?)}");
+                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_eliminarProveedor(?)}");
                             procedure.setInt(1, ((Proveedores) tblProveedores.getSelectionModel().getSelectedItem()).getIdProveedores());
                             procedure.execute();
                             listaProveedores.remove(tblProveedores.getSelectionModel().getSelectedItem());
@@ -348,16 +355,30 @@ public class MenuProveedorController implements Initializable {
 
     public void reporte() {
         switch (tipoDeOperaciones) {
+            case NULL:
+                imprimirReporte();
+                break;
+            
             case ACTUALIZAR:
-                desactivarControles();
-                limpiarControles();
+                imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
+                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporteria.png"));
                 btnEditar.setText("Editar");
                 btnReporte.setText("Reportes");
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
-                tipoDeOperaciones = MenuProveedorController.operaciones.NULL;
+                desactivarControles();
+                limpiarControles();
+                tipoDeOperaciones = operaciones.NULL;
+                break;
         }
     }
+    
+    public void imprimirReporte(){
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("idProveedores", null);
+        GenerarReportes.mostrarReportes("ReporteProveedores.jasper", "Reporte de Proveedor", parametros);
+     }
+    
 
 // *************************************************************************************************************
     public void desactivarControles() {

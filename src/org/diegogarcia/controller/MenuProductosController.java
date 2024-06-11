@@ -35,6 +35,12 @@ public class MenuProductosController implements Initializable {
 
     private main escenarioPrincipal;
 
+    private static class Proveedor extends Proveedores {
+
+        public Proveedor(int aInt, String string, String string0, String string1, String string2, String string3, String string4, String string5, String string6, String string7) {
+        }
+    }
+
     private enum operaciones {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
 
@@ -185,7 +191,7 @@ public class MenuProductosController implements Initializable {
             PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_mostrarproveedores()}");
             ResultSet resultado = procedimiento.executeQuery();
             while (resultado.next()) {
-                listaPro.add(new Proveedores(resultado.getInt("idProveedor"),
+                listaPro.add(new Proveedor(resultado.getInt("idProveedor"),
                         resultado.getString("nitProveedor"),
                         resultado.getString("nombresProveedor"),
                         resultado.getString("apellidosProveedor"),
@@ -433,7 +439,7 @@ public class MenuProductosController implements Initializable {
             procedimiento.setInt(1, codigoProveedor);
             ResultSet registro = procedimiento.executeQuery();
             while (registro.next()) {
-                resultado = new Proveedores(registro.getInt("idProveedores"),
+                resultado = new Proveedor(registro.getInt("idProveedores"),
                         registro.getString("nitProveedor"),
                         registro.getString("nombreProveedor"),
                         registro.getString("apellidosProveedor"),

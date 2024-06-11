@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteClientes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="51f65d90-4599-4398-b828-a91ac13b707d">
 	<property name="ireport.zoom" value="0.7513148009015795"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="363"/>
+	<property name="ireport.y" value="0"/>
 	<subDataset name="dataset1" uuid="d2c09df4-93e3-4162-b131-025a8e2cfc5f"/>
 	<parameter name="IMAGEN_FONDOC" class="java.lang.String"/>
 	<queryString>

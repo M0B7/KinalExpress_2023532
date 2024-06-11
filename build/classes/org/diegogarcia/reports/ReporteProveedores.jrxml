@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteProveedores" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b6ab9e77-cc8b-4164-b23b-2dbd06cefa1a">
 	<property name="ireport.zoom" value="1.1000000000000005"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="576"/>
+	<property name="ireport.y" value="205"/>
 	<queryString>
 		<![CDATA[call sp_listarProveedores]]>
 	</queryString>
@@ -32,24 +32,16 @@
 	</field>
 	<background>
 		<band height="802" splitType="Stretch">
-			<image scaleImage="FillFrame">
-				<reportElement x="0" y="0" width="555" height="802" uuid="85aa76b0-49e1-4e5c-99d4-40ea5f70365b"/>
-				<imageExpression><![CDATA["C:\\Users\\Informatica\\Desktop\\Proyecto\\KinalExpress_2023532\\src\\org\\diegogarcia\\images\\FondoReporte.png"]]></imageExpression>
-			</image>
 			<rectangle>
-				<reportElement x="44" y="74" width="280" height="62" forecolor="#FE9600" backcolor="#FE9600" uuid="27bdb3b3-4f02-4371-9b39-128e5d5df307"/>
+				<reportElement x="44" y="74" width="344" height="62" forecolor="#FE9600" backcolor="#FE9600" uuid="27bdb3b3-4f02-4371-9b39-128e5d5df307"/>
 			</rectangle>
 			<textField>
-				<reportElement x="44" y="58" width="333" height="109" forecolor="#FFFFFF" uuid="1c6835fb-7bbd-4b6e-9c87-80b618f80280"/>
+				<reportElement x="55" y="47" width="333" height="109" forecolor="#FFFFFF" uuid="1c6835fb-7bbd-4b6e-9c87-80b618f80280"/>
 				<textElement>
 					<font fontName="Bauhaus 93" size="54"/>
 				</textElement>
 				<textFieldExpression><![CDATA[Proveedores]]></textFieldExpression>
 			</textField>
-			<image scaleImage="FillFrame">
-				<reportElement x="419" y="204" width="136" height="125" uuid="ef504c95-a75a-4cec-a468-db689a3abd6c"/>
-				<imageExpression><![CDATA["C:\\Users\\Informatica\\Desktop\\Proyecto\\KinalExpress_2023532\\src\\org\\diegogarcia\\images\\Logo.png"]]></imageExpression>
-			</image>
 		</band>
 	</background>
 	<title>

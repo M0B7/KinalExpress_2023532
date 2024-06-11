@@ -71,6 +71,7 @@ public class MenuTipoProductoController implements Initializable {
     private TableView tblTipoProducto;
     
 
+    
     @FXML
     private TableColumn colIdTipoProducto;
 
@@ -120,7 +121,8 @@ public class MenuTipoProductoController implements Initializable {
             PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_listarTipoProductos()}");
             ResultSet resultado = procedimiento.executeQuery();
             while (resultado.next()) {
-                lista.add(new TipoProducto(resultado.getInt("idTipoProducto"),
+                lista.add(new TipoProducto(
+                        resultado.getInt("idTipoProducto"),
                         resultado.getString("descripcion")
                 ));
             }
@@ -143,9 +145,9 @@ public class MenuTipoProductoController implements Initializable {
                 btnEliminar.setText("Cancelar");
                 btnEditar.setDisable(true);
                 btnReporte.setDisable(true);
-                imgAgregar.setImage((new Image("/org/diegogarcia/images/Guardar.png")));
-                imgEliminar.setImage((new Image("/org/diegogarcia/images/Cancelar.png")));
-                tipoDeOperaciones = MenuTipoProductoController.operaciones.ACTUALIZAR;
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Guadar.png"));
+                imgEliminar.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
+                tipoDeOperaciones = operaciones.ACTUALIZAR;
                 break;
             case ACTUALIZAR:
                 guardar();
@@ -158,20 +160,20 @@ public class MenuTipoProductoController implements Initializable {
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
                 cargarDatos();
-                tipoDeOperaciones = MenuTipoProductoController.operaciones.NULL;
-                break;
-
+                tipoDeOperaciones = operaciones.NULL;
         }
     }
     
     public void guardar() {
-        TipoProducto registro = new TipoProducto();
-        registro.setDescripcion(txtDescripcion.getText());
+        TipoProducto register = new TipoProducto();
+        register.setIdTipoProducto(Integer.parseInt(txtIdTipoProducto.getText()));
+        register.setDescripcion(txtDescripcion.getText());
         try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarTipoProducto(?)}");
-            procedimiento.setString(1, registro.getDescripcion());
-            procedimiento.execute();
-            listaTipoProducto.add(registro);
+            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_agregarTipoProducto(?)}");
+            procedure.setInt(1, register.getIdTipoProducto());
+            procedure.setString(2, register.getDescripcion());
+            procedure.execute();
+            listaTipoProducto.add(register);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -186,18 +188,18 @@ public class MenuTipoProductoController implements Initializable {
                 btnEliminar.setText("Eliminar");
                 btnEditar.setDisable(false);
                 btnReporte.setDisable(false);
-                imgAgregar.setImage((new Image("/org/diegogarcia/images/Agregar.png")));
+                imgAgregar.setImage((new Image("/org/diegogarcoa/images/Agregar.png")));
                 imgEliminar.setImage((new Image("/org/diegogarcia/images/Eliminar.png")));
                 tipoDeOperaciones = MenuTipoProductoController.operaciones.NULL;
                 break;
             default:
                 if (tblTipoProducto.getSelectionModel().getSelectedItem() != null) {
-                    int respuesta = JOptionPane.showConfirmDialog(null, "Confirmar la eliminacion del registro", "Eliminar Proveedor", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    int respuesta = JOptionPane.showConfirmDialog(null, "Confirmar la eliminacion del registro", "Eliminar Tipo Producto", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (respuesta == JOptionPane.YES_NO_OPTION) {
                         try {
-                            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_eliminarTipoProducto(?)}");
-                            procedimiento.setInt(1, ((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getIdTipoProducto());
-                            procedimiento.execute();
+                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_eliminarTipoProducto(?)}");
+                            procedure.setInt(1,((TipoProducto) tblTipoProducto.getSelectionModel().getSelectedItem()).getIdTipoProducto());
+                            procedure.execute();
                             listaTipoProducto.remove(tblTipoProducto.getSelectionModel().getSelectedItem());
                             limpiarControles();
                         } catch (Exception e) {
@@ -205,7 +207,7 @@ public class MenuTipoProductoController implements Initializable {
                         }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Debe de seleccionar un cliente para eliminar");
+                    JOptionPane.showMessageDialog(null, "Debe de seleccionar una fila para eliminar");
                 }
                 break;
         }
@@ -269,24 +271,33 @@ public class MenuTipoProductoController implements Initializable {
                 btnEliminar.setText("Eliminar");
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
+                tipoDeOperaciones = operaciones.NULL;
+                
                 break;
         }
     }
     
     
     
-     public void reporte() {
+      public void reporte() {
         switch (tipoDeOperaciones) {
+            case NULL:
+                break;
+                
+            
             case ACTUALIZAR:
-                desactivarControles();
-                limpiarControles();
+                imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
+                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporteria.png"));
                 btnEditar.setText("Editar");
                 btnReporte.setText("Reportes");
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
-                tipoDeOperaciones = MenuTipoProductoController.operaciones.NULL;
+                desactivarControles();
+                limpiarControles();
+                tipoDeOperaciones = operaciones.NULL;
+                break;
         }
-    }
+      }
      
      
 // *************************************************************************************************************  

@@ -363,7 +363,6 @@ public class MenuClientesController implements Initializable {
      public void imprimirReporte(){
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("idCliente", null);
-        parametros.put("IMAGEN_FONDOC", GenerarReportes.class.getResource("/images/FondoReporte.png"));
         GenerarReportes.mostrarReportes("ReporteClientes.jasper", "Reporte de Clientes", parametros);
      }
      
