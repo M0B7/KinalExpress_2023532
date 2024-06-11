@@ -100,7 +100,7 @@ public class main extends Application {
 
     public void menuProveedoresView() {
         try {
-            MenuProveedorController menuProveedoresView = (MenuProveedorController) cambiarEscena("MenuProveedoresView.fxml", 1148, 648);
+            MenuProveedorController menuProveedoresView = (MenuProveedorController) cambiarEscena("MenuProveedoresView.fxml", 1228, 648);
             menuProveedoresView.setEscenarioPrincipal(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +118,7 @@ public class main extends Application {
 
     public void menuTipoProductoView() {
         try {
-            MenuTipoProductoController menuTipoProductoView = (MenuTipoProductoController) cambiarEscena("MenuTipoProductoView", 995, 648);
+            MenuTipoProductoController menuTipoProductoView = (MenuTipoProductoController) cambiarEscena("MenuTipoProductosView.fxml", 995, 648);
             menuTipoProductoView.setEscenarioPrincipal(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,7 +127,7 @@ public class main extends Application {
 
     public void menuEmpleadoView() {
         try {
-            MenuEmpleadoController menuEmpleadoView = (MenuEmpleadoController) cambiarEscena("MenuEmpleadosView", 995, 648);
+            MenuEmpleadoController menuEmpleadoView = (MenuEmpleadoController) cambiarEscena("MenuEmpleadosView.fxml", 995, 648);
             menuEmpleadoView.setEscenarioPrincipal(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,7 +136,7 @@ public class main extends Application {
 
     public void menuProductosView() {
         try {
-            MenuProductosController menuProductosView = (MenuProductosController) cambiarEscena("MenuProductosView", 995, 648);
+            MenuProductosController menuProductosView = (MenuProductosController) cambiarEscena("MenuProductosView.fxml", 995, 648);
             menuProductosView.setEscenarioPrincipal(this);
         } catch (Exception e) {
             e.printStackTrace();

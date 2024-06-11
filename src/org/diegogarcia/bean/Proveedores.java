@@ -16,13 +16,14 @@ public class Proveedores {
     private String razonSocial;
     private String contactoPrincipal;
     private String paginaWeb;
+    private String numeroTelefono;
     
     public Proveedores (){
         
     }
     
     public Proveedores (int idProveedores,String nitProveedor, String nombreProveedor, String apellidosProveedor,
-        String direccionProveedor,String razonSocial, String contactoPrincipal,  String paginaWeb ){
+        String direccionProveedor,String razonSocial, String contactoPrincipal,  String paginaWeb , String numeroTelefono){
         this.idProveedores = idProveedores;
         this.nitProveedor = nitProveedor;
         this.nombreProveedor = nombreProveedor;
@@ -31,9 +32,14 @@ public class Proveedores {
         this.razonSocial = razonSocial;
         this.contactoPrincipal = contactoPrincipal;
         this.paginaWeb = paginaWeb;
+        this.numeroTelefono = numeroTelefono; 
     }
 
     public Proveedores(int aInt, String string, String string0, String string1, String string2, String string3, String string4, String string5, String string6, String string7) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Proveedores(int aInt, String string, String string0, String string1, String string2, String string3, String string4, String string5) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -101,4 +107,13 @@ public class Proveedores {
     public void setPaginaWeb(String paginaWeb) {
         this.paginaWeb = paginaWeb;
     }
+
+    public String getNumeroTelefono() {
+        return numeroTelefono;
+    }
+
+    public void setNumeroTelefono(String numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
+    
 }

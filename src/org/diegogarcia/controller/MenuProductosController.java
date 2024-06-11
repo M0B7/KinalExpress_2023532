@@ -158,10 +158,10 @@ public class MenuProductosController implements Initializable {
     public ObservableList<Productos> getProducto() {
         ArrayList<Productos> listaP = new ArrayList<>();
         try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_mostrarProductos()}");
+            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_listarProductos()}");
             ResultSet resultado = procedimiento.executeQuery();
             while (resultado.next()) {
-                listaP.add(new Productos(resultado.getInt("codigoProducto"),
+                listaP.add(new Productos(resultado.getInt("idProducto"),
                         resultado.getString("descripcionProducto"),
                         resultado.getDouble("precioUnitario"),
                         resultado.getDouble("precioDocena"),
@@ -185,8 +185,8 @@ public class MenuProductosController implements Initializable {
             PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_mostrarproveedores()}");
             ResultSet resultado = procedimiento.executeQuery();
             while (resultado.next()) {
-                listaPro.add(new Proveedores(resultado.getInt("codigoProveedor"),
-                        resultado.getString("NITProveedor"),
+                listaPro.add(new Proveedores(resultado.getInt("idProveedor"),
+                        resultado.getString("nitProveedor"),
                         resultado.getString("nombresProveedor"),
                         resultado.getString("apellidosProveedor"),
                         resultado.getString("direccionProveedor"),
@@ -516,7 +516,7 @@ public class MenuProductosController implements Initializable {
     
 // *************************************************************************************************************
     
-
+    
     public main getEscenarioPrincipal() {
         return escenarioPrincipal;
     }

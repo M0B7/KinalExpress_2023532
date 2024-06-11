@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javax.swing.JOptionPane;
 import org.diegogarcia.bean.Clientes;
 import org.diegogarcia.db.Conexion;
+import org.diegogarcia.reports.GenerarReportes;
 import org.diegogarcia.system.main;
 
 
@@ -299,7 +302,7 @@ public class MenuClientesController implements Initializable {
                     int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que quieres eliminar al cliente?", "Eliminar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (respuesta == JOptionPane.YES_NO_OPTION) {
                         try {
-                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_eliminarCliente(?)}");
+                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_borrarCliente(?)}");
                             procedure.setInt(1, ((Clientes) tblClientes.getSelectionModel().getSelectedItem()).getIdCliente());
                             procedure.execute();
                             listaClientes.remove(tblClientes.getSelectionModel().getSelectedItem());
@@ -337,16 +340,36 @@ public class MenuClientesController implements Initializable {
     
      public void reporte() {
         switch (tipoDeOperaciones) {
+            case NULL:
+                imprimirReporte();
+                break;
+                
+            
             case ACTUALIZAR:
-                desactivarControles();
-                limpiarControles();
+                imgEditar.setImage(new Image("/org/diegogarcia/images/Editar.png"));
+                imgReporte.setImage(new Image("/org/diegogarcia/images/Reporteria.png"));
                 btnEditar.setText("Editar");
                 btnReporte.setText("Reportes");
                 btnAgregar.setDisable(false);
                 btnEliminar.setDisable(false);
+                desactivarControles();
+                limpiarControles();
                 tipoDeOperaciones = operaciones.NULL;
+                break;
+              
         }
     }
+     
+     public void imprimirReporte(){
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("idCliente", null);
+        parametros.put("IMAGEN_FONDOC", GenerarReportes.class.getResource("/images/FondoReporte.png"));
+        GenerarReportes.mostrarReportes("ReporteClientes.jasper", "Reporte de Clientes", parametros);
+     }
+     
+     
+     //IReport = commons partes seccionada del Ireport 
+     
 
 // *************************************************************************************************************    
     

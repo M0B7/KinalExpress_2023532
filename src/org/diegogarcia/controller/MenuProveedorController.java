@@ -37,6 +37,8 @@ public class MenuProveedorController implements Initializable {
     private operaciones tipoDeOperaciones = operaciones.NULL;
 
 // *************************************************************************************************************
+    
+    
     private ObservableList<Proveedores> listaProveedores;
 
     @FXML
@@ -84,6 +86,8 @@ public class MenuProveedorController implements Initializable {
     private TextField txtContactoPrincipal;
     @FXML
     private TextField txtPaginaWeb;
+    @FXML 
+    private TextField txtNumeroTelefono;
 
     @FXML
     private TableColumn colIdProveedores;
@@ -101,6 +105,8 @@ public class MenuProveedorController implements Initializable {
     private TableColumn colContactoPrincipal;
     @FXML
     private TableColumn colPaginaWeb;
+    @FXML
+    private TableColumn colNumeroTelefono;
 
 // *************************************************************************************************************
     @Override
@@ -123,19 +129,21 @@ public class MenuProveedorController implements Initializable {
         colRazonSocial.setCellValueFactory(new PropertyValueFactory<>("razonSocial"));
         colContactoPrincipal.setCellValueFactory(new PropertyValueFactory<>("contactoPrincipal"));
         colPaginaWeb.setCellValueFactory(new PropertyValueFactory<>("paginaWeb"));
+        colNumeroTelefono.setCellValueFactory(new PropertyValueFactory<>("numeroTelefono"));
     }
 
     public void seleccionarElemento() {
-        Proveedores clienteSeleccionado = tblProveedores.getSelectionModel().getSelectedItem();
-        if (clienteSeleccionado != null) {
-            txtIdProveedor.setText(String.valueOf(clienteSeleccionado.getIdProveedores()));
-            txtNitProveedor.setText(clienteSeleccionado.getNitProveedor());
-            txtNombreProveedor.setText(clienteSeleccionado.getNombreProveedor());
-            txtApellidoProveedor.setText(clienteSeleccionado.getApellidosProveedor());
-            txtDireccionProveedor.setText(clienteSeleccionado.getDireccionProveedor());
-            txtRazonSocial.setText(clienteSeleccionado.getRazonSocial());
-            txtContactoPrincipal.setText(clienteSeleccionado.getContactoPrincipal());
-            txtPaginaWeb.setText(clienteSeleccionado.getPaginaWeb());
+        Proveedores proveedorSeleccionado = tblProveedores.getSelectionModel().getSelectedItem();
+        if (proveedorSeleccionado != null) {
+            txtIdProveedor.setText(String.valueOf(proveedorSeleccionado.getIdProveedores()));
+            txtNitProveedor.setText(proveedorSeleccionado.getNitProveedor());
+            txtNombreProveedor.setText(proveedorSeleccionado.getNombreProveedor());
+            txtApellidoProveedor.setText(proveedorSeleccionado.getApellidosProveedor());
+            txtDireccionProveedor.setText(proveedorSeleccionado.getDireccionProveedor());
+            txtRazonSocial.setText(proveedorSeleccionado.getRazonSocial());
+            txtContactoPrincipal.setText(proveedorSeleccionado.getContactoPrincipal());
+            txtPaginaWeb.setText(proveedorSeleccionado.getPaginaWeb());
+            txtNumeroTelefono.setText(proveedorSeleccionado.getNumeroTelefono());
         }
     }
 
@@ -143,7 +151,7 @@ public class MenuProveedorController implements Initializable {
     public ObservableList<Proveedores> getProveedor() {
         ArrayList<Proveedores> lista = new ArrayList<>();
         try {
-            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_ListarProveedores()}");
+            PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_listarProveedores()}");
             ResultSet resultado = procedimiento.executeQuery();
             while (resultado.next()) {
                 lista.add(new Proveedores(
@@ -153,8 +161,9 @@ public class MenuProveedorController implements Initializable {
                         resultado.getString("apellidosProveedor"),
                         resultado.getString("direccionProveedor"),
                         resultado.getString("razonSocial"),
-                        resultado.getString("contactoPricipal"),
-                        resultado.getString("paginaWeb")));
+                        resultado.getString("contactoPrincipal"),
+                        resultado.getString("paginaWeb"),
+                        resultado.getString("numeroTelefono")));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,9 +180,9 @@ public class MenuProveedorController implements Initializable {
                 btnEliminar.setText("Cancelar");
                 btnEditar.setDisable(true);
                 btnReporte.setDisable(true);
-                imgAgregar.setImage(new Image("/org/diegogarcia/images/Guardar.png"));
+                imgAgregar.setImage(new Image("/org/diegogarcia/images/Guadar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Cancelar.png"));
-                tipoDeOperaciones = MenuProveedorController.operaciones.ACTUALIZAR;
+                tipoDeOperaciones = operaciones.ACTUALIZAR;
                 break;
             case ACTUALIZAR:
                 guardar();
@@ -185,7 +194,8 @@ public class MenuProveedorController implements Initializable {
                 btnReporte.setDisable(false);
                 imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
                 imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
-                tipoDeOperaciones = MenuProveedorController.operaciones.NULL;
+                cargarDatos();
+                tipoDeOperaciones = operaciones.NULL;
         }
     }
 
@@ -198,9 +208,10 @@ public class MenuProveedorController implements Initializable {
         register.setNitProveedor(txtNitProveedor.getText());
         register.setRazonSocial(txtRazonSocial.getText());
         register.setContactoPrincipal(txtContactoPrincipal.getText());
-        register.setContactoPrincipal(txtPaginaWeb.getText());
+        register.setPaginaWeb(txtPaginaWeb.getText());
+        register.setNumeroTelefono(txtNumeroTelefono.getText());
         try {
-            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_AgregarProveedor(?, ?, ?, ?, ?, ?, ?)}");
+            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{sp_agregarProveedor(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             procedure.setInt(1, register.getIdProveedores());
             procedure.setString(2, register.getNombreProveedor());
             procedure.setString(3, register.getApellidosProveedor());
@@ -209,6 +220,7 @@ public class MenuProveedorController implements Initializable {
             procedure.setString(6, register.getRazonSocial());
             procedure.setString(7, register.getContactoPrincipal());
             procedure.setString(7, register.getPaginaWeb());
+            procedure.setString(8, register.getNumeroTelefono());
             procedure.execute();
             listaProveedores.add(register);
         } catch (SQLException e) {
@@ -295,10 +307,10 @@ public class MenuProveedorController implements Initializable {
                 break;
             default:
                 if (tblProveedores.getSelectionModel().getSelectedItem() != null) {
-                    int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que quieres eliminar al cliente?", "Eliminar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que quieres eliminar al proveedor?", "Eliminar Proveedor", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (respuesta == JOptionPane.YES_NO_OPTION) {
                         try {
-                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{call sp_EliminarClientes(?)}");
+                            PreparedStatement procedure = Conexion.getInstance().getConexion().prepareCall("{sp_eliminarProveedor(?)}");
                             procedure.setInt(1, ((Proveedores) tblProveedores.getSelectionModel().getSelectedItem()).getIdProveedores());
                             procedure.execute();
                             listaProveedores.remove(tblProveedores.getSelectionModel().getSelectedItem());
@@ -308,25 +320,29 @@ public class MenuProveedorController implements Initializable {
                         }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente para eliminar");
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un proveedor para eliminar");
                 }
                 break;
 
         }
     }
 
-    public void cancelar() {
-        switch (tipoDeOperaciones) {
-            case NULL:
-                btnReporte.setDisable(false);
-                btnAgregar.setDisable(false);
-                btnEditar.setDisable(false);
-                btnEliminar.setDisable(false);
-                btnAgregar.setText("Agregar");
-                btnEliminar.setText("Eliminar");
-                imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
-                imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
+            public void cancelar() {
+                switch (tipoDeOperaciones) {
+                     case NULL:
+                        btnReporte.setDisable(false);
+                        btnAgregar.setDisable(false);
+                        btnEditar.setDisable(false);
+                        btnEliminar.setDisable(false);
+                        btnAgregar.setText("Agregar");
+                        btnEliminar.setText("Eliminar");
+                        imgAgregar.setImage(new Image("/org/diegogarcia/images/Agregar.png"));
+                        imgEliminar.setImage(new Image("/org/diegogarcia/images/Eliminar.png"));
+                tipoDeOperaciones = operaciones.NULL;
+                
                 break;
+ 
+    
         }
     }
 
@@ -353,6 +369,7 @@ public class MenuProveedorController implements Initializable {
         txtRazonSocial.setEditable(false);
         txtContactoPrincipal.setEditable(false);
         txtPaginaWeb.setEditable(false);
+        txtNumeroTelefono.setEditable(false);
     }
 
     public void activarControles() {
@@ -364,6 +381,7 @@ public class MenuProveedorController implements Initializable {
         txtRazonSocial.setEditable(true);
         txtContactoPrincipal.setEditable(true);
         txtPaginaWeb.setEditable(true);
+        txtNumeroTelefono.setEditable(true);
     }
 
     public void limpiarControles() {
@@ -375,6 +393,7 @@ public class MenuProveedorController implements Initializable {
         txtRazonSocial.clear();
         txtContactoPrincipal.clear();
         txtPaginaWeb.clear();
+        txtNumeroTelefono.clear();
     }
 
 // *************************************************************************************************************

@@ -7,6 +7,8 @@ set global time_zone = '-6:00';
 -- Seccion: IN5BM
 -- Fecha de Creacion: 08/05/2024
 
+alter user '2_IN5BM_2023532'@'localhost' identified with mysql_native_password by 'Elmantecasxdpro1';
+
 create table if not exists Clientes(
 idCliente int not null,
 nitCliente varchar(20),
@@ -280,6 +282,7 @@ DELIMITER ;
 
 
 call sp_listarProveedores();
+
 
 
 -- EDITAR 
