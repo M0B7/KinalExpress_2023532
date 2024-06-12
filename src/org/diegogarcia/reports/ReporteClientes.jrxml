@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteClientes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="51f65d90-4599-4398-b828-a91ac13b707d">
-	<property name="ireport.zoom" value="1.0000000000000084"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1017"/>
+	<property name="ireport.zoom" value="4.177248169415695"/>
+	<property name="ireport.x" value="511"/>
+	<property name="ireport.y" value="1290"/>
 	<subDataset name="dataset1" uuid="d2c09df4-93e3-4162-b131-025a8e2cfc5f"/>
 	<queryString>
 		<![CDATA[call sp_ListarClientes]]>
@@ -58,7 +58,7 @@
 				<reportElement x="416" y="96" width="11" height="10" backcolor="#333333" uuid="f829e0e9-20f7-46dd-8cce-d24997ebe838"/>
 			</ellipse>
 			<ellipse>
-				<reportElement x="98" y="444" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="f50a4e0b-558f-4c16-912c-56bd626615fe"/>
+				<reportElement x="52" y="435" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="f50a4e0b-558f-4c16-912c-56bd626615fe"/>
 			</ellipse>
 			<staticText>
 				<reportElement x="40" y="16" width="237" height="141" forecolor="#FFFFFF" uuid="c038ff74-20e8-42f2-af43-b97bb44917b1"/>
@@ -89,7 +89,7 @@
 				<reportElement x="400" y="407" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="72582530-173b-4002-9a64-0eca0a96ff54"/>
 			</ellipse>
 			<ellipse>
-				<reportElement x="279" y="562" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="ea1a7ade-36f5-4c9c-a919-caf69380b2c9"/>
+				<reportElement x="213" y="562" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="ea1a7ade-36f5-4c9c-a919-caf69380b2c9"/>
 			</ellipse>
 			<ellipse>
 				<reportElement x="479" y="304" width="35" height="38" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="1f6b7a2f-10f7-42d1-aef8-0b8a5fc8c954"/>
@@ -104,7 +104,7 @@
 				<reportElement x="63" y="359" width="35" height="38" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="6d5395a6-f9ef-4321-a55a-ac94f570a1bd"/>
 			</ellipse>
 			<ellipse>
-				<reportElement x="467" y="592" width="35" height="38" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="f790cfb2-ecc0-46c8-9897-09c28405a75a"/>
+				<reportElement x="68" y="591" width="35" height="38" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="f790cfb2-ecc0-46c8-9897-09c28405a75a"/>
 			</ellipse>
 			<ellipse>
 				<reportElement x="29" y="747" width="11" height="10" backcolor="#333333" uuid="4742894f-a893-4471-9b6a-abe1c840480f"/>
@@ -131,15 +131,32 @@
 				<reportElement x="103" y="768" width="11" height="10" backcolor="#333333" uuid="720b612e-9e78-4a66-8d01-5299e924b95f"/>
 			</ellipse>
 			<line>
-				<reportElement x="79" y="672" width="100" height="1" uuid="cc9d302c-cefa-4064-9a68-ab3a34c7dbad"/>
+				<reportElement x="400" y="652" width="100" height="1" uuid="cc9d302c-cefa-4064-9a68-ab3a34c7dbad"/>
 			</line>
 			<staticText>
-				<reportElement x="79" y="673" width="100" height="20" uuid="68dd4a55-8fe7-44c3-9a6c-2d11e760f5e4"/>
+				<reportElement x="400" y="653" width="100" height="20" uuid="68dd4a55-8fe7-44c3-9a6c-2d11e760f5e4"/>
+				<textElement>
+					<font fontName="Bauhaus 93"/>
+				</textElement>
 				<text><![CDATA[Firma del propietario]]></text>
 			</staticText>
 			<rectangle radius="10">
 				<reportElement x="416" y="28" width="117" height="27" forecolor="#FFC501" uuid="ebbb68ee-beb1-4af0-ac07-d4544e200ab9"/>
 			</rectangle>
+			<staticText>
+				<reportElement x="320" y="731" width="235" height="61" forecolor="#FFFFFF" uuid="128a0b91-da53-4df7-83ff-9fcd956be252"/>
+				<textElement>
+					<font fontName="Bauhaus 93" size="18"/>
+				</textElement>
+				<text><![CDATA[Centro Educativo Tecnico Laboral Kinal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="711" width="133" height="20" forecolor="#FFFFFF" uuid="bb101715-3137-406d-b247-cb5ed8d3116b"/>
+				<textElement>
+					<font fontName="Bauhaus 93" size="12"/>
+				</textElement>
+				<text><![CDATA[www.KinalExpress.com]]></text>
+			</staticText>
 		</band>
 	</background>
 	<title>
@@ -217,7 +234,7 @@
 	<detail>
 		<band height="60" splitType="Stretch">
 			<rectangle>
-				<reportElement x="1" y="10" width="555" height="32" forecolor="#FFEE4A" backcolor="#CCCCCC" uuid="99f772ee-52c6-4bcc-ba22-0b73ae01eefb"/>
+				<reportElement x="1" y="10" width="555" height="32" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="99f772ee-52c6-4bcc-ba22-0b73ae01eefb"/>
 			</rectangle>
 			<textField>
 				<reportElement x="427" y="17" width="100" height="20" uuid="470fdd9f-abb2-43a1-b1db-a0c9c3633d15"/>

@@ -12,9 +12,8 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ceo0f/Documents/NetBeansProjects/KinalExpress_2023532/src/org/diegogarcia/bean/Productos.java</file>
-            <file>file:/C:/Users/ceo0f/Documents/NetBeansProjects/KinalExpress_2023532/src/org/diegogarcia/controller/MenuTipoProductoController.java</file>
             <file>file:/C:/Users/ceo0f/Documents/NetBeansProjects/KinalExpress_2023532/src/org/diegogarcia/controller/MenuProductosController.java</file>
+            <file>file:/C:/Users/ceo0f/Documents/NetBeansProjects/KinalExpress_2023532/src/org/diegogarcia/database/DBKinalExpress.sql</file>
             <file>file:/C:/Users/ceo0f/Documents/NetBeansProjects/KinalExpress_2023532/src/org/diegogarcia/controller/MenuClientesController.java</file>
         </group>
     </open-files>

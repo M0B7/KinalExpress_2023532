@@ -529,6 +529,10 @@ end $$
 DELIMITER ;
 
 call sp_agregarTipoProducto(1, 'Limpieza');
+call sp_agregarTipoProducto(2, 'Comida');
+call sp_agregarTipoProducto(3, 'Comida');
+call sp_agregarTipoProducto(4, 'Ropa');
+call sp_agregarTipoProducto(5, 'Limpieza');
 
 -- LISTAR
 
@@ -610,6 +614,9 @@ VALUES (1, '123456789', 'Proveedor', 'Apellidos', 'Direccion', 'Razon Social', '
 ON DUPLICATE KEY UPDATE idProveedores = idProveedores;
  
 call sp_agregarProducto(1, 'Leche', 10.99, 88.99, 8.99, 'leche.jpg', 200, 1, 1);
+call sp_agregarProducto(2, 'Huevos', 7.99, 77.99, 6.99, 'huevos.jpg', 500, 2,2);
+call sp_agregarProducto(3, 'Carne', 20.00, 120.00, 18.00, 'carne.jpg', 250, 3,3);
+call sp_agregarProducto(4, 'Camisa', 50.99, 200.00, 45.00, 'camisa.jpg', 500, 4,4);
 
 -- BUSCAR
 

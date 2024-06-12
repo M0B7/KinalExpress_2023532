@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteProductos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="027dbba4-5d9f-4858-8090-cf09a6cf07b0">
+	<property name="ireport.zoom" value="0.6209213230591607"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="32"/>
+	<queryString>
+		<![CDATA[call sp_listarProductos();]]>
+	</queryString>
+	<field name="idProducto" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcionProducto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="precioUnitario" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="precioDocena" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="precioMayor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="imagenProducto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="existencia" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idTipoProducto" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idProveedores" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band height="802" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="405" y="30" width="117" height="27" forecolor="#FFC501" uuid="b4752a39-6f01-4b90-ac6e-1061e6530c4e"/>
+			</rectangle>
+			<ellipse>
+				<reportElement x="405" y="78" width="11" height="10" backcolor="#333333" uuid="5fc176b4-ffb0-42fd-9404-7d24c584fb94"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="428" y="78" width="11" height="10" backcolor="#333333" uuid="3ab0d149-4e8c-48d5-8254-efbfbb111521"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="454" y="78" width="11" height="10" backcolor="#333333" uuid="e42d51c1-db8a-4496-826c-377a27e4b73e"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="483" y="78" width="11" height="10" backcolor="#333333" uuid="f15ab345-01e2-4db0-864b-485bbc838261"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="511" y="78" width="11" height="10" backcolor="#333333" uuid="27855567-899f-473f-8f4e-ab0e32c17437"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="405" y="99" width="11" height="10" backcolor="#333333" uuid="500b3be3-08f2-41f7-9475-7f5b326d2d00"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="428" y="99" width="11" height="10" backcolor="#333333" uuid="12e955a8-4c3f-45de-b5a4-23b180eb89cf"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="454" y="99" width="11" height="10" backcolor="#333333" uuid="629308c1-7287-4d62-a7f5-01b1e3ad139e"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="483" y="99" width="11" height="10" backcolor="#333333" uuid="9caa62af-3935-4ab2-a0af-570a305e2416"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="511" y="99" width="11" height="10" backcolor="#333333" uuid="1d612135-ff29-49cd-aed3-87522a0289a4"/>
+			</ellipse>
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="129" forecolor="#FFC501" backcolor="#FFC501" uuid="37c238d7-7469-4b83-bdbb-1a9f0ea08013"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="48" y="15" width="237" height="141" forecolor="#FFFFFF" uuid="254acf7c-1412-42d7-a469-99ee9df6570c"/>
+				<textElement>
+					<font fontName="Bauhaus 93" size="48"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<ellipse>
+				<reportElement x="37" y="187" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="fb2eaafc-37c5-4a3e-816a-3dd039fe0f20"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="383" y="251" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="94f17ed4-cc2e-4804-8129-f631e960c1f4"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="108" y="374" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="2aa9d85f-9d02-4d75-9c48-53426199e79c"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="405" y="471" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="6682c74e-688f-48fd-a6f1-5e03b5cab2e6"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="108" y="569" width="100" height="97" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="9ebda5ba-5922-4033-a079-88a10328ae55"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="271" y="213" width="35" height="38" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="5f74ef8d-9903-4e39-b611-4cdb0507a871"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="285" y="374" width="35" height="38" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="cfad230b-4801-4964-a8e9-ab0d347bcc4e"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="48" y="518" width="35" height="38" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="248e845b-6f67-45b9-982c-35a486059d4a"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="285" y="556" width="35" height="38" forecolor="#FFEE4A" backcolor="#FFEE4A" uuid="33bc0b55-4423-4db4-8661-1237dd10f874"/>
+			</ellipse>
+			<rectangle>
+				<reportElement x="0" y="693" width="555" height="109" forecolor="#FFC501" backcolor="#FFC501" uuid="e8f21fd5-6411-4e25-afb0-61bc32bcb9b1"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="320" y="726" width="235" height="61" forecolor="#FFFFFF" uuid="484a1f5e-f861-420e-bede-2b63012a48eb"/>
+				<textElement>
+					<font fontName="Bauhaus 93" size="18"/>
+				</textElement>
+				<text><![CDATA[Centro Educativo Tecnico Laboral Kinal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="706" width="133" height="20" forecolor="#FFFFFF" uuid="c960a15f-a437-4fdc-8290-475ea0606be6"/>
+				<textElement>
+					<font fontName="Bauhaus 93" size="12"/>
+				</textElement>
+				<text><![CDATA[www.KinalExpress.com]]></text>
+			</staticText>
+			<ellipse>
+				<reportElement x="37" y="726" width="11" height="10" backcolor="#333333" uuid="1f2b7a67-67e9-4ab1-a115-fe0316872d18"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="61" y="726" width="11" height="10" backcolor="#333333" uuid="569d3d9a-f008-4105-b9f2-424f6ea89098"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="83" y="726" width="11" height="10" backcolor="#333333" uuid="aecfb0b0-676b-455a-b176-aa5c34ce4707"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="108" y="726" width="11" height="10" backcolor="#333333" uuid="0d8f51e7-97a5-4b39-80ef-805b8804e51b"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="137" y="726" width="11" height="10" backcolor="#333333" uuid="130ed16d-de8e-4c2f-ba1f-daa8464245d8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="37" y="752" width="11" height="10" backcolor="#333333" uuid="1639246b-0ea7-4bf5-a02d-2d3a1080555b"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="61" y="752" width="11" height="10" backcolor="#333333" uuid="e7bc6d1f-8f87-40ca-a60f-8291e420f0b7"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="83" y="752" width="11" height="10" backcolor="#333333" uuid="c112b858-f9a6-4739-85d4-58d8c86e1b8b"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="108" y="752" width="11" height="10" backcolor="#333333" uuid="4d5263c5-1f51-4f38-b538-5cc6ce6ee702"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="137" y="752" width="11" height="10" backcolor="#333333" uuid="5834703a-455c-40a7-8de3-e2fc2e94b619"/>
+			</ellipse>
+			<staticText>
+				<reportElement x="422" y="647" width="100" height="20" uuid="29b1afae-b8d2-4396-9702-cd60d537ddd5"/>
+				<textElement>
+					<font fontName="Bauhaus 93"/>
+				</textElement>
+				<text><![CDATA[Firma del propietario]]></text>
+			</staticText>
+			<line>
+				<reportElement x="422" y="646" width="100" height="1" uuid="87f5f6d6-51f5-4a7c-911d-478276f31d7d"/>
+			</line>
+		</band>
+	</background>
+	<title>
+		<band height="173" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="66" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-19" y="-701" width="557" height="40" backcolor="#000000" uuid="fc1bb473-209d-4317-b562-e24ffa2b716c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-19" y="-701" width="557" height="40" backcolor="#000000" uuid="5b1b3f3d-25b2-4be3-8735-c7fa2576354e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="557" height="40" backcolor="#000000" uuid="76710735-c4ed-4317-ae57-83dd92c166ed"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="235" y="2" width="104" height="38" forecolor="#FFFFFF" uuid="7bf91a89-782d-49a6-8c86-c4f9a946baf5"/>
+				<textElement>
+					<font fontName="Bauhaus 93" size="24"/>
+				</textElement>
+				<text><![CDATA[Datos]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="555" height="25" forecolor="#A788AB" backcolor="#A788AB" uuid="f450ce8d-122f-48a1-b010-b3d7a7e67c01"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="6" width="100" height="20" uuid="7fd03301-87be-4b1a-b2f3-eeb9fcc7f0c0"/>
+				<textElement>
+					<font fontName="Bauhaus 93"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="5" width="100" height="20" uuid="34fdda64-3166-41dd-968b-9f5a126fc77d"/>
+				<textElement>
+					<font fontName="Bauhaus 93"/>
+				</textElement>
+				<text><![CDATA[PRECIO UNITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="5" width="100" height="20" uuid="f3236bf8-30d9-4b03-9932-07fc8a12059e"/>
+				<textElement>
+					<font fontName="Bauhaus 93"/>
+				</textElement>
+				<text><![CDATA[PRECIO DOCENA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="328" y="5" width="100" height="20" uuid="e0f2265c-fc49-4baf-9a38-cfa83b867b39"/>
+				<textElement>
+					<font fontName="Bauhaus 93"/>
+				</textElement>
+				<text><![CDATA[PRECIO AL MAYOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="5" width="100" height="20" uuid="8d5f3368-b4ce-4e79-aa50-1916d1e80cc1"/>
+				<textElement>
+					<font fontName="Bauhaus 93"/>
+				</textElement>
+				<text><![CDATA[EXISTENCIA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="25" width="555" height="1" forecolor="#000000" uuid="f14eea8b-54e9-4115-abcc-7b6f6e142b32"/>
+			</line>
+			<line>
+				<reportElement x="2" y="1" width="555" height="1" forecolor="#000000" uuid="dbf569ee-a967-4e26-b599-3a105bc8c99d"/>
+			</line>
+			<line>
+				<reportElement x="93" y="2" width="1" height="23" uuid="39537dc1-376e-411c-a534-61315e157a4d"/>
+			</line>
+			<line>
+				<reportElement x="206" y="2" width="1" height="23" uuid="4a35ed29-51e6-4883-945b-ca22e6e78fb0"/>
+			</line>
+			<line>
+				<reportElement x="321" y="2" width="1" height="23" uuid="c8357681-2cd0-4b59-a843-29f019172018"/>
+			</line>
+			<line>
+				<reportElement x="437" y="1" width="1" height="24" uuid="14af00a6-dbca-4275-97d1-38cb881d082a"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<rectangle>
+				<reportElement x="2" y="3" width="555" height="31" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="97d25d53-f429-472f-8f70-f7e33005dffd"/>
+			</rectangle>
+			<textField>
+				<reportElement x="2" y="2" width="100" height="20" uuid="a7079c08-5e15-4abe-99e2-6673f38b6fbe"/>
+				<textFieldExpression><![CDATA[$F{idProducto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="2" width="100" height="20" uuid="49ba5e41-ebfe-412d-97ea-a6caf93cbfbc"/>
+				<textFieldExpression><![CDATA[$F{precioUnitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="221" y="2" width="100" height="20" uuid="d8e00c55-3960-4e5f-87d6-cb6526a69f7b"/>
+				<textFieldExpression><![CDATA[$F{precioDocena}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="339" y="2" width="100" height="20" uuid="64b13ff3-429e-4f1b-be67-c3ab1727d585"/>
+				<textFieldExpression><![CDATA[$F{precioMayor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="0" width="100" height="20" uuid="18642e0b-a616-4df4-a065-c6d245b6adfe"/>
+				<textFieldExpression><![CDATA[$F{existencia}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="2" width="555" height="1" forecolor="#000000" uuid="b9e4ef5f-2925-4563-be99-c660156f628f"/>
+			</line>
+			<line>
+				<reportElement x="93" y="2" width="1" height="34" uuid="1822d692-5cbd-48e3-94dc-d118903f9b59"/>
+			</line>
+			<line>
+				<reportElement x="207" y="3" width="1" height="33" uuid="cc414f23-11a1-4f1f-b969-64803e2e6fc0"/>
+			</line>
+			<line>
+				<reportElement x="321" y="3" width="1" height="33" uuid="7e48b689-7ad2-4b1e-97f9-098238400991"/>
+			</line>
+			<line>
+				<reportElement x="438" y="3" width="1" height="33" uuid="176eed4d-c9ce-4c35-a7cc-504185ce483e"/>
+			</line>
+			<line>
+				<reportElement x="2" y="36" width="555" height="1" forecolor="#000000" uuid="26c1e660-23b9-4b3d-b67f-01be29595b68"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

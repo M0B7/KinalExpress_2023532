@@ -28,6 +28,8 @@ public class MenuPrincipalController implements Initializable {
     MenuItem btnMenuEmpleados;
     @FXML
     MenuItem btnMenuProductos;
+    @FXML
+    MenuItem btnMenuTipoProductos;
     
     
 // *************************************************************************************************************
@@ -63,6 +65,9 @@ public class MenuPrincipalController implements Initializable {
         }
         if (event.getSource() == btnMenuProductos) {
             escenarioPrincipal.menuProductosView();
+        }
+        if (event.getSource() == btnMenuTipoProductos){
+            escenarioPrincipal.menuTipoProductosView();
         }
     }
 }
