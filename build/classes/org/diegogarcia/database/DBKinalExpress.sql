@@ -7,7 +7,7 @@ set global time_zone = '-6:00';
 -- Seccion: IN5BM
 -- Fecha de Creacion: 08/05/2024
 
-alter user '2_IN5BM_2023532'@'localhost' identified with mysql_native_password by 'Elmantecasxdpro1';
+alter user 'YouCanDoIt'@'localhost' identified with mysql_native_password by 'Elmantecasxdpro1';
 
 create table if not exists Clientes(
 idCliente int not null,
@@ -28,7 +28,8 @@ apellidosProveedor varchar(40),
 direccionProveedor varchar(80),
 razonSocial varchar(90),
 contactoPrincipal varchar(90),
-paginaWeb varchar(90) not null,
+paginaWeb varchar(90),
+numeroTelefono varchar(20),
 primary key PK_idProveedores(idProveedores)
 )engine innodb;
 
@@ -83,27 +84,6 @@ constraint FK_Productos_Proveedores foreign key Proveedores(idProveedores)
 references Proveedores(idProveedores) 
 )engine innodb;
 
-
-create table if not exists TelefonoProveedor(
-idTelefonoProveedor int not null,
-numeroPrincipal varchar(20),
-numeroSecundario varchar(20),
-observaciones varchar(90),
-idProveedores int not null,
-primary key PK_idTelefonoProveedor(idTelefonoProveedor),
-constraint FK_TelefonoProveedor_Proveedores foreign key Proveedores(idProveedores)
-references Proveedores(idProveedores)
-)engine innodb;
-
-create table if not exists EmailProveedor(
-idEmailProveedor int not null,
-emailProveedor varchar(90),
-descripcion varchar(90),
-idProveedores int not null,
-primary key PK_idEmailProveedor(idEmailProveedor), 
-constraint FK_EmailProveedor_Proveedores foreign key Proveedores(idProveedores)
-references Proveedores(idProveedores)
-)engine innodb;
 
 
 create table if not exists DetalleCompras(
@@ -232,13 +212,13 @@ call sp_editarCliente(1, '6755945-1', 'Jordi', 'Wild', '4ta calle sur 1-20', 635
 -- BORRAR
 
 DELIMITER $$
-create procedure sp_eliminarCliente(in idCli int)
+create procedure sp_borrarCliente(in idCli int)
 begin
 	delete from Clientes where idCliente = idCli;
 end$$
 DELIMITER ;
 
-call sp_eliminarCliente(1);
+call sp_borrarCliente(1);
 
 
 -- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
@@ -248,18 +228,55 @@ call sp_eliminarCliente(1);
 -- AGREGAR 
 
 DELIMITER $$
-create procedure sp_agregarProveedor(in idProv int, in nitPro varchar(10), in nombrePro varchar(90), in apellidosPro varchar(90),
-in direccionPro varchar(100), in razonSo varchar(100), in contactoPri varchar(100), in paginaW varchar(90))
-	begin 
-		insert into Proveedores (idProveedores, nitProveedor, nombreProveedor, apellidosProveedor, direccionProveedor,
-		razonSocial, contactoPrincipal, paginaWeb)
-		values(idProv, nitPro, nombrePro, apellidosPro, direccionPro, razonSo, contactoPri, paginaW);
+CREATE PROCEDURE sp_agregarProveedor(
+    IN idProv INT,
+    IN nitPro VARCHAR(10),
+    IN nombrePro VARCHAR(90),
+    IN apellidosPro VARCHAR(90),
+    IN direccionPro VARCHAR(100),
+    IN razonSo VARCHAR(100),
+    IN contactoPri VARCHAR(100),
+    IN paginaW VARCHAR(90),
+    IN numeroTe VARCHAR(20)
+)
+BEGIN 
+    INSERT INTO Proveedores (
+        idProveedores, 
+        nitProveedor, 
+        nombreProveedor, 
+        apellidosProveedor, 
+        direccionProveedor,
+        razonSocial, 
+        contactoPrincipal, 
+        paginaWeb, 
+        numeroTelefono
+    )
+    VALUES (
+        idProv, 
+        nitPro, 
+        nombrePro, 
+        apellidosPro, 
+        direccionPro, 
+        razonSo, 
+        contactoPri, 
+        paginaW, 
+        numeroTe
+    );
+END$$
+DELIMITER ;
 
-	end$$
-DELIMITER ; 
 
-
-call sp_agregarProveedor(1, '63548594', ' Primo Manolo', 'Juega FFXV', 'En su casa', 'Razon Social', 'Contacto', 'www.proveedor.com');
+CALL sp_agregarProveedor(
+    1, 
+    '63548594', 
+    'Primo Manolo', 
+    'Juega FFXV', 
+    'En su casa', 
+    'Razon Social', 
+    'Contacto', 
+    'www.proveedor.com', 
+    '46573945'
+);
 
 
 -- LISTAR
@@ -275,14 +292,14 @@ create procedure sp_listarProveedores()
         p.direccionProveedor,
         p.razonSocial,
         p.contactoPrincipal,
-        p.paginaWeb
+        p.paginaWeb,
+        p.numeroTelefono
         from Proveedores p;
 	end $$
 DELIMITER ;
 
 
 call sp_listarProveedores();
-
 
 
 -- EDITAR 
@@ -670,158 +687,7 @@ DELIMITER ;
  
 
 -- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
--- TELEFONO PROVEEDOR
--- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
-
--- AGREGAR
-
-DELIMITER $$
-
-create procedure sp_agregarTelefonoProveedor
-(in idTelPro int, in numeroPrin varchar(12), in numeroSec varchar(12), in observa varchar(90), in idProvee int)
-begin
-    insert into TelefonoProveedor(idTelefonoProveedor, numeroPrincipal, numeroSecundario, observaciones, idProveedores)
-    values (idTelPro, numeroPrin, numeroSec, observa, idProvee);
-end$$
-DELIMITER ;
-
-call sp_agregarTelefonoProveedor(1, '82536475', '0273546', 'El numero principal es de la secretaria', 1);
-
--- LISTAR
-
-DELIMITER $$
-
-create procedure sp_listarTelefonoProveedor()
-begin 
-    select t.idTelefonoProveedor, t.numeroPrincipal, t.numeroSecundario, t.observaciones, t.idProveedores
-    from TelefonoProveedor t;
-end$$
-DELIMITER ;
-
-call sp_listarTelefonoProveedor();
-
--- BUSCAR
-
-delimiter $$
-
-create procedure sp_buscarTelefonoProveedor(in idPro int)
-begin
-    select t.idTelefonoProveedor, t.numeroPrincipal, t.numeroSecundario, t.observaciones, t.idProveedores
-    from TelefonoProveedor t 
-    where t.idProveedores = idPro;
-end$$
-DELIMITER ;
-
--- EDITAR
-
-DELIMITER $$
-
-create procedure sp_editarTelefonoProveedor(in idTelPro int, in numPrin varchar(10),
- in numSec varchar(10), in obs varchar(90), in idPro int)
-begin
-    update TelefonoProveedor 
-    set
-    numeroPrincipal = numPrin,
-    numeroSecundario = numSec, 
-    observaciones = obs, 
-    idProveedores = idPro where idTelefonoProveedor = idTelPro;
-end$$
-DELIMITER ;
-
--- ELIMINAR
-
-DELIMITER $$
-
-create procedure sp_eliminarTelefonoProveedor(in idTelPro int)
-begin
-    delete from TelefonoProveedor 
-    where idTelefonoProveedor = idTelPro;
-end$$
-DELIMITER ;
-
--- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
--- EMAIL PROVEEDOR
--- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
-
-DELIMITER $$
-
-create procedure sp_agregarEmailProveedor(
-    in idEmailPro int,
-    in email varchar(50),
-    in descr varchar(100),
-    in idProv int
-)
-begin
-    insert into EmailProveedor (idEmailProveedor, emailProveedor, descripcion, idProveedores)
-    values (idEmailPro, email, descr, idProv);
-end$$
-DELIMITER ;
-
-call sp_agregarEmailProveedor(1, 'hdfjebrf@gmail.com', 'No respondo los domingos', 1);
-
--- LISTAR
-
-DELIMITER $$
-
-create procedure sp_listarEmailProveedor()
-begin 
-    select e.idEmailProveedor,
-    e.emailProveedor,
-    e.descripcion, 
-    e.idProveedores 
-    from EmailProveedor e;
-end$$
-DELIMITER ;
-
-call sp_listarEmailProveedor();
-
--- BUSCAR
-
-DELIMITER $$
-
-create procedure sp_buscarEmailProveedor(in idPro int)
-begin
-    select e.idEmailProveedor, 
-    e.emailProveedor, 
-    e.descripcion,
-    e.idProveedores 
-    from EmailProveedor e 
-    where e.idProveedores = idPro;
-end$$
-DELIMITER ;
-
--- EDITAR
-
-delimiter $$
-
-create procedure sp_editarEmailProveedor(
-    in idEmailPro int,
-    in email varchar(50),
-    in descri varchar(100),
-    in idPro int
-)
-begin
-    update EmailProveedor 
-    set emailProveedor = email,
-    descripcion = descri,
-    idProveedores = idPro 
-    where idEmailProveedor = idEmailPro;
-end$$
-DELIMITER ;
-
--- ELIMINAR
-
-DELIMITER $$
-
-create procedure sp_eliminarEmailProveedor(in idEmailPro int)
-begin
-    delete from EmailProveedor 
-    where idEmailProveedor = idEmailPro;
-end$$
-DELIMITER ;
-
--- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
--- EMAIL EMPLEADOS
+--  EMPLEADOS
 -- ------------------------------------------------------------------------------------------ ----------------------------------------------------------------------------------------
 
 

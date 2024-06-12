@@ -35,12 +35,6 @@ public class MenuProductosController implements Initializable {
 
     private main escenarioPrincipal;
 
-    private static class Proveedor extends Proveedores {
-
-        public Proveedor(int aInt, String string, String string0, String string1, String string2, String string3, String string4, String string5, String string6, String string7) {
-        }
-    }
-
     private enum operaciones {
         AGREGAR, ELIMINAR, EDITAR, ACTUALIZAR, CANCELAR, NULL
 
@@ -54,7 +48,7 @@ public class MenuProductosController implements Initializable {
     private ObservableList<TipoProducto> listaTipoProducto;
 
     @FXML
-    private TableView<Productos> tblProductos;
+    private TableView tblProductos;
 
     @FXML
     private Button btnTipoProducto;
@@ -126,6 +120,8 @@ public class MenuProductosController implements Initializable {
         Connection conexion = Conexion.getInstance().getConexion();
         if (conexion != null) {
             cargarDatos();
+         //   cmbProveedores.setItems(getProveedores());
+       //     cmbTipoProducto.setItems(getTipoProducto());
         } else {
             JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
         }
@@ -153,8 +149,8 @@ public class MenuProductosController implements Initializable {
             txtPrecioMayor.setText(String.valueOf(((Productos) tblProductos.getSelectionModel().getSelectedItem()).getPrecioMayor()));
             txtImagenProducto.setText((((Productos) tblProductos.getSelectionModel().getSelectedItem()).getImagenProducto()));
             txtExistencia.setText(String.valueOf(((Productos) tblProductos.getSelectionModel().getSelectedItem()).getExistencia()));
-            // cmbTipoProducto.setText(String.valueOf(((Productos)tblProductos.getSelectionModel().getSelectedItem()).getIdTipoProducto()));
-            // cmbProveedores.setText(String.valueOf(((Productos)tblProductos.getSelectionModel().getSelectedItem()).getIdProveedores()));
+            cmbTipoProducto.setValue(((Productos) tblProductos.getSelectionModel().getSelectedItem()).getIdTipoProducto());
+            cmbProveedores.setValue(((Productos) tblProductos.getSelectionModel().getSelectedItem()).getIdProveedores());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Por favor selecciona una fila", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -162,12 +158,12 @@ public class MenuProductosController implements Initializable {
 
 // *************************************************************************************************************
     public ObservableList<Productos> getProducto() {
-        ArrayList<Productos> listaP = new ArrayList<>();
+        ArrayList<Productos> lista = new ArrayList<>();
         try {
             PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_listarProductos()}");
             ResultSet resultado = procedimiento.executeQuery();
             while (resultado.next()) {
-                listaP.add(new Productos(resultado.getInt("idProducto"),
+                lista.add(new Productos(resultado.getInt("idProducto"),
                         resultado.getString("descripcionProducto"),
                         resultado.getDouble("precioUnitario"),
                         resultado.getDouble("precioDocena"),
@@ -181,11 +177,11 @@ public class MenuProductosController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return listaProductos = FXCollections.observableList(listaP);
+        return listaProductos = FXCollections.observableList(lista);
     }
 
 // *************************************************************************************************************
-    public ObservableList<Proveedores> getProveedores() {
+   /* public ObservableList<Proveedores> getProveedores() {
         ArrayList<Proveedores> listaPro = new ArrayList<>();
         try {
             PreparedStatement procedimiento = Conexion.getInstance().getConexion().prepareCall("{call sp_mostrarproveedores()}");
@@ -208,7 +204,7 @@ public class MenuProductosController implements Initializable {
         }
         return listaProveedores = FXCollections.observableList(listaPro);
     }
-
+*/
 // *************************************************************************************************************
     
     
@@ -431,7 +427,7 @@ public class MenuProductosController implements Initializable {
 
 
     
-    
+   /* 
     public Proveedores buscarProveedor(int codigoProveedor) {
         Proveedores resultado = null;
         try {
@@ -456,7 +452,7 @@ public class MenuProductosController implements Initializable {
         }
         return resultado;
     }
-    
+    */
     
     
         public TipoProducto buscarTipoProducto(int idTipoProducto) {

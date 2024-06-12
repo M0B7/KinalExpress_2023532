@@ -29,16 +29,12 @@ public class GenerarReportes {
             JasperReport ReporteClientes = (JasperReport)JRLoader.loadObject(reporte);
             //Verifica
             JasperPrint reporteImpreso = JasperFillManager.fillReport(ReporteClientes, parametros, Conexion.getInstance().getConexion());
-            
-            JasperReport ReporteProveedores = (JasperReport)JRLoader.loadObject(reporte);
-            
-            JasperPrint reporteImpresoProveedor = JasperFillManager.fillReport(ReporteProveedores, parametros, Conexion.getInstance().getConexion());
+                
             
             //Vista Previa
             
             JasperViewer visor = new JasperViewer(reporteImpreso, false);
             
-            JasperViewer visorPro = new JasperViewer(reporteImpresoProveedor, false);
             
             visor.setTitle(titulo);
             visor.setVisible(true);
